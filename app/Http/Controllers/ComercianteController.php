@@ -1,0 +1,69 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Comerciante;
+use App\Services\ComercianteService;
+use App\Services\EnderecoService;
+use App\Services\UserService;
+use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
+class ComercianteController extends Controller
+{
+    protected $comercianteService = null;
+    protected $userService = null;
+    protected $enderecoService = null;
+    
+    public function __construct(UserService $userService, EnderecoService $enderecoService, ComercianteService $comercianteService ) {
+        $this->comercianteService = $comercianteService;
+        $this->userService = $userService;
+        $this->enderecoService = $enderecoService;
+    }
+
+    public function create()
+    {
+        return view('comerciantes.create');
+    }
+
+    public function store(Request $request)
+    {
+        try{
+            $cpf = Validator::make($request->all(), [
+                'comerciante.cpf' => 'required|cpf',
+            ]);
+        
+            if ($cpf->fails()) {
+                return response()->json(['error' => "Esse CPF não é válido!"], 400);
+            }
+
+            $cnpj = Validator::make($request->all(), [
+                'comerciante.cnpj' => 'required|cnpj',
+            ]);
+        
+            if ($cnpj->fails()) {
+                return response()->json(['error' => "Esse CNPJ não é válido!"], 400);
+            }
+
+            $existeCnpj = Comerciante::where("cnpj", $request['comerciante.cnpj'])->first();
+            
+            if($existeCnpj){
+                return response()->json(['error' => "Esse CNPJ já existe!"], 400);
+            }
+
+            $existeCpf = Comerciante::where("cpf", $request['comerciante.cpf'])->first();
+
+            if($existeCpf){
+                return response()->json(['error' => "Esse CPF já existe!"], 400);
+            }
+
+            $comerciante = $this->comercianteService->store($request);
+            return $comerciante;
+        }catch(Exception $e){
+            if ($e->getCode() == 409) {
+                return response()->json(['error' => $e->getMessage()], 409);
+            }
+        }
+    }
+}

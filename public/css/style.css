@@ -1,0 +1,39 @@
+*{
+    font-family: "Poppins" !important;
+}
+
+body{
+    background-color: #F0F3F4;
+}
+
+.primary-color{
+    background-color: #FCA622;
+}
+
+.light-gray{
+    background-color: #D9D9D9
+}
+
+.btn-default{
+    background-color: #FCA622;
+    height: fit-content;
+    width: fit-content;
+    border-radius: 8px;
+    border: none;
+}
+
+.btn-large{
+    padding: 8px 80px;
+}
+
+.step { 
+    display: none; 
+}
+
+.step.active { 
+    display: block; 
+}
+
+.none{
+    display: none;
+}
