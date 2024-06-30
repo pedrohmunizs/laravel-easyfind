@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('telefone', 12);
             $table->string('email', 75);
             $table->string('enquadramento_juridico', 45);
-            $table->string('url_instragram')->nullable();
+            $table->string('url_instagram')->nullable();
             $table->string('url_facebook')->nullable();
             $table->unsignedBigInteger('fk_comerciante');
             $table->unsignedBigInteger('fk_endereco');

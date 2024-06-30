@@ -11,7 +11,6 @@ class Comerciante extends Model
     use HasFactory;
     
     protected $table = 'comerciantes';
-    public $timestamps = false;
 
     protected $fillable = [
         'nome',
@@ -28,7 +27,8 @@ class Comerciante extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,'fk_usuario', 'id');
     }
 
+    public $timestamps = false;
 }

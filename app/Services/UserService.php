@@ -2,17 +2,19 @@
 
 namespace App\Services;
 
-use App\Models\Users;
+use App\Models\User;
 use App\Models\Usuario;
 use Exception;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
     public function store($usuario){
         try{
-            $user = new Users();
+            $user = new User();
             $user->fill($usuario);
+            $user->password = Hash::make($usuario['password']);
             $user->save();
             return $user;
         }catch(QueryException $e){

@@ -4,11 +4,10 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class Users extends Model
+class User extends Authenticatable
 {
     use HasFactory;
     
@@ -20,4 +19,9 @@ class Users extends Model
         'password',
         'type'
     ];
+
+    public function comerciante()
+    {
+        return $this->hasOne(Comerciante::class, 'fk_usuario', 'id');
+    }
 }

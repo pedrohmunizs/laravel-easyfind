@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\Comerciante;
-use App\Models\Users;
+use App\Models\User;
 use App\Models\Usuario;
 use Carbon\Carbon;
 use Exception;
