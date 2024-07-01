@@ -9,4 +9,4 @@
         <input type="password" name="password">
         <button type="submit">Login</button>
     </form>
-@endsectio
+@endsection

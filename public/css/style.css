@@ -38,6 +38,20 @@ body{
     padding: 8px 80px;
 }
 
+.br-8{
+    border-radius: 8px;
+}
+
+.brt-8{
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.brb-8{
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
 .step { 
     display: none; 
 }
@@ -61,7 +75,6 @@ body{
     top: 56px;
     left: 0;
     height: calc(100vh - 56px);
-    width: 16.666667%;
     background-color: #343a40;
     padding: 20px 10px;
     color: #ffffff;
@@ -95,4 +108,36 @@ body{
 
 .fit-content{
     height: fit-content;
+}
+
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.nav-link:hover .bi {
+    color: #ffc107;
+}
+
+.card-options {
+    position: absolute;
+    top: 52px;
+    right: 10px;
+    display: none;
+    z-index: 1000;
+}
+
+.px-9{
+    padding-left: 9rem;
+    padding-right: 9rem;
+}
+
+.a-button{
+    display: inherit;
+    text-decoration: none;
+    color: #222222;
+}
+
+.a-button:hover{
+    background-color: rgb(252, 166, 34, .5);
+    color: #222222;
 }

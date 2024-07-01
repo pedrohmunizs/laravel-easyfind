@@ -11,8 +11,8 @@ Route::prefix('/')->namespace('App\Http\Controllers')->group(function () {
 });
 Route::middleware('auth')->group(function () {
     Route::group(['prefix' => 'estabelecimentos', 'namespace' => 'App\Http\Controllers'], function(){
-        Route::get('/teste',['uses' => 'ComercianteController@management', 'as' => 'comerciante.management'] );
         Route::get('/load', ['uses' => 'EstabelecimentoController@load', 'as' => 'estabelecimentos.load'] );
+        Route::get('/show', ['uses' => 'EstabelecimentoController@show', 'as' => 'estabelecimentos.show'] );
         Route::get('/', ['uses' => 'EstabelecimentoController@index', 'as' => 'estabelecimentos.index'] );
         Route::post('/',['uses' => 'EstabelecimentoController@store', 'as' => 'estabelecimentos.store'] );
     });

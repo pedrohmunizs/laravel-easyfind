@@ -21,5 +21,22 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     @yield('script')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var logo = document.getElementById('logo');
+            var optionsCard = document.getElementById('optionsCard');
+            var isVisible = false;
+
+            logo.addEventListener('click', function() {
+                if (isVisible) {
+                    optionsCard.style.display = 'none';
+                    isVisible = false;
+                } else {
+                    optionsCard.style.display = 'block';
+                    isVisible = true;
+                }
+            });
+        });
+    </script>
 </body>
 </html>

@@ -3,26 +3,23 @@
 @section('title', 'Lojas')
 
 @section('content')
-@include('includes.header')
-<div class="container-fluid main-content" style="margin-top: 71px;">
-    <div class="row">
-        @include('includes.menu')
-        <div class="col-md-10 offset-md-2 p-5">
-            <div class="d-flex flex-column gap-2 mb-4">
-                <h3>Lojas</h3>
-                <div class="d-flex flex-row justify-content-between">
-                    <div class="col-md-5">
-                        <input type="text" class="form-control" placeholder="Buscar estabelecimento" id="search" value="">
-                    </div>
-                    <button type="button" class="btn-default py-2 px-3 small" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        <i class="bi bi-plus-lg"></i>
-                        Cadastrar loja
-                    </button>
+@include('includes.header-comerciante')
+<div class="main-content w-100" style="margin-top: 53px;">
+    <div class="col-md-12 pt-5 px-9">
+        <div class="d-flex flex-column gap-2 mb-5">
+            <h3>Lojas</h3>
+            <div class="d-flex flex-row justify-content-between">
+                <div class="col-md-5">
+                    <input type="text" class="form-control" placeholder="Buscar estabelecimento" id="search" value="">
                 </div>
+                <button type="button" class="btn-default py-2 px-3 small" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <i class="bi bi-plus-lg"></i>
+                    Cadastrar loja
+                </button>
             </div>
-            <div class="d-flex flex-row flex-wrap justify-content-evenly" id="card"></div>
-            @include('estabelecimentos.create')
         </div>
+        <div class="d-flex flex-row flex-wrap justify-content-between" id="card"></div>
+        @include('estabelecimentos.create')
     </div>
 </div>
 @endsection
@@ -36,7 +33,7 @@
         function load(){
             var search = $('#search').val();
             $.ajax({
-                url: `estabelecimentos/load?search=${search}`,
+                url: `/estabelecimentos/load?search=${search}`,
                 type: 'GET',
                 success: function(response) {
                     $('#card').html(null)
