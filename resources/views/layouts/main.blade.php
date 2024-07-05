@@ -6,7 +6,7 @@
     <title>@yield('title')</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
@@ -14,6 +14,7 @@
 <body>
     @yield('content')
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
@@ -35,6 +36,17 @@
                     optionsCard.style.display = 'block';
                     isVisible = true;
                 }
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var chevrons = document.querySelectorAll('.nav-link .bi-chevron-down');
+
+            chevrons.forEach(function(chevron) {
+                var link = chevron.closest('.nav-link');
+                link.addEventListener('click', function() {
+                    chevron.classList.toggle('rotate-180');
+                });
             });
         });
     </script>

@@ -15,4 +15,9 @@ class Imagem extends Model
     {
         return $this->belongsTo(Estabelecimento::class,'fk_estabelecimento', 'id');
     }
+
+    public function produto()
+    {
+        return $this->belongsTo(Produto::class,'fk_produto', 'id');
+    }
 }

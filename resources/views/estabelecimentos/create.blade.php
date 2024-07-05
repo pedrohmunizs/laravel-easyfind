@@ -16,13 +16,13 @@
                         <div class="d-flex flex-row gap-3 justify-content-between">
                             <div class="d-flex flex-column gap-4">
                                 <div class="form-label-column d-flex flex-column gap-1">
-                                    <label for="nome">Nome</label>
-                                    <input type="text" name="estabelecimento[nome]" class="form-control px-3 py-2" required>
+                                    <label class="label-default" for="nome">Nome</label>
+                                    <input type="text" name="estabelecimento[nome]" class="input-default w-100 px-3 py-2" required>
                                     <div class="invalid-feedback">Por favor, adicione o nome da loja.</div>
                                 </div>
                                 <div class="form-label-column d-flex flex-column gap-1">
-                                    <label for="segmento">Segmento</label>
-                                    <select name="estabelecimento[segmento]" id="segmento" class="form-control px-3 py-2" required>
+                                    <label class="label-default" for="segmento">Segmento</label>
+                                    <select name="estabelecimento[segmento]" id="segmento" class="input-default w-100 px-3 py-2" required>
                                         <option value=""></option>
                                         <option value="Eletrônicos">Eletrônicos</option>
                                         <option value="Informática">Informática</option>
@@ -36,25 +36,25 @@
                                     <div class="invalid-feedback">Por favor, selecione o segmento da loja.</div>
                                 </div>
                                 <div class="form-label-column d-flex flex-column gap-1">
-                                    <label for="telefone">Número de contato</label>
-                                    <input type="text" name="estabelecimento[telefone]" class="form-control px-3 py-2" required>
+                                    <label class="label-default" for="telefone">Número de contato</label>
+                                    <input type="text" name="estabelecimento[telefone]" class="input-default w-100 px-3 py-2" required>
                                     <div class="invalid-feedback">Por favor, adicione o número de contato.</div>
                                 </div>
                             </div>
                             <div class="d-flex flex-column gap-4">
                                 <div class="form-label-column d-flex flex-column gap-1">
-                                    <label for="email">Email de contato</label>
-                                    <input type="email" name="estabelecimento[email]" class="form-control px-3 py-2" required>
+                                    <label class="label-default" for="email">Email de contato</label>
+                                    <input type="email" name="estabelecimento[email]" class="input-default w-100 px-3 py-2" required>
                                     <div class="invalid-feedback">Por favor, adicione o email de contato.</div>
                                 </div>
                                 <div class="form-label-column d-flex flex-column gap-1">
-                                    <label for="instagram">Link do Instagram</label>
-                                    <input type="text" name="estabelecimento[url_instagram]" class="form-control px-3 py-2" required>
+                                    <label class="label-default" for="instagram">Link do Instagram</label>
+                                    <input type="text" name="estabelecimento[url_instagram]" class="input-default w-100 px-3 py-2" required>
                                     <div class="invalid-feedback">Por favor, adicione o link do Instagram.</div>
                                 </div>
                                 <div class="form-label-column d-flex flex-column gap-1">
-                                    <label for="facebook">Link do Facebook</label>
-                                    <input type="text" name="estabelecimento[url_facebook]" class="form-control px-3 py-2" required>
+                                    <label class="label-default" for="facebook">Link do Facebook</label>
+                                    <input type="text" name="estabelecimento[url_facebook]" class="input-default w-100 px-3 py-2" required>
                                     <div class="invalid-feedback">Por favor, adicione o link do Facebook.</div>
                                 </div>
                             </div>
@@ -65,25 +65,25 @@
                         <div class="d-flex flex-row gap-3 justify-content-between">
                             <div class="d-flex flex-column gap-4">
                                 <div class="form-label-column d-flex flex-column gap-1">
-                                    <label for="cep">CEP</label>
-                                    <input type="text" name="endereco[cep]" class="form-control px-3 py-2" id="cep" required>
+                                    <label class="label-default" for="cep">CEP</label>
+                                    <input type="text" name="endereco[cep]" class="input-default w-100 px-3 py-2" id="cep" required>
                                     <div class="invalid-feedback">Por favor, adicione o CEP.</div>
                                 </div>
                                 <div class="form-label-column d-flex flex-column gap-1">
-                                    <label for="numero">Número</label>
-                                    <input type="text" name="endereco[numero]" class="form-control px-3 py-2" required>
+                                    <label class="label-default" for="numero">Número</label>
+                                    <input type="text" name="endereco[numero]" class="input-default w-100 px-3 py-2" required>
                                     <div class="invalid-feedback">Por favor, adicione o número.</div>
                                 </div>
                             </div>
                             <div class="d-flex flex-column gap-4">
                                 <div class="form-label-column d-flex flex-column gap-1">
-                                    <label for="logradouro">Logradouro</label>
-                                    <input type="text" name="endereco[logradouro]" class="form-control px-3 py-2" id="logradouro" required>
+                                    <label class="label-default" for="logradouro">Logradouro</label>
+                                    <input type="text" name="endereco[logradouro]" class="input-default w-100 px-3 py-2" id="logradouro" required>
                                     <div class="invalid-feedback">Por favor, adicione o logradouro.</div>
                                 </div>
                                 <div class="form-label-column d-flex flex-column gap-1">
-                                    <label for="bairro">Bairro</label>
-                                    <input type="text" name="endereco[bairro]" class="form-control px-3 py-2" id="bairro" required>
+                                    <label class="label-default" for="bairro">Bairro</label>
+                                    <input type="text" name="endereco[bairro]" class="input-default w-100 px-3 py-2" id="bairro" required>
                                     <div class="invalid-feedback">Por favor, adicione o bairro.</div>
                                 </div>
                             </div>

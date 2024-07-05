@@ -23,7 +23,7 @@ return new class extends Migration
             $table->unsignedBigInteger('fk_secao');
             $table->boolean('is_ativo');
             $table->boolean('is_promocao_ativa');
-            $table->integer('qtd_vendas');
+            $table->integer('qtd_vendas')->nullable();
 
             $table->foreign('fk_secao')->references('id')->on('secoes');
         });

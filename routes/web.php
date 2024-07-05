@@ -12,8 +12,19 @@ Route::prefix('/')->namespace('App\Http\Controllers')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::group(['prefix' => 'estabelecimentos', 'namespace' => 'App\Http\Controllers'], function(){
         Route::get('/load', ['uses' => 'EstabelecimentoController@load', 'as' => 'estabelecimentos.load'] );
-        Route::get('/show', ['uses' => 'EstabelecimentoController@show', 'as' => 'estabelecimentos.show'] );
         Route::get('/', ['uses' => 'EstabelecimentoController@index', 'as' => 'estabelecimentos.index'] );
         Route::post('/',['uses' => 'EstabelecimentoController@store', 'as' => 'estabelecimentos.store'] );
+    });
+
+    Route::group(['prefix' => 'produtos', 'namespace' => 'App\Http\Controllers'], function(){
+        Route::get('/{idEstabelecimento}', ['uses' => 'ProdutoController@index', 'as' => 'produtos.index'] );
+        Route::get('/{idEstabelecimento}/create', ['uses' => 'ProdutoController@create', 'as' => 'produtos.create'] );
+        Route::post('/',['uses' => 'ProdutoController@store', 'as' => 'produtos.store'] );
+    });
+
+    Route::group(['prefix' => 'secoes', 'namespace' => 'App\Http\Controllers'], function(){
+        Route::get('/{idEstabelecimento}', ['uses' => 'SecaoController@index', 'as' => 'secoes.index'] );
+        Route::get('/{idEstabelecimento}/create', ['uses' => 'SecaoController@create', 'as' => 'secoes.create'] );
+        Route::post('/',['uses' => 'SecaoController@store', 'as' => 'secoes.store'] );
     });
 });

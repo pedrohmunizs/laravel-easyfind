@@ -58,9 +58,4 @@ class EstabelecimentoController extends Controller
             'estabelecimentos' => $estabelecimentos
         ]);
     }
-
-    public function show()
-    {
-        return view('estabelecimentos.show');
-    }
 }

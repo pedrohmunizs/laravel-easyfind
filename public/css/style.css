@@ -26,12 +26,20 @@ body{
     background-color: #222222;
 }
 
-.btn-default{
-    background-color: #FCA622;
-    height: fit-content;
-    width: fit-content;
-    border-radius: 8px;
-    border: none;
+.bgc-input{
+    background-color: #F9F9FC;
+}
+
+.fc-gray{
+    color: #667085;
+}
+
+.fc-red{
+    color: #D81F47;
+}
+
+.dashed{
+    border: 2px dashed #ccc;
 }
 
 .btn-large{
@@ -40,6 +48,26 @@ body{
 
 .br-8{
     border-radius: 8px;
+}
+
+.fs-13 {
+    font-size: 13px;
+}
+
+.fit-content{
+    height: fit-content;
+}
+
+.w-fit-content{
+    width: fit-content;
+}
+
+.btn-default{
+    background-color: #FCA622;
+    height: fit-content;
+    width: fit-content;
+    border-radius: 8px;
+    border: none;
 }
 
 .brt-8{
@@ -67,19 +95,18 @@ body{
 .navbar {
     background-color: #222222;
     width: 100%;
-    z-index: 1030;
+    z-index: 1040;
 }
 
 .sidebar {
+    background-color: #222222;
+    z-index: 1050; /* Valor alto para sobrepor o header */
     position: fixed;
-    top: 56px;
+    top: 0;
     left: 0;
-    height: calc(100vh - 56px);
-    background-color: #343a40;
     padding: 20px 10px;
     color: #ffffff;
     overflow-y: auto;
-    z-index: 1020;
 }
 
 .create-modal-width {
@@ -102,20 +129,12 @@ body{
     display: block;
 }
 
-.fs-13 {
-    font-size: 13px;
-}
-
-.fit-content{
-    height: fit-content;
-}
-
 .nav-link:hover {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-.nav-link:hover .bi {
-    color: #ffc107;
+.nav-link:hover .bi, .nav-link:hover > div > p {
+    color: #FCA622;
 }
 
 .card-options {
@@ -140,4 +159,94 @@ body{
 .a-button:hover{
     background-color: rgb(252, 166, 34, .5);
     color: #222222;
+}
+
+.rotate-180 {
+    transform: rotate(180deg);
+    transition: transform 0.3s ease-in-out;
+}
+
+.input-default{
+    background-color: #F9F9FC;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #495057;
+    background-clip: padding-box;
+    border: 2px solid #ced4da;
+    appearance: none;
+    border-radius: 8px;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    width: 160px;
+}
+
+.input-default:focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+}
+
+.label-default{
+    color: #4D5464;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.input-default::placeholder {
+    color: #6c757d;
+    opacity: 1;
+}
+
+.container-default{
+    border: 2px solid #ced4da;
+    border-radius: 8px;
+}
+
+/* imagens produto */
+#imagePreviewContainer {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.image-preview-wrapper {
+    position: relative;
+    width: 150px;
+    height: 150px;
+}
+
+.image-preview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.remove-image-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.btn-cancel{
+    background-color: transparent;
+    color: #858D9D;
+    border: 1px solid #858D9D;
+}
+
+.btn-clean{
+    background-color: transparent;
+    border: none;
 }

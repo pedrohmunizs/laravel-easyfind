@@ -4,7 +4,7 @@
 
 @section('content')
 @include('includes.header-comerciante')
-<div class="main-content w-100" style="margin-top: 53px;">
+<div class="main-content w-100">
     <div class="col-md-12 pt-5 px-9">
         <div class="d-flex flex-column gap-2 mb-5">
             <h3>Lojas</h3>
@@ -199,8 +199,9 @@
                 contentType: false,
                 processData: false,
                 success: function(response) {
-                    toastr.success('Cadastro realizado com sucesso!', 'Sucesso');
+                    toastr.success('Estabelecimento cadastrado com sucesso!', 'Sucesso');
                     $('#exampleModal').modal('hide');
+                    load();
                     setTimeout(function() {
                         // window.location.href = '/';
                     }, 3000);

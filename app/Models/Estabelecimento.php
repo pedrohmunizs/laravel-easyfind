@@ -24,4 +24,14 @@ class Estabelecimento extends Model
     {
         return $this->hasOne(Imagem::class, 'fk_estabelecimento', 'id');
     }
+
+    public function agendas()
+    {
+        return $this->hasMany(Agenda::class, 'fk_estabelecimento', 'id');
+    }
+
+    public function secoes()
+    {
+        return $this->hasMany(Secao::class, 'fk_estabelecimento', 'id');
+    }
 }

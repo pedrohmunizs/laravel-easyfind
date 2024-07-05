@@ -1,7 +1,7 @@
-<header class="navbar navbar-expand-lg navbar-dark fixed-top d-flex flex-row-reverse" style="background-color: #222222; width: 100%;">
+<header class="navbar navbar-expand-lg navbar-dark d-flex flex-row-reverse" style="background-color: #222222; width: 100%;">
     <nav class="px-5 py-1">
-        <a class="navbar-brand m-0 d-flex flex-rown gap-2 align-items-center" href="#" id="logo">
-            <p class="m-0 fs-13 fc-primary">{{auth()->user()->comerciante->nome}}</p>
+        <a class="navbar-brand m-0 d-flex flex-row gap-2 align-items-center" href="#" id="logo">
+            <p class="m-0 fs-13 fc-primary">{{ auth()->user()->comerciante->nome }}</p>
             <i class="bi bi-chevron-down fs-13"></i>
         </a>
     </nav>
@@ -17,7 +17,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white d-flex flex-row align-items-center gap-2 br-8" href="#">
+                <a class="nav-link text-white d-flex flex-row align-items-center gap-2 br-8" href="/estabelecimentos">
                     <i class="bi bi-shop"></i>
                     <p class="m-0 fs-13">Lojas</p>
                 </a>
