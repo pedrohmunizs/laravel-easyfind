@@ -17,7 +17,7 @@
             <div class="collapse" id="submenu1">
                 <ul class="nav flex-column ms-3">
                     <li class="nav-item">
-                        <a class="nav-link text-white br-8" href="#">
+                        <a class="nav-link text-white br-8" href="{{ route('produtos.index', ['idEstabelecimento' => $estabelecimento->id]) }}">
                             <p class="m-0 fs-13">Lista de produtos</p>
                         </a>
                     </li>

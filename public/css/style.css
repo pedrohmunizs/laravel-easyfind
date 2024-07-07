@@ -38,6 +38,10 @@ body{
     color: #D81F47;
 }
 
+.fc-green{
+    color: #0D894F;
+}
+
 .dashed{
     border: 2px dashed #ccc;
 }
@@ -52,6 +56,14 @@ body{
 
 .fs-13 {
     font-size: 13px;
+}
+
+.fs-20 {
+    font-size: 20px;
+}
+
+.fs-14 {
+    font-size: 14px !important;
 }
 
 .fit-content{
@@ -100,7 +112,7 @@ body{
 
 .sidebar {
     background-color: #222222;
-    z-index: 1050; /* Valor alto para sobrepor o header */
+    z-index: 1050;
     position: fixed;
     top: 0;
     left: 0;
@@ -176,15 +188,13 @@ body{
     appearance: none;
     border-radius: 8px;
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-    width: 160px;
+    width: 170px;
 }
 
 .input-default:focus {
     color: #495057;
     background-color: #fff;
-    border-color: #80bdff;
     outline: 0;
-    box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
 }
 
 .label-default{
@@ -196,6 +206,12 @@ body{
 .input-default::placeholder {
     color: #6c757d;
     opacity: 1;
+}
+
+.input-search{
+    border-radius: 0px 8px 8px 0px;
+    border-left: none;
+    padding-left: 0px !important;
 }
 
 .container-default{
@@ -240,6 +256,7 @@ body{
     cursor: pointer;
 }
 
+/* Botões default */
 .btn-cancel{
     background-color: transparent;
     color: #858D9D;
@@ -249,4 +266,66 @@ body{
 .btn-clean{
     background-color: transparent;
     border: none;
+}
+
+.btn-color-default{
+    color: rgba(18, 18, 18, 0.5);
+}
+
+/* Tabela */
+
+th{
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: normal;
+}
+
+table thead th {
+    padding-top: 18px !important;
+    padding-bottom: 18px !important;
+}
+
+
+.table-container thead th:first-child {
+    border-top-left-radius: 8px;
+}
+
+.table-container thead th:last-child {
+    border-top-right-radius: 8px;
+}
+
+.table-container {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    background-color: #ffffff;
+    border: 2px solid #ced4da;
+}
+
+table thead th, tbody td {
+    padding-left: 20px !important;
+    vertical-align: middle;
+}
+
+nav.d-flex.justify-items-center.justify-content-between {
+    width: 100%;
+}
+
+.page-item.active .page-link{
+    background-color: #FCA622 ;
+    border: none;
+    border-radius: 8px;
+}
+
+.page-link{
+    padding: .15rem  .75rem;
+    border: none;
+    color: #FCA622;
+}
+
+.page-link:hover {
+    color: #000000;
+    background-color: rgb(252, 166, 34, .5);
+    border: none;
+    border-radius: 8px;
+    padding: .15rem  .75rem;
 }

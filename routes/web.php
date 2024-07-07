@@ -19,6 +19,7 @@ Route::middleware('auth')->group(function () {
     Route::group(['prefix' => 'produtos', 'namespace' => 'App\Http\Controllers'], function(){
         Route::get('/{idEstabelecimento}', ['uses' => 'ProdutoController@index', 'as' => 'produtos.index'] );
         Route::get('/{idEstabelecimento}/create', ['uses' => 'ProdutoController@create', 'as' => 'produtos.create'] );
+        Route::get('/{idEstabelecimento}/load', ['uses' => 'ProdutoController@load', 'as' => 'produtos.load'] );
         Route::post('/',['uses' => 'ProdutoController@store', 'as' => 'produtos.store'] );
     });
 

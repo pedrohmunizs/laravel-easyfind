@@ -33,5 +33,40 @@ class Produto extends Model
         return $this->belongsTo(Secao::class, 'fk_secao');
     }
 
-    public $timestamps = false;
+    public function scopeStatus($query, $status)
+    {
+        if ($status !== null) {
+            return $query->where('is_ativo', $status);
+        }
+
+        return $query;
+    }
+
+    public function scopePriceRange($query, $min, $max)
+    {
+        if ($min !== null) {
+            $query->where('preco', '>=', $min);
+        }
+
+        if ($max !== null) {
+            $query->where('preco', '<=', $max);
+        }
+
+        return $query;
+    }
+
+    public function scopeDateRange($query, $from, $to)
+    {
+        if ($from !== null) {
+            $from = \Carbon\Carbon::parse($from)->startOfDay();
+            $query->where('created_at', '>=', $from);
+        }
+
+        if ($to !== null) {
+            $to = \Carbon\Carbon::parse($to)->endOfDay();
+            $query->where('created_at', '<=', $to);
+        }
+
+        return $query;
+    }
 }
