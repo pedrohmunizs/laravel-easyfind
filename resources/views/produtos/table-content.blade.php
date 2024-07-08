@@ -19,7 +19,7 @@
         <td>{{$produto->secao->descricao}}</td>
         <td>R$ {{$produto->preco}}</td>
         <td>
-            {!! $produto->is_ativo ? '<div class="py-1 px2 rounded-pill fc-green d-flex justify-content-center" style="background-color: #E7F4EE;"><p class="m-0">Ativado</p></div>' : '<p class="m-0 py-1 px2 rounded-pill fc-red" style="background-color: #FDF1E8;">Desativado</p>' !!}
+            {!! $produto->is_ativo ? '<div class="py-1 px2 rounded-pill fc-green d-flex justify-content-center" style="background-color: #E7F4EE;"><p class="m-0">Ativado</p></div>' : '<div class="py-1 px2 rounded-pill fc-red d-flex justify-content-center" style="background-color: #FDF1E8;"><p class="m-0" >Desativado</p></div>' !!}
         </td>
         <td>
             <a href="{{ $produto->id }}/edit" class="btn-clean"><i class="bi bi-pencil fs-20 btn-color-default"></i></a>

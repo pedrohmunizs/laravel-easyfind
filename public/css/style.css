@@ -219,6 +219,11 @@ body{
     border-radius: 8px;
 }
 
+.container-primary{
+    border: 2px solid #FCA622;
+    border-radius: 8px;
+}
+
 /* imagens produto */
 #imagePreviewContainer {
     display: flex;
@@ -246,7 +251,7 @@ body{
     position: absolute;
     top: 5px;
     right: 5px;
-    background-color: red;
+    background-color: #D81F47;
     color: white;
     border: none;
     border-radius: 50%;
@@ -295,8 +300,7 @@ table thead th {
 }
 
 .table-container {
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
+    border-radius: 8px;
     background-color: #ffffff;
     border: 2px solid #ced4da;
 }

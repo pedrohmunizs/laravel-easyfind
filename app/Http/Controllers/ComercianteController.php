@@ -95,7 +95,7 @@ class ComercianteController extends Controller
 
             if ($user) {
                 $user->load('comerciante');
-                return redirect()->route('estabelecimentos.index');
+                return redirect()->intended('/');
             } else {
                 return response()->json([
                     'message' => 'User not found after authentication.',

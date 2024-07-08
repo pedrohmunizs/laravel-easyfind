@@ -25,6 +25,7 @@ Route::middleware('auth')->group(function () {
 
     Route::group(['prefix' => 'secoes', 'namespace' => 'App\Http\Controllers'], function(){
         Route::get('/{idEstabelecimento}', ['uses' => 'SecaoController@index', 'as' => 'secoes.index'] );
+        Route::get('/{idEstabelecimento}/load', ['uses' => 'SecaoController@load', 'as' => 'secoes.load'] );
         Route::get('/{idEstabelecimento}/create', ['uses' => 'SecaoController@create', 'as' => 'secoes.create'] );
         Route::post('/',['uses' => 'SecaoController@store', 'as' => 'secoes.store'] );
     });

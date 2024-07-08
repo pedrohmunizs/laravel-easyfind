@@ -20,8 +20,8 @@
             </div>
         </div>
             <div class="d-flex flex-row gap-3">
-                <button class="btn-default py-2 px-3 small" id="filtro" >Filtro</button>
-                <a href="/produtos/{{$estabelecimento->id}}/create" class="btn-default small a-button px-3 py-2 d-flex flex-row gap-1"><i class="bi bi-plus-lg"></i><p class="m-0">Cadastrar Produto</p></a>
+                <button class="btn-default py-2 px-3 small d-flex flex-row gap-2 container-default bg-white" id="filtro"><i class="bi bi-filter"></i><p class="m-0">Filtro</p></button>
+                <a href="/produtos/{{$estabelecimento->id}}/create" class="btn-default small a-button px-3 py-2 d-flex flex-row gap-1 container-primary"><i class="bi bi-plus-lg"></i><p class="m-0">Cadastrar Produto</p></a>
             </div>
         </div>
         <div>
@@ -66,7 +66,7 @@
                 <button class="btn-default py-2 px-3 small" id="clear-filter" >Limpar filtro</button>
             </div>
         </div>
-        <div class="table-container mt-3">
+        <div class="table-container mt-3 shadow-sm">
             <table class="table">
                 <thead class="table-dark">
                     <tr>
@@ -86,7 +86,6 @@
 @endsection
 @section('script')
 <script>
-    let page = 1;
     let per_page = 10;
 
     function formatCurrency(value) {
@@ -118,7 +117,7 @@
 
     $(document).ready(function(){
         
-        load(page);
+        load();
 
         $('#filtro').on('click', function(){
             if($("#card-filter").hasClass('d-none')){
@@ -129,32 +128,6 @@
                 $("#card-filter").addClass('d-none')
             }
         })
-
-        $(document).on('change', '#per_page', function(){
-            per_page = $('#per_page').val();
-            page = 1;
-
-            load()
-        })
-
-        $(document).on('click','.page-link', function(){
-            event.preventDefault();
-            page = this.text
-
-            if(page == "›" || page == "‹"){
-                let href = this.href;
-                let url = new URL(href);
-                page =  url.searchParams.get('page');
-            }
-
-            load();
-        })
-
-        function actualPage(){
-            let div = $('.active');
-            let span = div.find('span');
-            page = span.text();
-        }
 
         $('#apply-filter').on('click', function() {
             page = 1;
@@ -179,23 +152,23 @@
             load();
         });
 
-        function load(){
-            let formData = $('#form_filter').serialize();
-            let search = $('#search').val();
-            console.log(formData);
-            $.ajax({
-                url: `/produtos/{{$estabelecimento->id}}/load?page=${page}&per_page=${per_page}&${formData}&search=${search}`,
-                type: 'GET',
-                success: function(response) {
-                    $('#table-content').html(response.tableContent);
-                    $('.pagination').html(response.pagination);
-                },
-                error: function(xhr, status, error) {
-                    console.error(error);
-                    alert('Erro ao carregar o evento.');
-                }
-            });
-        }
     });
+    function load(){
+        let formData = $('#form_filter').serialize();
+        let search = $('#search').val();
+
+        $.ajax({
+            url: `/produtos/{{$estabelecimento->id}}/load?page=${page}&per_page=${per_page}&${formData}&search=${search}`,
+            type: 'GET',
+            success: function(response) {
+                $('#table-content').html(response.tableContent);
+                $('.pagination').html(response.pagination);
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+                alert('Erro ao carregar o evento.');
+            }
+        });
+    }
 </script>
 @endsection
