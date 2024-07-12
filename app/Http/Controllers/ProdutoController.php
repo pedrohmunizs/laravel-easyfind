@@ -7,7 +7,6 @@ use App\Models\Produto;
 use App\Models\Tag;
 use App\Services\ProdutoService;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 class ProdutoController extends Controller
 {

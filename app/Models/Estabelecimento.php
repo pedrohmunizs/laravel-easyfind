@@ -34,4 +34,9 @@ class Estabelecimento extends Model
     {
         return $this->hasMany(Secao::class, 'fk_estabelecimento', 'id');
     }
+
+    public function metodosPagamentosAceito()
+    {
+        return $this->hasMany(MetodoPagamentoAceito::class, 'fk_estabelecimento', 'id');
+    }
 }

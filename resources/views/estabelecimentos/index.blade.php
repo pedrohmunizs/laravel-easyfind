@@ -48,6 +48,17 @@
         $("#search").on('keyup', function() {
             load();
         });
+
+        $(document).on('click', '.btnGerenciarEstabelecimento', function(e) {
+            e.preventDefault();
+            var idEstabelecimento = $(this).data('id-estabelecimento');
+            console.log('ID Estabelecimento:', idEstabelecimento);
+            if (idEstabelecimento) {
+                sessionStorage.removeItem('idEstabelecimento');
+                sessionStorage.setItem('idEstabelecimento', idEstabelecimento);
+                window.location.href = `/produtos/${idEstabelecimento}`;
+            }
+        });
     });
 
     let currentStep = 1;

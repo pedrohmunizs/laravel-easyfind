@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('fk_metodo_pagamento');
             
             $table->foreign('fk_estabelecimento')->references('id')->on('estabelecimentos');
-            $table->foreign('fk_metodo_pagamento')->references('id')->on('metodos_pagamento');
+            $table->foreign('fk_metodo_pagamento')->references('id')->on('bandeiras_metodos');
         });
     }
 

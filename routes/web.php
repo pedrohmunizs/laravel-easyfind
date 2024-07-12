@@ -29,4 +29,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/{idEstabelecimento}/create', ['uses' => 'SecaoController@create', 'as' => 'secoes.create'] );
         Route::post('/',['uses' => 'SecaoController@store', 'as' => 'secoes.store'] );
     });
+    
+    Route::group(['prefix' => 'metodos', 'namespace' => 'App\Http\Controllers'], function(){
+        Route::get('/{idEstabelecimento}/create', ['uses' => 'MetodoPagamentoAceitoController@create', 'as' => 'metodos.create'] );
+        Route::get('/{idEstabelecimento}', ['uses' => 'MetodoPagamentoAceitoController@index', 'as' => 'metodos.index'] );
+        Route::post('/', ['uses' => 'MetodoPagamentoAceitoController@store', 'as' => 'metodos.store'] );
+    });
 });

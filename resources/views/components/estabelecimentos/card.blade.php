@@ -22,7 +22,7 @@
                     <p class="fs-13 text-white">0</p>
                 </div>
             </div>
-            <a href="/produtos/{{$estabelecimento->id}}" class="btn-default btn-large a-button">Gerenciar</a>
+            <a href="javascript:void(0)" class="btn-default btn-large a-button btnGerenciarEstabelecimento" id="btnGerenciar" data-id-estabelecimento="{{$estabelecimento->id}}">Gerenciar</a>
         </div>
     </div>
 @endforeach

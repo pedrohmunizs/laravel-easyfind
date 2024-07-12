@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Estabelecimento;
-use App\Models\Imagem;
 use App\Services\EstabelecimentoService;
-use App\Services\EnderecoService;
 use Illuminate\Http\Request;
 
 class EstabelecimentoController extends Controller
