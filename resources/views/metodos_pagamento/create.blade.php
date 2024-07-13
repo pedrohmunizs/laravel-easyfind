@@ -68,7 +68,7 @@
     </div>
     <div class="col-md-12 d-flex flex-row-reverse bg-white p-3 gap-3 position-fixed bottom-0">
         <div class="d-flex flex-row gap-2">
-            <a href="/metodos_pagamento/{{$estabelecimento->id}}" class="btn-default small a-button px-3 py-2 btn-cancel d-flex flex-row gap-2" ><i class="bi bi-x-lg"></i><p class="m-0">Cancelar</p></a>
+            <a href="/metodos/{{$estabelecimento->id}}" class="btn-default small a-button px-3 py-2 btn-cancel d-flex flex-row gap-2" ><i class="bi bi-x-lg"></i><p class="m-0">Cancelar</p></a>
             <button type="submit" class="btn-default py-2 px-3 small d-flex flex-row gap-2" ><i class="bi bi-floppy"></i><p class="m-0">Salvar</p></button>
         </div>
     </div>

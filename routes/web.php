@@ -38,6 +38,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/{idEstabelecimento}/load', ['uses' => 'MetodoPagamentoAceitoController@load', 'as' => 'metodos.load'] );
         Route::get('/{idEstabelecimento}', ['uses' => 'MetodoPagamentoAceitoController@index', 'as' => 'metodos.index'] );
         Route::post('/', ['uses' => 'MetodoPagamentoAceitoController@store', 'as' => 'metodos.store'] );
+        Route::delete('/{id}', ['uses' => 'MetodoPagamentoAceitoController@destroy', 'as' => 'metodos.destroy'] );
     });
 
     Route::group(['prefix' =>'agendas', 'namespace' => 'App\Http\Controllers'], function(){

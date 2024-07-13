@@ -35,7 +35,7 @@ class MetodoPagamentoAceitoController extends Controller
     {
         $estabelecimento = Estabelecimento::where('id', $idEstabelecimento)->first();
         
-        $metodos = MetodoPagamentoAceito::where('fk_estabelecimento', $idEstabelecimento);
+        $metodos = MetodoPagamentoAceito::where('fk_estabelecimento', $idEstabelecimento)->where('status', 1);
         
         $filter = array_filter($request['filter']);
 
@@ -75,7 +75,7 @@ class MetodoPagamentoAceitoController extends Controller
     {
         $estabelecimento = Estabelecimento::where('id', $idEstabelecimento)->first();
 
-        $metodosEstabelecimento = MetodoPagamentoAceito::where('fk_estabelecimento', $idEstabelecimento)->pluck('fk_metodo_pagamento');
+        $metodosEstabelecimento = MetodoPagamentoAceito::where('fk_estabelecimento', $idEstabelecimento)->where('status', 1)->pluck('fk_metodo_pagamento');
         
         $bandeirasMetodos = BandeiraMetodo::whereNotIn('id', $metodosEstabelecimento)->get();
 
@@ -100,5 +100,11 @@ class MetodoPagamentoAceitoController extends Controller
 
         $aceito = $this->service->store($metodos, $idEstabelecimento);
         return $aceito;
+    }
+
+    public function destroy($id)
+    {
+        $metodo = $this->service->destroy($id);
+        return $metodo;
     }
 }

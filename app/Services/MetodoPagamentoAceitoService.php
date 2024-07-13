@@ -26,4 +26,13 @@ class MetodoPagamentoAceitoService
         }
         return response()->json(null, 201);
     }
+
+    public function destroy($id)
+    {
+        $metodo = MetodoPagamentoAceito::where('id', $id)->first();
+        $metodo->status = false;
+        $metodo->save();
+
+        return response()->json(null, 204);
+    }
 }
