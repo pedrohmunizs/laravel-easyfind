@@ -108,7 +108,7 @@
             success: function(response) {
                 toastr.success('Método cadastrado com sucesso!', 'Sucesso');
                 setTimeout(function() {
-                    window.location.href = `/metodos_pagamento/{{$estabelecimento->id}}`;
+                    window.location.href = `/metodos/{{$estabelecimento->id}}`;
                 }, 3000);
             },
             error: function(xhr, status, error) {

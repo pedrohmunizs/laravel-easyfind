@@ -24,7 +24,7 @@ class MetodoPagamentoAceitoController extends Controller
         $metodos = MetodoPagamento::all();
         $bandeiras = BandeiraPagamento::all();
         
-        return view('metodos_pagamento.index',[
+        return view('metodos.index',[
             'estabelecimento' => $estabelecimento,
             'metodos' =>$metodos,
             'bandeiras' =>$bandeiras
@@ -59,7 +59,7 @@ class MetodoPagamentoAceitoController extends Controller
     
         $metodos = $metodos->paginate($perPage, ['*'], 'page', $page);
 
-        $tableContent =  view('metodos_pagamento.table-content', [
+        $tableContent =  view('metodos.table-content', [
             'metodos'  => $metodos
         ])->render();
 
@@ -86,7 +86,7 @@ class MetodoPagamentoAceitoController extends Controller
             $bandeiraMetodo->imagem = $bandeiraMetodo->bandeiraPagamento->imagem;
         }
         
-        return view('metodos_pagamento.create', [
+        return view('metodos.create', [
             'estabelecimento' => $estabelecimento,
             'bandeirasMetodos' => $bandeirasMetodos,
             'metodosPagamento' => $metodosPagamento

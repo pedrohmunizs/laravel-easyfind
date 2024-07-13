@@ -75,12 +75,6 @@ class ComercianteController extends Controller
         }
     }
 
-    public function management()
-    {
-        return view('comerciantes.management');
-    }
-
-
     public function login(Request $request)
     {
         return view('users.index');
@@ -94,7 +88,7 @@ class ComercianteController extends Controller
             $user = auth()->user();
 
             if ($user) {
-                $user->load('comerciante');
+                //$user->load('comerciante');
                 return redirect()->intended('/');
             } else {
                 return response()->json([
