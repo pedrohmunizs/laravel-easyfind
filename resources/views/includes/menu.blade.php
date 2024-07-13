@@ -2,7 +2,11 @@
     <ul class="nav flex-column">
         <li class="nav-item mb-4">
             <div class="d-flex flex-row align-items-center gap-3">
-                <img src="/img/estabelecimentos/{{ $estabelecimento->imagem->nome_referencia }}" class="rounded-circle" alt="" style="height: 43px;">
+                @if ($estabelecimento->imagem && $estabelecimento->imagem->nome_referencia)
+                    <img src="/img/estabelecimentos/{{ $estabelecimento->imagem->nome_referencia }}" class="rounded-circle" alt="" style="height: 43px;">
+                @else
+                    <img src="/img/default.jpg" class="rounded-circle" alt="Imagem Indisponível" style="height: 43px;">
+                @endif
                 <p class="m-0 fs-13">{{$estabelecimento->nome}}</p>
             </div>
         </li>

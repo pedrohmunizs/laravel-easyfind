@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Lojas')
+@section('title', 'Produtos')
 
 @section('content')
 @include('includes.header-comerciante')

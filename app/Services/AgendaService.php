@@ -17,4 +17,18 @@ class AgendaService{
             return $agenda;
         }
     }
+
+    public function update($agendas, $idEstabelecimento)
+    {
+        Agenda::where('fk_estabelecimento', $idEstabelecimento)->delete();
+
+        foreach($agendas as $agenda){
+            $new = new Agenda();
+
+            $new->fill($agenda);
+            $new->fk_estabelecimento = $idEstabelecimento;
+            $new->save();
+        }
+        return response()->json(null, 201);
+    }
 }

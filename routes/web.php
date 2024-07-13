@@ -36,4 +36,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/{idEstabelecimento}', ['uses' => 'MetodoPagamentoAceitoController@index', 'as' => 'metodos.index'] );
         Route::post('/', ['uses' => 'MetodoPagamentoAceitoController@store', 'as' => 'metodos.store'] );
     });
+
+    Route::group(['prefix' =>'agendas', 'namespace' => 'App\Http\Controllers'], function(){
+        Route::get('/{idEstabelecimento}', ['uses' => 'AgendaController@index', 'as' => 'agendas.index']);
+        Route::post('/{idEstabelecimento}', ['uses' => 'AgendaController@update', 'as' => 'agendas.update']);
+    });
 });
