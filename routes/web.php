@@ -21,6 +21,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/{idEstabelecimento}/create', ['uses' => 'ProdutoController@create', 'as' => 'produtos.create'] );
         Route::get('/{idEstabelecimento}/load', ['uses' => 'ProdutoController@load', 'as' => 'produtos.load'] );
         Route::post('/',['uses' => 'ProdutoController@store', 'as' => 'produtos.store'] );
+        Route::patch('/{id}',['uses' => 'ProdutoController@active', 'as' => 'produtos.active'] );
+        Route::delete('/{id}',['uses' => 'ProdutoController@destroy', 'as' => 'produtos.destroy'] );
     });
 
     Route::group(['prefix' => 'secoes', 'namespace' => 'App\Http\Controllers'], function(){

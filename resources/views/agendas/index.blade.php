@@ -10,7 +10,7 @@
         <div class="d-flex flex-row">
             <p class="fc-primary">Agenda</p>
         </div>
-        <div class="d-flex flex-column bg-white p-4">
+        <div class="d-flex flex-column bg-white p-4 shadow-sm br-8">
             <h4 class="mb-4">Horário de atendimento</h4>
             <form id="form_agenda" action="/agendas" method="POST">
                 @csrf
@@ -25,10 +25,8 @@
 
                     <x-day :day="$day" :data="$currentDayData ? ['horario_inicio' => $currentDayData->horario_inicio, 'horario_fim' => $currentDayData->horario_fim] : null" />
                 @endforeach
-                <div class="col-md-12 d-flex flex-row-reverse bg-white p-3">
-                    <div class="d-flex flex-row">
-                        <button type="submit" class="btn-default py-2 px-3 small d-flex flex-row gap-2" ><i class="bi bi-floppy"></i><p class="m-0">Salvar</p></button>
-                    </div>
+                <div class="col-md-12 d-flex flex-row-reverse bg-white">
+                    <button type="submit" class="btn-default py-2 px-3 small d-flex flex-row gap-2" ><i class="bi bi-floppy"></i><p class="m-0">Salvar</p></button>
                 </div>
             </form>
         </div>

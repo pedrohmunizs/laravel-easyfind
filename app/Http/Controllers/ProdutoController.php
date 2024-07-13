@@ -116,4 +116,20 @@ class ProdutoController extends Controller
 
         return $produto;
     }
+
+    public function destroy($id)
+    {
+        $produto = Produto::where('id', $id)->first();
+        $produto->is_ativo = false;
+        $produto->save();
+        return $produto;
+    }
+
+    public function active($id)
+    {
+        $produto = Produto::where('id', $id)->first();
+        $produto->is_ativo = true;
+        $produto->save();
+        return $produto;
+    }
 }

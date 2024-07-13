@@ -170,5 +170,47 @@
             }
         });
     }
+
+    $(document).on('click', '.delete', function(){
+        let id = this.id;
+
+        $.ajax({
+            url: `${id}`,
+            type: 'DELETE',
+            data: {
+                "_token": "{{ csrf_token() }}",
+            },
+            success: function(response) {
+                toastr.success('Produto desativado com sucesso!', 'Sucesso');
+                setTimeout(function() {
+                     window.location.reload();
+                }, 3000);
+            },
+            error: function(xhr, status, error) {
+                toastr.error('Erro ao desativar produto!', 'Erro');
+            }
+        });
+    })
+
+    $(document).on('click', '.active', function(){
+        let id = this.id;
+
+        $.ajax({
+            url: `${id}`,
+            type: 'PATCH',
+            data: {
+                "_token": "{{ csrf_token() }}",
+            },
+            success: function(response) {
+                toastr.success('Produto ativado com sucesso!', 'Sucesso');
+                setTimeout(function() {
+                     window.location.reload();
+                }, 3000);
+            },
+            error: function(xhr, status, error) {
+                toastr.error('Erro ao ativar produto!', 'Erro');
+            }
+        });
+    })
 </script>
 @endsection

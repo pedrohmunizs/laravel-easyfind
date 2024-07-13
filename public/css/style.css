@@ -333,3 +333,15 @@ nav.d-flex.justify-items-center.justify-content-between {
     border-radius: 8px;
     padding: .15rem  .75rem;
 }
+
+.delete>i:hover{
+    color: #D81F47;
+}
+
+.active>i:hover{
+    color: #0D894F;
+}
+
+.hover-default:hover{
+    color: #FCA622;
+}
