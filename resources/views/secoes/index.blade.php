@@ -69,5 +69,26 @@
         });
     }
 
+    $(document).on('click', '.delete', function(){
+        let id = this.id;
+
+        $.ajax({
+            url: `${id}`,
+            type: 'DELETE',
+            data: {
+                "_token": "{{ csrf_token() }}",
+            },
+            success: function(response) {
+                toastr.success('Seção excluída com sucesso!', 'Sucesso');
+                setTimeout(function() {
+                     window.location.reload();
+                }, 3000);
+            },
+            error: function(xhr, status, error) {
+                toastr.error('Erro ao excluir seção!', 'Erro');
+            }
+        });
+    })
+
 </script>
 @endsection

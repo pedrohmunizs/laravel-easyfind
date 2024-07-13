@@ -20,7 +20,7 @@ return new class extends Migration
             $table->decimal('preco_oferta', total:6, places:2);
             $table->char('codigo_barras', 13);
             $table->string('categoria', 45);
-            $table->unsignedBigInteger('fk_secao');
+            $table->unsignedBigInteger('fk_secao')->nullable();
             $table->boolean('is_ativo');
             $table->boolean('is_promocao_ativa');
             $table->integer('qtd_vendas')->nullable();

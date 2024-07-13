@@ -86,4 +86,11 @@ class SecaoController extends Controller
         
         return $secao;
     }
+
+    public function destroy($id)
+    {
+        $secao = $this->service->destroy($id);
+
+        return $secao;
+    }
 }

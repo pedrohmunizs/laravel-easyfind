@@ -30,6 +30,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/{idEstabelecimento}/load', ['uses' => 'SecaoController@load', 'as' => 'secoes.load'] );
         Route::get('/{idEstabelecimento}/create', ['uses' => 'SecaoController@create', 'as' => 'secoes.create'] );
         Route::post('/',['uses' => 'SecaoController@store', 'as' => 'secoes.store'] );
+        Route::delete('/{id}',['uses' => 'SecaoController@destroy', 'as' => 'secoes.destroy'] );
     });
     
     Route::group(['prefix' => 'metodos', 'namespace' => 'App\Http\Controllers'], function(){
