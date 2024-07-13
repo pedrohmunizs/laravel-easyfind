@@ -41,24 +41,16 @@ class SecaoController extends Controller
         if(!empty($search)){
             $secoes->where('descricao', 'LIKE', '%'. $search .'%');
         }
-        
-        $secoes = $secoes->get();
+
+        $page = $request['page'];
+        $per_page = $request['per_page'];
+
+        $secoes = $secoes->paginate($per_page, ['*'], 'page', $page);
 
         foreach($secoes as $secao){
             $secao->total_produto =count($secao->produtos);
         }
 
-        $page = $request['page'];
-        $per_page = $request['per_page'];
-
-        $secoes = new LengthAwarePaginator(
-            $secoes->forPage($page, $per_page),
-            $secoes->count(),
-            $per_page,
-            $page,
-            ['path' => LengthAwarePaginator::resolveCurrentPath()]
-        );
-        
         $tableContent = view('secoes.table-content', [
             'secoes' => $secoes
         ])->render();
