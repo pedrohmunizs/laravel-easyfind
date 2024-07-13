@@ -42,6 +42,12 @@
             </a>
         </li>
         <li class="nav-item">
+            <a class="nav-link text-white d-flex flex-row align-items-center gap-2 br-8" href="{{ route('metodos.index', ['idEstabelecimento' => $estabelecimento->id]) }}">
+                <i class="bi bi-wallet2"></i>
+                <p class="m-0 fs-13">Métodos de pagamento</p>
+            </a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link text-white d-flex flex-row align-items-center gap-2 br-8" href="#">
                 <i class="bi bi-clock-history"></i>
                 <p class="m-0 fs-13">Horário de atendimento</p>

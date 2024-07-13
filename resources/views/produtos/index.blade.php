@@ -13,12 +13,12 @@
             <p class="fc-gray">Lista de produtos</p>
         </div>
         <div class="d-flex flex-row justify-content-between">
-        <div class="input-group mb-3" style="width: 50%;">
-            <i class="bi bi-search px-3 pr-0 py-2 fs-14 bg-white container-default border-end-0"></i>
-            <div class="" style="width: 80%;">
-                <input type="text" class="input-default px-3 py-2 w-100 fs-14 input-search" placeholder="Buscar produto" id="search" value="">
+            <div class="input-group mb-3" style="width: 50%;">
+                <i class="bi bi-search px-3 pr-0 py-2 fs-14 bg-white container-default border-end-0"></i>
+                <div class="" style="width: 80%;">
+                    <input type="text" class="input-default px-3 py-2 w-100 fs-14 input-search" placeholder="Buscar produto" id="search" value="">
+                </div>
             </div>
-        </div>
             <div class="d-flex flex-row gap-3">
                 <button class="btn-default py-2 px-3 small d-flex flex-row gap-2 container-default bg-white" id="filtro"><i class="bi bi-filter"></i><p class="m-0">Filtro</p></button>
                 <a href="/produtos/{{$estabelecimento->id}}/create" class="btn-default small a-button px-3 py-2 d-flex flex-row gap-1 container-primary"><i class="bi bi-plus-lg"></i><p class="m-0">Cadastrar Produto</p></a>

@@ -54,6 +54,9 @@
                                 @endif
                             @endif
                         @endforeach
+                        @if ($count == 0)
+                            <p>Todas as bandeiras disponíveis já foram atreladas a esse estabelecimento.</p>
+                        @endif
                         @if ($count % 3 != 0)
                             </div>
                         @endif

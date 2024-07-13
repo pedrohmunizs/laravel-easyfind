@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\BandeiraMetodo;
+use App\Models\BandeiraPagamento;
 use App\Models\Estabelecimento;
 use App\Models\MetodoPagamento;
 use App\Models\MetodoPagamentoAceito;
@@ -20,9 +21,53 @@ class MetodoPagamentoAceitoController extends Controller
     public function index($idEstabelecimento)
     {
         $estabelecimento = Estabelecimento::where('id', $idEstabelecimento)->first();
+        $metodos = MetodoPagamento::all();
+        $bandeiras = BandeiraPagamento::all();
         
         return view('metodos_pagamento.index',[
-            'estabelecimento' => $estabelecimento
+            'estabelecimento' => $estabelecimento,
+            'metodos' =>$metodos,
+            'bandeiras' =>$bandeiras
+        ]);
+    }
+
+    public function load($idEstabelecimento, Request $request)
+    {
+        $estabelecimento = Estabelecimento::where('id', $idEstabelecimento)->first();
+        
+        $metodos = MetodoPagamentoAceito::where('fk_estabelecimento', $idEstabelecimento);
+        
+        $filter = array_filter($request['filter']);
+
+        if(isset($filter)){
+
+            if(isset($filter['metodo'])){
+                $metodos->whereHas('bandeiraMetodo', function($query) use ($filter) {
+                    $query->where('fk_metodo_pagamento', $filter['metodo']);
+                });
+            }
+
+            if(isset($filter['bandeira'])){
+                $metodos->whereHas('bandeiraMetodo', function($query) use ($filter) {
+                    $query->where('fk_bandeira_pagamento', $filter['bandeira']);
+                });
+            }
+        }
+
+        $page = $request['page'];
+        $perPage = intval($request['per_page']);
+    
+        $metodos = $metodos->paginate($perPage, ['*'], 'page', $page);
+
+        $tableContent =  view('metodos_pagamento.table-content', [
+            'metodos'  => $metodos
+        ])->render();
+
+        $pagination = $metodos->links('pagination::bootstrap-5')->render();
+
+        return response()->json([
+            'tableContent' => $tableContent,
+            'pagination' => $pagination
         ]);
     }
 
@@ -30,7 +75,10 @@ class MetodoPagamentoAceitoController extends Controller
     {
         $estabelecimento = Estabelecimento::where('id', $idEstabelecimento)->first();
 
-        $bandeirasMetodos = BandeiraMetodo::all();
+        $metodosEstabelecimento = MetodoPagamentoAceito::where('fk_estabelecimento', $idEstabelecimento)->pluck('fk_metodo_pagamento');
+        
+        $bandeirasMetodos = BandeiraMetodo::whereNotIn('id', $metodosEstabelecimento)->get();
+
         $metodosPagamento = MetodoPagamento::all();
 
         foreach($bandeirasMetodos as $bandeiraMetodo){
