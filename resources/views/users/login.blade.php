@@ -3,7 +3,7 @@
 
 @section('content')
 
-    <form action="{{ route('users.auth') }}" method="POST">
+    <form action="{{ route('usuarios.auth') }}" method="POST">
         @csrf
         <input type="text" name="email">
         <input type="password" name="password">

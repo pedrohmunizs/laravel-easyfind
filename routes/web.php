@@ -14,7 +14,8 @@ Route::group(['prefix' => 'usuarios', 'namespace' => 'App\Http\Controllers'], fu
 
 Route::group(['prefix' => 'comerciantes', 'namespace' => 'App\Http\Controllers'], function(){
     Route::get('/create',['uses' => 'ComercianteController@create', 'as' => 'comerciantes.create'] );
-    Route::post('/comerciantes',['uses' => 'ComercianteController@store', 'as' => 'comerciantes.store'] );
+    Route::get('/store',['uses' => 'ComercianteController@create2', 'as' => 'comerciantes.create2'] );
+    Route::post('/',['uses' => 'ComercianteController@store', 'as' => 'comerciantes.store'] );
 });
 
 Route::group(['prefix' => 'consumidores', 'namespace' => 'App\Http\Controllers'], function(){

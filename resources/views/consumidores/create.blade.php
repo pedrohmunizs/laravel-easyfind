@@ -116,7 +116,7 @@
                         success: function(response) {
                             toastr.success('Usuário cadastrado com sucesso!', 'Sucesso');
                             setTimeout(function() {
-                                window.location.href = '/login';
+                                window.location.href = '/usuarios/login';
                             }, 3000);
                         },
                         error: function(xhr, status, error) {

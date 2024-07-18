@@ -28,10 +28,19 @@ class ComercianteService
             $usuario['type'] = "comerciante";
             $user = $this->userService->store($usuario);
 
-            $endereco = $this->enderecoService->store($request['endereco']);
+            $enderecoData = $request['endereco'];
+            $enderecoData['cep'] = str_replace('-', '', $enderecoData['cep']);
+
+            $endereco = $this->enderecoService->store($enderecoData);
             
+            $data = $request['comerciante'];
+
+            $data['cpf'] = str_replace(['.', '-'], '', $data['cpf']);
+            $data['cnpj'] = str_replace(['.', '/', '-'], '', $data['cnpj']);
+            $data['telefone'] = str_replace(['(', ')', '-', ' '], '', $data['telefone']);
+
             $comerciante = new Comerciante();
-            $comerciante->fill($request['comerciante']);
+            $comerciante->fill($data);
             $comerciante->fk_usuario =  $user->id;
             $comerciante->fk_endereco =  $endereco->id;
             $comerciante->ultimo_acesso = now();
