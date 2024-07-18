@@ -3,7 +3,7 @@
 
 @section('content')
     @include('includes.header')
-    <div class="container-fluid main-content" style="margin-top: 71px;">
+    <div class="container-fluid main-content">
         <div class="full-screen container-fluid d-flex justify-content-center">
             <div class="d-flex flex-column mt-5 gap-4 align-items-center">
                 <div class="d-flex flex-column justify-content-center align-items-center">

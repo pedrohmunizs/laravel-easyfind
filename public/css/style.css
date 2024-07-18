@@ -66,6 +66,10 @@ body{
     font-size: 14px !important;
 }
 
+.fw-500{
+    font-weight: 500;
+}
+
 .fit-content{
     height: fit-content;
 }
@@ -162,6 +166,10 @@ body{
     padding-right: 9rem;
 }
 
+.px-7{
+    padding-left: 7rem;
+    padding-right: 7rem;
+}
 .a-button{
     display: inherit;
     text-decoration: none;
@@ -171,6 +179,10 @@ body{
 .a-button:hover{
     background-color: rgb(252, 166, 34, .5);
     color: #222222;
+}
+
+.a-default{
+    text-decoration: none;
 }
 
 .rotate-180 {

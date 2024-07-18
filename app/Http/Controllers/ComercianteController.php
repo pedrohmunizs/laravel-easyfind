@@ -74,31 +74,4 @@ class ComercianteController extends Controller
             }
         }
     }
-
-    public function login(Request $request)
-    {
-        return view('users.index');
-    }
-
-    public function login1(Request $request)
-    {
-        $credentials = $request->only('email', 'password');
-        
-        if (Auth::attempt($credentials)) {
-            $user = auth()->user();
-
-            if ($user) {
-                //$user->load('comerciante');
-                return redirect()->intended('/');
-            } else {
-                return response()->json([
-                    'message' => 'User not found after authentication.',
-                ], 404);
-            }
-        } else {
-            return response()->json([
-                'message' => 'Login failed. Invalid credentials.',
-            ], 401);
-        }
-    }
 }

@@ -24,4 +24,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Comerciante::class, 'fk_usuario', 'id');
     }
+
+    public function consumidor()
+    {
+        return $this->hasOne(Consumidor::class, 'fk_usuario', 'id');
+    }
 }

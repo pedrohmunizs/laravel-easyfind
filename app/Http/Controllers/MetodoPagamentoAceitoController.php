@@ -32,9 +32,7 @@ class MetodoPagamentoAceitoController extends Controller
     }
 
     public function load($idEstabelecimento, Request $request)
-    {
-        $estabelecimento = Estabelecimento::where('id', $idEstabelecimento)->first();
-        
+    {   
         $metodos = MetodoPagamentoAceito::where('fk_estabelecimento', $idEstabelecimento)->where('status', 1);
         
         $filter = array_filter($request['filter']);

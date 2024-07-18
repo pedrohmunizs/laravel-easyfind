@@ -3,13 +3,23 @@
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('/')->namespace('App\Http\Controllers')->group(function () {
-    Route::get('/login',['uses' => 'ComercianteController@login', 'as' => 'login'] );
-    Route::post('/',['uses' => 'ComercianteController@login1', 'as' => 'comerciante.login1'] );
+    Route::get('/',['uses' => 'UserController@index', 'as' => 'home'] );
+});
+
+Route::group(['prefix' => 'usuarios', 'namespace' => 'App\Http\Controllers'], function(){
+    Route::get('/create',['uses' => 'UserController@create', 'as' => 'usuarios.create'] );
+    Route::get('/login',['uses' => 'UserController@login', 'as' => 'login'] );
+    Route::post('/',['uses' => 'UserController@auth', 'as' => 'usuarios.auth'] );
 });
 
 Route::group(['prefix' => 'comerciantes', 'namespace' => 'App\Http\Controllers'], function(){
-    Route::get('/create',['uses' => 'ComercianteController@create', 'as' => 'comerciante.create'] );
-    Route::post('/comerciantes',['uses' => 'ComercianteController@store', 'as' => 'comerciante.store'] );
+    Route::get('/create',['uses' => 'ComercianteController@create', 'as' => 'comerciantes.create'] );
+    Route::post('/comerciantes',['uses' => 'ComercianteController@store', 'as' => 'comerciantes.store'] );
+});
+
+Route::group(['prefix' => 'consumidores', 'namespace' => 'App\Http\Controllers'], function(){
+    Route::get('/create',['uses' => 'ConsumidorController@create', 'as' => 'consumidores.create'] );
+    Route::post('/',['uses' => 'ConsumidorController@store', 'as' => 'consumidores.store'] );
 });
 
 Route::middleware('auth')->group(function () {
