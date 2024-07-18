@@ -29,11 +29,6 @@ class ComercianteController extends Controller
         return view('comerciantes.create');
     }
 
-    public function create2()
-    {
-        return view('comerciantes.store');
-    }
-
     public function store(Request $request)
     {
         try{

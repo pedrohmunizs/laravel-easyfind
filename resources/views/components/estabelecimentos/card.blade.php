@@ -19,7 +19,11 @@
                 </div>
                 <div class="d-flex flex-column align-items-center">
                     <p class="fs-13 text-white">Produtos ativos</p>
-                    <p class="fs-13 text-white">0</p>
+                    @if($estabelecimento->total_produtos)
+                        <p class="fs-13 text-white">{{$estabelecimento->total_produtos}}</p>
+                    @else
+                        <p class="fs-13 text-white">0</p>
+                    @endif
                 </div>
             </div>
             <a href="javascript:void(0)" class="btn-default btn-large a-button btnGerenciarEstabelecimento" id="btnGerenciar" data-id-estabelecimento="{{$estabelecimento->id}}">Gerenciar</a>

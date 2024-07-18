@@ -30,7 +30,15 @@ class UserController extends Controller
             $user = auth()->user();
 
             if ($user) {
-                return redirect()->intended('/');
+
+                if ($user->type == 'consumidor') {
+                    $defaultUrl = '/home';
+                } else {
+                    $defaultUrl = '/estabelecimentos';
+                }
+
+                return redirect()->intended($defaultUrl);
+
             } else {
                 return response()->json([
                     'message' => 'User not found after authentication.',

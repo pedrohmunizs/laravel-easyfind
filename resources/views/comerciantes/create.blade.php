@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title', 'Cadastro')
+@section('title', 'Cadastro usuário')
 
 @section('content')
 @include('includes.header')
@@ -49,38 +49,42 @@
             </div>
             <div class="bg-white container-default d-flex flex-column p-4 gap-2">
                 <h5>Endereço</h5>
-                <div class="d-flex flex-column">
-                    <label class="label-default" for="cep">CEP</label>
-                    <input type="text" name="endereco[cep]" id="cep" class="form-control px-3 py-2 input-default w-25" placeholder="00000-000" required>
-                    <div class="invalid-feedback">Adicione seu CEP.</div>
-                </div>
-                <div class="d-flex flex-column">
-                    <label class="label-default" for="logradouro">Logradouro</label>
-                    <input type="text" name="endereco[logradouro]" id="logradouro" class="form-control px-3 py-2 input-default w-100" required>
-                    <div class="invalid-feedback">Adicione seu logradouro.</div>
-                </div>
-                <div class="d-flex flex-row gap-4">
-                    <div class="d-flex flex-column">
-                        <label class="label-default" for="numero">Número</label>
-                        <input type="text" name="endereco[numero]" class="form-control px-3 py-2 input-default w-100" required>
-                        <div class="invalid-feedback">Adicione seu número.</div>
+                <div class="d-flex flex-column gap-2">
+                    <div class="d-flex flex-row gap-3">
+                        <div class="d-flex flex-column w-25">
+                            <label class="label-default" for="cep">CEP</label>
+                            <input type="text" name="endereco[cep]" class="input-default w-100 px-3 py-2" id="cep" required>
+                            <div class="invalid-feedback">Por favor, adicione o CEP.</div>
+                        </div>
+                        <div class="d-flex flex-column w-75">
+                            <label class="label-default" for="logradouro">Logradouro</label>
+                            <input type="text" name="endereco[logradouro]" class="input-default w-100 px-3 py-2" id="logradouro" required>
+                            <div class="invalid-feedback">Por favor, adicione o logradouro.</div>
+                        </div>
                     </div>
-                    <div class="d-flex flex-column">
-                        <label class="label-default" for="bairro">Bairro</label>
-                        <input type="text" name="endereco[bairro]" id="bairro" class="form-control px-3 py-2 input-default w-100" required>
-                        <div class="invalid-feedback">Adicione seu bairro.</div>
+                    <div class="d-flex flex-row gap-3">
+                        <div class="d-flex flex-column">
+                            <label class="label-default" for="numero">Número</label>
+                            <input type="text" name="endereco[numero]" class="input-default w-100 px-3 py-2" required>
+                            <div class="invalid-feedback">Por favor, adicione o número.</div>
+                        </div>
+                        <div class="d-flex flex-column">
+                            <label class="label-default" for="bairro">Bairro</label>
+                            <input type="text" name="endereco[bairro]" class="input-default w-100 px-3 py-2" id="bairro" required>
+                            <div class="invalid-feedback">Por favor, adicione o bairro.</div>
+                        </div>
                     </div>
-                </div>
-                <div class="d-flex flex-row gap-4">
-                    <div class="d-flex flex-column">
-                        <label class="label-default" for="cidade">Cidade</label>
-                        <input type="text" name="endereco[cidade]" id="cidade" class="form-control px-3 py-2 input-default w-100" required>
-                        <div class="invalid-feedback">Adicione sua cidade.</div>
-                    </div>
-                    <div class="d-flex flex-column">
-                        <label class="label-default" for="estado">Estado</label>
-                        <input type="text" name="endereco[estado]" id="estado" class="form-control px-3 py-2 input-default w-100" required>
-                        <div class="invalid-feedback">Adicione seu estado.</div>
+                    <div class="d-flex flex-row gap-3">
+                        <div class="d-flex flex-column">
+                            <label class="label-default">Cidade</label>
+                            <input type="text" id="cidade" name="endereco[cidade]" class="input-default w-100 px-3 py-2" required>
+                            <div class="invalid-feedback">Por favor, adicione a cidade.</div>
+                        </div>
+                        <div class="d-flex flex-column">
+                            <label class="label-default">Estado</label>
+                            <input type="text" name="endereco[estado]" class="input-default w-100 px-3 py-2" id="estado" required>
+                            <div class="invalid-feedback">Por favor, adicione o estado.</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -104,7 +108,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-12 d-flex flex-row-reverse bg-white p-3 gap-3 bottom-0 mt-4">
+    <div class="col-md-12 d-flex flex-row-reverse bg-white p-3 gap-3 position-fixed bottom-0 mt-4">
         <div class="d-flex flex-row gap-2">
             <a href="/" class="btn-default small a-button px-3 py-2 btn-cancel d-flex flex-row gap-2"><i class="bi bi-x-lg"></i>
                 <p class="m-0">Cancelar</p>
