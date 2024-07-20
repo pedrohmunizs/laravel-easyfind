@@ -42,6 +42,14 @@ body{
     color: #0D894F;
 }
 
+.fc-blue{
+    color: #3A3AC5;
+}
+
+.fc-black{
+    color: #22232C;
+}
+
 .dashed{
     border: 2px dashed #ccc;
 }

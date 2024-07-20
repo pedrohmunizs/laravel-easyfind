@@ -3,7 +3,8 @@
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('/')->namespace('App\Http\Controllers')->group(function () {
-    Route::get('/',['uses' => 'UserController@index', 'as' => 'home'] );
+   // Route::get('/',['uses' => 'UserController@index', 'as' => 'home'] );
+    Route::get('/',['uses' => 'EasyFindController@index', 'as' => 'home'] );
 });
 
 Route::group(['prefix' => 'usuarios', 'namespace' => 'App\Http\Controllers'], function(){

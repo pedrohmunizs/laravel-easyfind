@@ -22,11 +22,11 @@
                     <h5>Informações Gerais</h5>
                     <div class="d-flex flex-column">
                         <label class="label-default" for="nome">Nome do produto</label>
-                        <input type="text" name="produto[nome]" class=" px-3 py-2 input-default w-100">
+                        <input type="text" name="produto[nome]" class=" px-3 py-2 input-default w-100" maxlength="15">
                     </div>
                     <div class="d-flex flex-column">
                         <label class="label-default" for="nome">Descrição</label>
-                        <textarea name="produto[descricao]" id="" class="px-3 py-2 input-default w-100"></textarea>
+                        <textarea name="produto[descricao]" id="" class="px-3 py-2 input-default w-100" maxlength="255"></textarea>
                     </div>
                 </div>
                 <div class="bg-white container-default p-3 gap-3">

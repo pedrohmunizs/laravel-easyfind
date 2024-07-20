@@ -38,9 +38,9 @@
                     <div class="d-flex flex-column">
                         <label class="fs-13" for="nome">Status</label>
                         <select name="filter[status]" class="px-3 py-2 input-default">
-                            <option value="">Indiferente</option>
                             <option value="1">Ativado</option>
                             <option value="0">Desativado</option>
+                            <option value="">Indiferente</option>
                         </select>
                     </div>
                     <div class="d-flex flex-column">
