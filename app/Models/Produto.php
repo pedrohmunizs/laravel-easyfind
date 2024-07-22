@@ -33,6 +33,16 @@ class Produto extends Model
         return $this->belongsTo(Secao::class, 'fk_secao');
     }
 
+    public function avaliacoes()
+    {
+        return $this->hasMany(Avaliacao::class, 'fk_produto', 'id');
+    }
+
+    public function carrinhos()
+    {
+        return $this->hasMany(Carrinho::class, 'fk_produto', 'id');
+    }
+
     public function scopeStatus($query, $status)
     {
         if ($status !== null) {

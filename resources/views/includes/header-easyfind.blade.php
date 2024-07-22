@@ -8,7 +8,7 @@
             @auth
             <a href="#"><i class="bi bi-cart3 text-white h4"></i></a>
             <a class="navbar-brand m-0 d-flex flex-row gap-2 align-items-center" href="#" id="logo">
-                <p class="m-0 fs-13 text-white">{{ auth()->user()->comerciante->nome }}</p>
+                <p class="m-0 fs-13 text-white">{{ auth()->user()->consumidor->nome }}</p>
                 <i class="bi bi-chevron-down fs-13 text-white"></i>
             </a>
             @endauth
@@ -51,7 +51,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white d-flex flex-row align-items-center gap-2 br-8" href="#">
+                <a class="nav-link text-white d-flex flex-row align-items-center gap-2 br-8" href="{{route('usuarios.logout')}}">
                     <i class="bi bi-door-open"></i>
                     <p class="m-0 fs-13">Sair</p>
                 </a>

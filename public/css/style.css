@@ -365,3 +365,21 @@ nav.d-flex.justify-items-center.justify-content-between {
 .hover-default:hover{
     color: #FCA622;
 }
+
+.star-rating {
+    font-size: 2rem;
+    color: lightgray;
+    cursor: pointer;
+}
+.star-rating .filled {
+    color: gold;
+}
+
+.thumbnail-img {
+    cursor: pointer;
+    max-height: 70px;
+}
+.main-img {
+    width: 100%;
+    height: auto;
+}

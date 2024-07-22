@@ -23,6 +23,11 @@ Route::group(['prefix' => 'consumidores', 'namespace' => 'App\Http\Controllers']
     Route::post('/',['uses' => 'ConsumidorController@store', 'as' => 'consumidores.store'] );
 });
 
+Route::group(['prefix' => 'produtos', 'namespace' => 'App\Http\Controllers'], function(){
+    Route::get('/{id}/show', ['uses' => 'ProdutoController@show', 'as' => 'produtos.show'] );
+});
+
+
 Route::middleware('auth')->group(function () {
     Route::group(['prefix' => 'estabelecimentos', 'namespace' => 'App\Http\Controllers'], function(){
         Route::get('/load', ['uses' => 'EstabelecimentoController@load', 'as' => 'estabelecimentos.load'] );
@@ -59,5 +64,17 @@ Route::middleware('auth')->group(function () {
     Route::group(['prefix' =>'agendas', 'namespace' => 'App\Http\Controllers'], function(){
         Route::get('/{idEstabelecimento}', ['uses' => 'AgendaController@index', 'as' => 'agendas.index']);
         Route::post('/{idEstabelecimento}', ['uses' => 'AgendaController@update', 'as' => 'agendas.update']);
+    });
+
+    Route::group(['prefix' =>'avaliacoes', 'namespace' => 'App\Http\Controllers'], function(){
+        Route::post('/', ['uses' => 'AvaliacaoController@store', 'as' => 'avaliacoes.store']);
+    });
+
+    Route::group(['prefix' => 'usuarios', 'namespace' => 'App\Http\Controllers'], function(){
+        Route::get('/',['uses' => 'UserController@logout', 'as' => 'usuarios.logout'] );
+    });
+
+    Route::group(['prefix' =>'carrinhos', 'namespace' => 'App\Http\Controllers'], function(){
+        Route::post('/', ['uses' => 'CarrinhoController@store', 'as' => 'carrinhos.store']);
     });
 });

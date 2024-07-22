@@ -23,4 +23,14 @@ class Consumidor extends Model
     {
         return $this->belongsTo(User::class,'fk_usuario', 'id');
     }
+
+    public function avaliacoes()
+    {
+        return $this->hasMany(Avaliacao::class, 'fk_consumidor', 'id');
+    }
+
+    public function carrinhos()
+    {
+        return $this->hasMany(Carrinho::class, 'fk_consumidor', 'id');
+    }
 }

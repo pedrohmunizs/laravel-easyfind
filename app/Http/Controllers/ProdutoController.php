@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Avaliacao;
 use App\Models\Estabelecimento;
+use App\Models\MetodoPagamento;
 use App\Models\Produto;
+use App\Models\Secao;
 use App\Models\Tag;
 use App\Services\ProdutoService;
 use Illuminate\Http\Request;
@@ -132,4 +135,27 @@ class ProdutoController extends Controller
         $produto->save();
         return $produto;
     }
+
+    public function show($id)
+    {
+        $produto = Produto::find($id);
+        $metodos = MetodoPagamento::all();
+        $avaliacoes = $produto->avaliacoes;
+
+        $secoes = Secao::where('fk_estabelecimento', $produto->secao->estabelecimento->id)->pluck('id'); 
+        $produtos = Produto::whereIn('fk_secao', $secoes)->get();
+        
+        $avaliacoesEstabelecimento = Avaliacao::whereIn('fk_produto', $produtos->pluck('id'))->get()->toArray();
+        $totalEstabelecimento = $produtos->sum('qtd_vendas');
+
+        return view('produtos.show',[
+            'produto' => $produto,
+            'metodos' => $metodos,
+            'avaliacoes' => $avaliacoes,
+            'avaliacoesEstabelecimento' => $avaliacoesEstabelecimento,
+            'totalVendidosEstabelecimento' => $totalEstabelecimento,
+            'totalProdutos' => count($produtos->where('is_ativo', true))
+        ]);
+    }
+
 }
