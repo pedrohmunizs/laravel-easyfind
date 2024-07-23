@@ -19,7 +19,7 @@
                 <h5>Informações Gerais</h5>
                 <div class="d-flex flex-column">
                     <label class="label-default" for="nome">Nome Completo</label>
-                    <input type="text" name="comerciante[nome]" class="form-control px-3 py-2 input-default w-100" required>
+                    <input type="text" name="usuario[nome]" class="form-control px-3 py-2 input-default w-100" required>
                     <div class="invalid-feedback">Adicione seu nome completo.</div>
                 </div>
                 <div class="d-flex flex-row gap-4">

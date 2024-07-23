@@ -43,7 +43,6 @@ class ComercianteService
             $comerciante->fill($data);
             $comerciante->fk_usuario =  $user->id;
             $comerciante->fk_endereco =  $endereco->id;
-            $comerciante->ultimo_acesso = now();
             
             if ($comerciante->save()) {                
                 return response()->json($comerciante, 201);

@@ -31,11 +31,12 @@ class ProdutoController extends Controller
 
     public function load($idEstabelecimento, Request $request)
     {
-        $filter = array_filter($request['filter']);
+        $filter = $request['filter'];
         $search = $request['search'];
+        list($column, $direction) = explode(',', $request['order']);
 
         $estabelecimento = Estabelecimento::where('id', $idEstabelecimento)->first();
-        $produtosQuery = Produto::whereIn('fk_secao', $estabelecimento->secoes->pluck('id'))->orderBy('created_at');
+        $produtosQuery = Produto::whereIn('fk_secao', $estabelecimento->secoes->pluck('id'))->orderBy($column, $direction);
 
         if(isset($filter)){
 

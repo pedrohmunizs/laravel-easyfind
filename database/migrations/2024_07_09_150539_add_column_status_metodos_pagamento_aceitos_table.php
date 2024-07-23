@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('metodos_pagamento_aceitos', function (Blueprint $table) {
-            $table->boolean('status')->default(true)->change();
+            $table->boolean('status')->default(true);
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('metodos_pagamento_aceitos', function (Blueprint $table) {
-            $table->dropColumn('status')->change();
+            $table->dropColumn('status');
         });
     }
 };

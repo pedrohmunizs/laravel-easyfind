@@ -13,7 +13,6 @@ class Comerciante extends Model
     protected $table = 'comerciantes';
 
     protected $fillable = [
-        'nome',
         'razao_social',
         'cnpj',
         'telefone',

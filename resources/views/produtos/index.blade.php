@@ -24,11 +24,17 @@
                 <a href="/produtos/{{$estabelecimento->id}}/create" class="btn-default small a-button px-3 py-2 d-flex flex-row gap-1 container-primary"><i class="bi bi-plus-lg"></i><p class="m-0">Cadastrar Produto</p></a>
             </div>
         </div>
-        <div>
+        <div class="d-flex flex-row gap-2">
             <select name="" id="per_page" class="bg-white py-1 px-3 border-0 br-8">
                 <option value="10">10</option>
                 <option value="20">20</option>
                 <option value="50">50</option>
+            </select>
+            <select name="" id="order_page" class="bg-white py-1 px-3 border-0 br-8 fs-14">
+                <option value="created_at,ASC">Do mais antigo</option>
+                <option value="created_at,DESC">Do mais novo</option>
+                <option value="preco,DESC">Do mais caro</option>
+                <option value="preco,ASC">Do mais barato</option>
             </select>
         </div>
         <div class="d-none flex-column flex-wrap bg-white p-3 gap-3 border border-2 br-8" id="card-filter">
@@ -152,13 +158,18 @@
             load();
         });
 
+        $("#order_page").on('change', function(){
+            load();
+        })
+
     });
     function load(){
         let formData = $('#form_filter').serialize();
         let search = $('#search').val();
+        let order = $('#order_page').val();
 
         $.ajax({
-            url: `/produtos/{{$estabelecimento->id}}/load?page=${page}&per_page=${per_page}&${formData}&search=${search}`,
+            url: `/produtos/{{$estabelecimento->id}}/load?page=${page}&per_page=${per_page}&${formData}&search=${search}&order=${order}`,
             type: 'GET',
             success: function(response) {
                 $('#table-content').html(response.tableContent);

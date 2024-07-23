@@ -28,10 +28,16 @@ class EstabelecimentoService
 
             $user = auth()->user();
             
-            $endereco = $this->enderecoService->store($request['endereco']);
+            $data = $request['endereco'];
+            $data['cep'] = str_replace('-', '', $data['cep']);
+
+            $endereco = $this->enderecoService->store($data);
+
+            $data = $request['estabelecimento'];
+            $data['telefone'] = str_replace(['(', ')', '-', ' '], '', $data['telefone']);
 
             $estabelecimento = new Estabelecimento();
-            $estabelecimento->fill($request['estabelecimento']);
+            $estabelecimento->fill($data);
             $estabelecimento->is_ativo = true;
             $estabelecimento->fk_endereco = $endereco->id;
             $estabelecimento->fk_comerciante = $user->comerciante->id;

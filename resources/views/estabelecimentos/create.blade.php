@@ -40,7 +40,7 @@
                             </div>
                             <div class="d-flex flex-column">
                                 <label class="label-default" for="telefone">Número de contato</label>
-                                <input type="text" name="estabelecimento[telefone]" class="form-control input-default w-100 px-3 py-2" required>
+                                <input type="text" id="telefone" name="estabelecimento[telefone]" class="form-control input-default w-100 px-3 py-2" placeholder="(00) 00000-0000" required>
                                 <div class="invalid-feedback">Por favor, adicione o número de contato.</div>
                             </div>
                         </div>
@@ -141,6 +141,12 @@
 
 @section('script')
 <script>
+
+    $(document).ready(function() {
+        $('#telefone').mask('(00) 00000-0000');
+        $('#cep').mask('00000-000');
+    });
+
     document.getElementById('imagePreview').addEventListener('click', function() {
         document.getElementById('image').click();
     });

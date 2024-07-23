@@ -13,14 +13,12 @@ return new class extends Migration
     {
         Schema::create('comerciantes', function (Blueprint $table) {
             $table->id();
-            $table->string('nome', 45);
             $table->char('cnpj', 14);
             $table->char('cpf', 11);
             $table->string('telefone', 12);
             $table->unsignedBigInteger('fk_usuario');
             $table->string('razao_social');
             $table->unsignedBigInteger('fk_endereco');
-            $table->dateTime('ultimo_acesso')->nullable();
             
             $table->foreign('fk_usuario')->references('id')->on('users');
             $table->foreign('fk_endereco')->references('id')->on('enderecos');

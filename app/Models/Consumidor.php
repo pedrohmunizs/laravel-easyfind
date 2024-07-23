@@ -12,7 +12,6 @@ class Consumidor extends Model
     protected $table = 'consumidores';
 
     protected $fillable = [
-        'nome',
         'cpf',
         'telefone',
         'genero',

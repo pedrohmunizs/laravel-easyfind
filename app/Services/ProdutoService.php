@@ -32,8 +32,11 @@ class ProdutoService{
             $newProduto->fill($produto);
             $newProduto->save();
 
-            $tags = $this->produtoTagService->store($tags, $newProduto->id);
-            $tags = $this->imagemService->storeProduto($produto['images'], $newProduto->id);
+            if(json_decode($tags['fk_tag'])){
+                $tags = $this->produtoTagService->store($tags, $newProduto->id);
+            }
+
+            $imagens = $this->imagemService->storeProduto($produto['images'], $newProduto->id);
             
             return response()->json($produto, 201);
 

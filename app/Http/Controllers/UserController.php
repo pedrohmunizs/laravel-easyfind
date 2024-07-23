@@ -32,7 +32,7 @@ class UserController extends Controller
             if ($user) {
 
                 if ($user->type == 'consumidor') {
-                    $defaultUrl = '/home';
+                    $defaultUrl = '/';
                 } else {
                     $defaultUrl = '/estabelecimentos';
                 }

@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('consumidores', function (Blueprint $table) {
             $table->id();
-            $table->string('nome', 45);
             $table->unsignedBigInteger('fk_usuario');
             $table->char('cpf', 11);
             $table->string('telefone', 12);
