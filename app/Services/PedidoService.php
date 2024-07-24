@@ -27,7 +27,7 @@ class PedidoService
 
         $itemVenda = $this->itemService->store($request, $pedido->id);
 
-        $transacao = $this->transacaoService->store($itemVenda->valor, $pedido->id);
+        $transacao = $this->transacaoService->store($itemVenda, $pedido->id);
 
         return response()->json(['Success' => 'Pedido realizado com sucesso!'], 201);
     }

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\BandeiraMetodo;
+use App\Models\ItemVenda;
 use App\Models\MetodoPagamento;
+use App\Models\Pedido;
 use App\Models\Produto;
 use App\Services\PedidoService;
 use Illuminate\Http\Request;
@@ -14,6 +16,23 @@ class PedidoController extends Controller
 
     public function __construct(PedidoService $pedidoService) {
         $this->service = $pedidoService;
+    }
+
+    public function index()
+    {
+        return view('pedidos.index');
+    }
+
+    public function load()
+    {
+        $itensVenda = ItemVenda::where('fk_consumidor', auth()->user()->consumidor->id)->get();
+        $pedidos = array_unique($itensVenda->pluck('fk_pedido')->toArray());
+        $pedidos = Pedido::whereIn('id', $pedidos)->get();
+
+        return view('components.pedidos.card-consumidor',[
+            'itensVenda' => $itensVenda,
+            'pedidos' => $pedidos
+        ]);
     }
 
     public function create(Request $request)

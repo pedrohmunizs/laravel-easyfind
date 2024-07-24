@@ -39,4 +39,9 @@ class Estabelecimento extends Model
     {
         return $this->hasMany(MetodoPagamentoAceito::class, 'fk_estabelecimento', 'id');
     }
+
+    public function endereco()
+    {
+        return $this->belongsTo(Endereco::class, 'fk_endereco', 'id');
+    }
 }

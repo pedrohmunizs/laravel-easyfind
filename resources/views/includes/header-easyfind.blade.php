@@ -51,6 +51,12 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link text-white d-flex flex-row align-items-center gap-2 br-8" href="{{ route('pedidos.index') }}">
+                    <i class="bi bi-file-earmark-text"></i>
+                    <p class="m-0 fs-13">Pedidos</p>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link text-white d-flex flex-row align-items-center gap-2 br-8" href="{{route('usuarios.logout')}}">
                     <i class="bi bi-door-open"></i>
                     <p class="m-0 fs-13">Sair</p>

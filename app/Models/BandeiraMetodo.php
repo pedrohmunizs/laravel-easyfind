@@ -21,5 +21,10 @@ class BandeiraMetodo extends Model
         return $this->belongsTo(BandeiraPagamento::class,'fk_bandeira_pagamento', 'id');
     }
 
+    public function pedido()
+    {
+        return $this->hasOne(Pedido::class, 'fk_metodo_aceito', 'id');
+    }
+
     public $timestamps = false;
 }

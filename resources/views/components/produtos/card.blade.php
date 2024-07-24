@@ -15,7 +15,11 @@
                 <p class="m-0 fc-black">{{$produto->nome}}</p>
                 <p class="m-0 fs-14 fc-black"><small>{{$produto->secao->descricao}}</small></p>
             </div>
-            <p class="m-0 h5 fc-black">R$ {{number_format($produto->preco, 2, ',', '.')}}</p>
+            @if($produto->is_promocao_ativa)
+                <p class="m-0 h5 fc-black">R$ {{number_format($produto->preco_oferta, 2, ',', '.')}}</p>
+            @else
+                <p class="m-0 h5 fc-black">R$ {{number_format($produto->preco, 2, ',', '.')}}</p>
+            @endif
         </div>
     </div>
 </a>

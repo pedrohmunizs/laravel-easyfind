@@ -23,5 +23,10 @@ class Endereco extends Model
         'numero'
     ];
 
+    public function estabelecimento()
+    {
+        return $this->hasOne(Estabelecimento::class, "fk_endereco", 'id');
+    }
+
     public $timestamps = false;
 }

@@ -30,4 +30,9 @@ class Pedido extends Model
     {
         return $this->hasOne(Transacao::class, 'fk_pedido', 'id');
     }
+
+    public function metodoPagamento()
+    {
+        return $this->belongsTo(BandeiraMetodo::class, 'fk_metodo_aceito', 'id');
+    }
 }

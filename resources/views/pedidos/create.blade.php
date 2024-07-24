@@ -195,7 +195,7 @@
             success: function(response) {
                 toastr.success('Sucesso ao realizar pedido!', 'Sucesso');
                 setTimeout(function() {
-                    //window.location.href;
+                    window.location.href='/pedidos';
                 }, 3000);
             },
             error: function(xhr, status, error) {
