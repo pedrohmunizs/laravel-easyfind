@@ -71,7 +71,14 @@
                             </div>
                         @endif
                     @endif
-                    <h4>R$ {{number_format($produto->preco, 2, ',', '.')}}</h4>
+                    @if($produto->is_promocao_ativa)
+                        <div class="d-flex flex-column">
+                            <p class="text-decoration-line-through m-0 text-secondary"><small>R$ {{ number_format($produto->preco, 2, ',', '.') }}</small></p>
+                            <h4>R$ {{number_format($produto->preco_oferta, 2, ',', '.')}}</h4>
+                        </div>
+                    @else
+                        <h4>R$ {{number_format($produto->preco, 2, ',', '.')}}</h4>
+                    @endif
                     <div class="d-flex flex-row align-items-center">
                         <p class="m-0">Quantidade</p>
                         <p class="p-2 m-0" id="quantidade">1</p>
@@ -81,7 +88,7 @@
                         </div>
                     </div>
                     <div class="d-flex flex-column gap-2">
-                        <a href="" class="a-button btn-default w-100 py-2 d-flex justify-content-center">Comprar</a>
+                        <a href="#" class="a-button btn-default w-100 py-2 d-flex justify-content-center" id="comprarBtn">Comprar</a>
                         <button class="btn-default btn-large" id="add_carrinho">Adicionar ao carrinho</button>
                     </div>
                 </div>
@@ -286,11 +293,13 @@
 
     document.getElementById('add_qtd').addEventListener('click', function(){
         document.getElementById('quantidade').textContent = ++qtd
+        updateComprarLink();
     });
 
     document.getElementById('sub_qtd').addEventListener('click', function(){
         if(qtd>1){
             document.getElementById('quantidade').textContent = --qtd
+            updateComprarLink();
         }
     });
 
@@ -317,13 +326,23 @@
                 if(xhr.status == 409){
                     toastr.error(xhr.responseJSON.error);
                 }else if(xhr.status == 400){
-                    toastr.error(xhr.responseJSON.error);                        
+                    toastr.error(xhr.responseJSON.error);
                 }else{
                     toastr.error('Erro ao adicionar produto ao carrinho!', 'Erro');
                 }
             }
         });
     })
+
+    $(document).ready(function(){
+        updateComprarLink()
+    })
+
+    function updateComprarLink(){
+        let idProduto = "{{$produto->id}}";
+        let quantidade = document.getElementById('quantidade').textContent;
+        document.getElementById('comprarBtn').href = `/pedidos/create?idProduto=${idProduto}&quantidade=${quantidade}`;
+    }
 
 </script>
 @endsection

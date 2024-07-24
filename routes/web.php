@@ -77,4 +77,9 @@ Route::middleware('auth')->group(function () {
     Route::group(['prefix' =>'carrinhos', 'namespace' => 'App\Http\Controllers'], function(){
         Route::post('/', ['uses' => 'CarrinhoController@store', 'as' => 'carrinhos.store']);
     });
+
+    Route::group(['prefix' =>'pedidos', 'namespace' => 'App\Http\Controllers'], function(){
+        Route::get('/create',['uses' => 'PedidoController@create', 'as' => 'pedidos.create']);
+        Route::post('/', ['uses' => 'PedidoController@store', 'as' => 'pedidos.store']);
+    });
 });

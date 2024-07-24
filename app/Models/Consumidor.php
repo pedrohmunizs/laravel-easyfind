@@ -32,4 +32,9 @@ class Consumidor extends Model
     {
         return $this->hasMany(Carrinho::class, 'fk_consumidor', 'id');
     }
+
+    public function itensVenda()
+    {
+        return $this->hasMany(itemVenda::class, 'fk_consumidor', 'id');
+    }
 }
