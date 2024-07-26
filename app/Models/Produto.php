@@ -43,6 +43,16 @@ class Produto extends Model
         return $this->hasMany(Carrinho::class, 'fk_produto', 'id');
     }
 
+    public function itensVenda()
+    {
+        return $this->hasMany(ItemVenda::class, 'fk_produto', 'id');
+    }
+
+    public function produtosTags()
+    {
+        return $this->hasMany(ProdutoTag::class, 'fk_produto', 'id');
+    }
+
     public function scopeStatus($query, $status)
     {
         if ($status !== null) {
@@ -78,10 +88,5 @@ class Produto extends Model
         }
 
         return $query;
-    }
-
-    public function itensVenda()
-    {
-        return $this->hasMany(ItemVenda::class, 'fk_produto', 'id');
     }
 }

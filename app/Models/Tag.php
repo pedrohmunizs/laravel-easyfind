@@ -10,4 +10,9 @@ class Tag extends Model
     use HasFactory;
 
     protected $table = 'tags';
+
+    public function tagsProduto()
+    {
+        return $this->hasMany(ProdutoTag::class, 'fk_tag', 'id');
+    }
 }

@@ -25,6 +25,8 @@ Route::group(['prefix' => 'consumidores', 'namespace' => 'App\Http\Controllers']
 
 Route::group(['prefix' => 'produtos', 'namespace' => 'App\Http\Controllers'], function(){
     Route::get('/{id}/show', ['uses' => 'ProdutoController@show', 'as' => 'produtos.show'] );
+    Route::get('/pesquisa', ['uses' => 'ProdutoController@search', 'as' => 'produtos.search'] );
+    Route::get('/loadSearch', ['uses' => 'ProdutoController@loadSearch', 'as' => 'produtos.loadSearch'] );
 });
 
 

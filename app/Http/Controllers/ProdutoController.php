@@ -10,6 +10,7 @@ use App\Models\Secao;
 use App\Models\Tag;
 use App\Services\ProdutoService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProdutoController extends Controller
 {
@@ -159,4 +160,108 @@ class ProdutoController extends Controller
         ]);
     }
 
+    public function search(Request $request)
+    {
+        $origem = $request['origem'];
+        $tags = Tag::all();
+        $metodos = MetodoPagamento::all();
+        $produtos = Produto::where('is_ativo', true)->get();
+
+        if($origem){
+            $produtos = $this->loadSearch($request);
+        }
+
+        return view('produtos.search',[
+            'tags' => $tags,
+            'metodos' => $metodos,
+            'produtos' => $produtos
+        ]);
+    }
+
+    public function loadSearch(Request $request)
+    {
+        $filter = $request['filter'];
+        $search = $request['search'];
+
+        $produtos = Produto::where('produtos.is_ativo', true);
+
+        if(isset($request['origem'])){
+            $filter = json_decode(urldecode($filter), true);
+        }
+
+        if(isset($filter)){
+
+            if (isset($filter['promocao'])) {
+                $produtos->where('is_promocao_ativa',($filter['promocao']));
+            }
+
+            if (isset($filter['metodo'])) {
+
+                $produtos->join('secoes', 'produtos.fk_secao', '=', 'secoes.id')
+                ->join('estabelecimentos', 'secoes.fk_estabelecimento', '=', 'estabelecimentos.id')
+                ->join('metodos_pagamento_aceitos', 'metodos_pagamento_aceitos.fk_estabelecimento', '=', 'estabelecimentos.id')
+                ->join('bandeiras_metodos', 'metodos_pagamento_aceitos.fk_metodo_pagamento', '=', 'bandeiras_metodos.id')
+                ->join('metodos_pagamento', 'bandeiras_metodos.fk_metodo_pagamento', '=', 'metodos_pagamento.id')
+                ->where('metodos_pagamento.id',($filter['metodo']))
+                ->select('produtos.*')
+                ->groupBy('produtos.id');
+            }
+
+            if (isset($filter['tag'])) {
+
+                $produtos->join('produtos_tags', 'produtos.id', '=', 'produtos_tags.fk_produto')
+                     ->join('tags', 'produtos_tags.fk_tag', '=', 'tags.id')
+                     ->where('tags.id', $filter['tag'])
+                     ->select('produtos.*')
+                     ->groupBy('produtos.id');
+            }
+            
+            if (isset($filter['preco_min'])) {
+
+                $filter['preco_min'] = str_replace(".", "", $filter['preco_min']);
+                $filter['preco_min'] = str_replace(',', '.', $filter['preco_min']);
+                $filter['preco_min'] = number_format((float) $filter['preco_min'], 2, '.', '');
+
+                if((float)$filter['preco_min'] > 0){
+                    $produtos->priceRange($filter['preco_min'], null);
+                }
+            }
+            
+            if (isset($filter['preco_max'])) {
+
+                $filter['preco_max'] = str_replace(".", "", $filter['preco_max']);
+                $filter['preco_max'] = str_replace(',', '.', $filter['preco_max']);
+                $filter['preco_max'] = number_format((float) $filter['preco_max'], 2, '.', '');
+
+                if((float)$filter['preco_max'] > 0){
+                    $produtos->priceRange(null, $filter['preco_max']);
+                }
+            }
+
+            if(isset($filter['segmento'])){
+
+                $produtos->join('secoes', 'produtos.fk_secao', '=', 'secoes.id')
+                ->join('estabelecimentos', 'secoes.fk_estabelecimento', '=', 'estabelecimentos.id')
+                ->where('estabelecimentos.segmento', $filter['segmento'])
+                ->select('produtos.*')
+                ->groupBy('produtos.id');
+            }
+        }
+
+        if(isset($search)){
+            $produtos->where('nome','LIKE', "%".$search."%");
+        }
+
+        if(isset($request['origem'])){
+            return $produtos->get();
+        }
+
+        $produtos = view('components.produtos.card', [
+            'produtos' => $produtos->get()
+        ])->render();
+
+        return response()->json([
+            'produtos' => $produtos
+        ]);
+    }
 }

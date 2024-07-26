@@ -3,7 +3,8 @@
         <a class="navbar-brand" href="/">
             <img src="/img/logo.png" alt="" style="height: 40px; width: auto;">
         </a>
-        <input type="text" class="input-default px-3 py-2 fit-content" style="width: 700px;">
+        
+        <input type="text" class="input-default px-3 py-2 fit-content" id="search_produto" style="width: 700px;">
         <div class="d-flex flex-row gap-5 align-items-center">
             @auth
             <a href="#"><i class="bi bi-cart3 text-white h5"></i></a>
