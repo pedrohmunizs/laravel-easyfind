@@ -383,3 +383,9 @@ nav.d-flex.justify-items-center.justify-content-between {
     width: 100%;
     height: auto;
 }
+
+.icon-pedido {
+    background-color: #E0E2E7;
+    border: 5px solid #F0F1F3;
+    
+}

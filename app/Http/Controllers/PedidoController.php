@@ -23,15 +23,21 @@ class PedidoController extends Controller
         return view('pedidos.index');
     }
 
-    public function load()
+    public function load(Request $request)
     {
+        $status = array_filter($request->toArray());
+
         $itensVenda = ItemVenda::where('fk_consumidor', auth()->user()->consumidor->id)->get();
         $pedidos = array_unique($itensVenda->pluck('fk_pedido')->toArray());
-        $pedidos = Pedido::whereIn('id', $pedidos)->get();
+        $pedidos = Pedido::whereIn('id', $pedidos);
+
+        if($status){
+            $pedidos->where('status', $status);
+        }
 
         return view('components.pedidos.card-consumidor',[
             'itensVenda' => $itensVenda,
-            'pedidos' => $pedidos
+            'pedidos' => $pedidos->get()
         ]);
     }
 
@@ -60,5 +66,14 @@ class PedidoController extends Controller
     {
         $pedido = $this->service->store($request);
         return $pedido;
+    }
+
+    public function show($id)
+    {
+        $pedido = Pedido::find($id);
+
+        return view('pedidos.show',[
+            'pedido' => $pedido
+        ]);
     }
 }

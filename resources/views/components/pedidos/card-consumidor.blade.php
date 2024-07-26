@@ -43,7 +43,7 @@
         </div>
         <div class="d-flex flex-row mt-1 justify-content-between align-items-center">
             <h6 class="m-0">Valor total: R$ {{ number_format($pedido->transacao->valor, 2, ',', '.') }}</h6>
-            <a href="" class="a-button btn-default px-3 py-1">Ver pedido</a>
+            <a href="/pedidos/{{$pedido->id}}/show" class="a-button btn-default px-3 py-1">Ver pedido</a>
         </div>
     </div>
 @endforeach

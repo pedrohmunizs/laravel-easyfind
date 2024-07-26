@@ -23,7 +23,7 @@ class Pedido extends Model
 
     public function itensVenda()
     {
-        return $this->hasMany(itemVenda::class, 'fk_pedido', 'id');
+        return $this->hasMany(ItemVenda::class, 'fk_pedido', 'id');
     }
 
     public function transacao()

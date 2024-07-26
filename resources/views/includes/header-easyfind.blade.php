@@ -1,4 +1,4 @@
-<header class="col-md-12 d-flex flex-column bg-black w-100 px-4 py-3">
+<header class="col-md-12 d-flex flex-column bg-black w-100 px-5 py-2">
     <div class="d-flex flex-row align-items-center justify-content-between">
         <a class="navbar-brand" href="/">
             <img src="/img/logo.png" alt="" style="height: 40px; width: auto;">
@@ -6,7 +6,7 @@
         <input type="text" class="input-default px-3 py-2 fit-content" style="width: 700px;">
         <div class="d-flex flex-row gap-5 align-items-center">
             @auth
-            <a href="#"><i class="bi bi-cart3 text-white h4"></i></a>
+            <a href="#"><i class="bi bi-cart3 text-white h5"></i></a>
             <a class="navbar-brand m-0 d-flex flex-row gap-2 align-items-center" href="#" id="logo">
                 <p class="m-0 fs-13 text-white">{{ auth()->user()->nome }}</p>
                 <i class="bi bi-chevron-down fs-13 text-white"></i>

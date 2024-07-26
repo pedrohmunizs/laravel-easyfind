@@ -80,7 +80,7 @@ class Produto extends Model
         return $query;
     }
 
-    public function itensVendaa()
+    public function itensVenda()
     {
         return $this->hasMany(ItemVenda::class, 'fk_produto', 'id');
     }

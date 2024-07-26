@@ -81,6 +81,7 @@ Route::middleware('auth')->group(function () {
     Route::group(['prefix' =>'pedidos', 'namespace' => 'App\Http\Controllers'], function(){
         Route::get('/create',['uses' => 'PedidoController@create', 'as' => 'pedidos.create']);
         Route::get('/load',['uses' => 'PedidoController@load', 'as' => 'pedidos.load']);
+        Route::get('/{id}/show',['uses' => 'PedidoController@show', 'as' => 'pedidos.show']);
         Route::get('/',['uses' => 'PedidoController@index', 'as' => 'pedidos.index']);
         Route::post('/', ['uses' => 'PedidoController@store', 'as' => 'pedidos.store']);
     });
