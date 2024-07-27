@@ -10,10 +10,6 @@ body{
     background-color: #FCA622;
 }
 
-.fc-primary{
-    color: #FCA622;
-}
-
 .light-gray{
     background-color: #D9D9D9
 }
@@ -28,6 +24,22 @@ body{
 
 .bgc-input{
     background-color: #F9F9FC;
+}
+
+.bgc-green{
+    background-color: #E7F4EE;
+}
+
+.bgc-blue{
+    background-color: #E8F8FD;
+}
+
+.bgc-orange{
+    background-color: #FDF1E8;
+}
+
+.bgc-gray{
+    background-color: rgb(73, 61, 38, .3);
 }
 
 .fc-gray{
@@ -46,8 +58,16 @@ body{
     color: #3A3AC5;
 }
 
+.fc-light-blue{
+    color: #13B2E4;
+}
+
 .fc-black{
     color: #22232C;
+}
+
+.fc-primary{
+    color: #FCA622;
 }
 
 .dashed{
@@ -386,6 +406,5 @@ nav.d-flex.justify-items-center.justify-content-between {
 
 .icon-pedido {
     background-color: #E0E2E7;
-    border: 5px solid #F0F1F3;
-    
+    border: 5px solid #F0F1F3;   
 }

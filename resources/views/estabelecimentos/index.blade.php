@@ -34,7 +34,7 @@
         $(document).on('click', '.btnGerenciarEstabelecimento', function(e) {
             e.preventDefault();
             var idEstabelecimento = $(this).data('id-estabelecimento');
-            console.log('ID Estabelecimento:', idEstabelecimento);
+
             if (idEstabelecimento) {
                 sessionStorage.removeItem('idEstabelecimento');
                 sessionStorage.setItem('idEstabelecimento', idEstabelecimento);

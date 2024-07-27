@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\StatusPedido;
 use App\Models\BandeiraMetodo;
+use App\Models\Estabelecimento;
 use App\Models\ItemVenda;
 use App\Models\MetodoPagamento;
 use App\Models\Pedido;
 use App\Models\Produto;
 use App\Services\PedidoService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class PedidoController extends Controller
@@ -74,6 +77,63 @@ class PedidoController extends Controller
 
         return view('pedidos.show',[
             'pedido' => $pedido
+        ]);
+    }
+
+    public function indexComerciante($idEstabelecimento)
+    {
+        $estabelecimento = Estabelecimento::where('id', $idEstabelecimento)->first();
+
+        return view('pedidos.comerciantes.index',[
+            'estabelecimento' => $estabelecimento
+        ]);
+    }
+
+    public function loadComerciante($idEstabelecimento, Request $request)
+    {
+        $range = $request['range'];
+        $order = $request['order'];
+        $filter = array_filter($request['filter']);
+
+        $pedidos = Pedido::join('bandeiras_metodos', 'bandeiras_metodos.id', '=', 'pedidos.fk_metodo_aceito')
+                        ->join('metodos_pagamento_aceitos', 'metodos_pagamento_aceitos.fk_metodo_pagamento', '=', 'bandeiras_metodos.id')
+                        ->join('estabelecimentos', 'metodos_pagamento_aceitos.fk_estabelecimento', '=', 'estabelecimentos.id')
+                        ->where('estabelecimentos.id', $idEstabelecimento)
+                        ->select('pedidos.*')
+                        ->groupBy('pedidos.id');
+
+        if(!empty($range)){
+            $rangeDate = Carbon::now()->subDays($request['range']);
+            $pedidos->where('pedidos.created_at', '>=', $rangeDate);
+        }
+
+        if(!empty($order)){
+            $pedidos->orderBy('pedidos.created_at', $order);
+        }
+
+        if(!empty($filter)){
+
+            if(isset($filter['status'])){
+                $pedidos->where('pedidos.status', $filter['status']);
+            }
+            
+            if(isset($filter['is_pagamento_online'])){
+                $pedidos->where('pedidos.is_pagamento_online', $filter['is_pagamento_online']);
+            }
+        }
+
+        $pedidos = $pedidos->paginate(10, ['*'], 'page', 1);
+
+        $tableContent = view('pedidos.comerciantes.table-content', [
+            'pedidos' => $pedidos,
+            'statusEnum' => StatusPedido::class
+        ])->render();
+
+        $pagination = $pedidos->links('pagination::bootstrap-5')->render();
+
+        return response()->json([
+            'tableContent' => $tableContent,
+            'pagination' => $pagination
         ]);
     }
 }

@@ -6,7 +6,7 @@ enum StatusPedido: string
 {
     case Pendente = 'pendente';
     case EmPreparo = 'em_preparo';
-    case AguardadoRetirada = 'aguardando_retirada';
+    case AguardandoRetirada = 'aguardando_retirada';
     case Cancelado = 'cancelado';
     case Finalizado = 'finalizado';
 }

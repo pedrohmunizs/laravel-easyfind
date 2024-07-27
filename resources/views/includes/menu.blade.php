@@ -14,7 +14,7 @@
             <a class="nav-link text-white d-flex flex-row align-items-center gap-2 br-8 d-flex flex-row justify-between" href="#submenu1" data-bs-toggle="collapse" aria-expanded="false">
                 <div class="d-flex flex-row align-items-center gap-2 w-100">
                     <i class="bi bi-bag"></i>
-                    <p class="m-0 fs-13">Produto</p>
+                    <p class="m-0 fs-13">Produtos</p>
                 </div>
                 <i class="bi bi-chevron-down fs-13"></i>
             </a>
@@ -34,7 +34,7 @@
             </div>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-white d-flex flex-row align-items-center gap-2 br-8" href="#">
+            <a class="nav-link text-white d-flex flex-row align-items-center gap-2 br-8" href="{{ route('pedidos.indexComerciante', ['idEstabelecimento' => $estabelecimento->id]) }}">
                 <i class="bi bi-cart3"></i>
                 <p class="m-0 fs-13">Pedidos</p>
             </a>
