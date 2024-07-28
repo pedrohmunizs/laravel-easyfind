@@ -38,7 +38,7 @@ class PedidoController extends Controller
             $pedidos->where('status', $status);
         }
 
-        return view('components.pedidos.card-consumidor',[
+        return view('components.pedidos.card',[
             'itensVenda' => $itensVenda,
             'pedidos' => $pedidos->get()
         ]);

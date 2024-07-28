@@ -11,7 +11,7 @@
         <p class="fc-gray">Seus pedidos</p>
     </div>
     <div class="d-flex flex-column gap-2 mb-2">
-        <label class="fs-13" for="nome">Status</label>
+        <label class="label-default">Status</label>
         <select name="" id="status" class="bg-white py-1 px-3 border-0 br-8 w-fit-content">
             <option value=""></option>
             <option value="pendente">Pendente</option>
@@ -21,7 +21,7 @@
             <option value="finalizado">Finalizado</option>
         </select>
     </div>
-    <div class="d-flex flex-wrap gap-5 col-md-12" id="pedidos"></div>
+    <div class="d-flex flex-wrap gap-3 col-md-12" id="pedidos"></div>
 </div>
 @endsection
 @section('script')

@@ -4,7 +4,7 @@
 
 @section('content')
 @include('includes.header')
-<div class="col-md-12 px-4 py-5 d-flex flex-column gap-2">
+<div class="col-md-12 px-5 py-5 d-flex flex-column gap-2">
     <h3 class="m-0">Pedidos</h3>
     <div class="d-flex flex-row gap-2">
         <a href="/pedidos" class="a-default">
@@ -18,7 +18,17 @@
             <div class="d-flex flex-column bg-white container-default p-3 col-md-5">
                 <div class="d-flex flex-row justify-content-between">
                     <h5>Pedido #{{ $pedido->id }}</h5>
-                    <p>{{ $pedido->status }}</p>
+                    @if($pedido->status->value == App\Enums\StatusPedido::Pendente->value)
+                        <p class="m-0 bgc-blue fc-light-blue py-1 px-3 w-fit-content rounded-pill"> {{$pedido->status->name}} </p>
+                    @elseif($pedido->status->value == App\Enums\StatusPedido::EmPreparo->value)
+                        <p class="m-0 bgc-orange fc-orange py-1 px-3 w-fit-content rounded-pill"> Em Preparo </p>
+                    @elseif($pedido->status->value == App\Enums\StatusPedido::AguardandoRetirada->value)
+                        <p class="m-0 bgc-gray fc-black py-1 px-3 w-fit-content rounded-pill"> Aguardando Retirada </p>
+                    @elseif($pedido->status->value == App\Enums\StatusPedido::Finalizado->value)
+                        <p class="m-0 bgc-green fc-green py-1 px-3 w-fit-content rounded-pill"> {{$pedido->status->name}} </p>
+                    @else
+                        <p class="m-0 bgc-red fc-red py-1 px-3 w-fit-content rounded-pill"> {{$pedido->status->name}} </p>
+                    @endif
                 </div>
                 <div class="d-flex flex-row align-items-center justify-content-between">
                     <div class="d-flex flex-row align-items-center gap-2">
