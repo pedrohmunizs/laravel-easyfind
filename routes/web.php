@@ -87,6 +87,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/',['uses' => 'PedidoController@index', 'as' => 'pedidos.index']);
         Route::get('/{idEstabelecimento}/index',['uses' => 'PedidoController@indexComerciante', 'as' => 'pedidos.indexComerciante']);
         Route::get('/{idEstabelecimento}/load',['uses' => 'PedidoController@loadComerciante', 'as' => 'pedidos.loadComerciante']);
+        Route::get('/{idEstabelecimento}/show/{id}',['uses' => 'PedidoController@showComerciante', 'as' => 'pedidos.showComerciante']);
+        Route::patch('/{id}',['uses' => 'PedidoController@changeStatus', 'as' => 'pedidos.status'] );
         Route::post('/', ['uses' => 'PedidoController@store', 'as' => 'pedidos.store']);
     });
 });

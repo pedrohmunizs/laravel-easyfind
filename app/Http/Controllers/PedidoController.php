@@ -126,7 +126,7 @@ class PedidoController extends Controller
 
         $tableContent = view('pedidos.comerciantes.table-content', [
             'pedidos' => $pedidos,
-            'statusEnum' => StatusPedido::class
+            'estabelecimento' => $idEstabelecimento
         ])->render();
 
         $pagination = $pedidos->links('pagination::bootstrap-5')->render();
@@ -135,5 +135,34 @@ class PedidoController extends Controller
             'tableContent' => $tableContent,
             'pagination' => $pagination
         ]);
+    }
+
+    public function showComerciante($idEstabelecimento, $id)
+    {
+        $estabelecimento = Estabelecimento::find($idEstabelecimento);
+        $pedido = Pedido::find($id);
+
+        return view('pedidos.comerciantes.show', [
+            'estabelecimento' => $estabelecimento,
+            'pedido' => $pedido
+        ]);
+    }
+
+    public function changeStatus($id, Request $request)
+    {
+        $pedido = Pedido::find($id);
+
+        if($pedido->status->value == StatusPedido::Cancelado->value){
+            return response()->json(['message' => 'Este pedido já foi cancelado!'], 400);
+        }
+
+        if($pedido->status->value == StatusPedido::Finalizado->value){
+            return response()->json(['message' => 'Este pedido já foi finalizado!'], 400);
+        }
+
+
+        $pedido = $this->service->changeStatus($id, $request['status']);
+
+        return $pedido;
     }
 }

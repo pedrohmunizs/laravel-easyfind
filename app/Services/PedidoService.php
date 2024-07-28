@@ -27,8 +27,21 @@ class PedidoService
 
         $itemVenda = $this->itemService->store($request, $pedido->id);
 
-        $transacao = $this->transacaoService->store($itemVenda, $pedido->id);
+        $this->transacaoService->store($itemVenda, $pedido->id);
 
         return response()->json(['Success' => 'Pedido realizado com sucesso!'], 201);
+    }
+
+    public function changeStatus($id, $status)
+    {
+        try{
+            $pedido = Pedido::find($id);
+            $pedido->status = $status;
+            $pedido->save();
+    
+            return response()->json(['message' => 'Status do pedido atualizado com sucesso!'], 201);
+        }catch(Exception $e){
+            throw $e;
+        }
     }
 }

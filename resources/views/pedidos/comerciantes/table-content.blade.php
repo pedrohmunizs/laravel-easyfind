@@ -17,20 +17,20 @@
         </td>
 
         <td>
-            @if($pedido->status->value == $statusEnum::Pendente->value)
-                <p class="m-0 bgc-blue fc-light-blue py-1 px-3 w-fit-content rounded-pill"> {{$pedido->status}} </p>
-            @elseif($pedido->status->value == $statusEnum::EmPreparo->value)
-                <p class="m-0 bgc-blue fc-light-blue py-1 px-3 w-fit-content rounded-pill"> {{$pedido->status}} </p>
-            @elseif($pedido->status->value == $statusEnum::AguardandoRetirada->value)
-                <p class="m-0 bgc-blue fc-light-blue py-1 px-3 w-fit-content rounded-pill"> {{$pedido->status}} </p>
-            @elseif($pedido->status->value == $statusEnum::Finalizado->value)
-                <p class="m-0 bgc-blue fc-light-blue py-1 px-3 w-fit-content rounded-pill"> {{$pedido->status}} </p>
+            @if($pedido->status->value == App\Enums\StatusPedido::Pendente->value)
+                <p class="m-0 bgc-blue fc-light-blue py-1 px-3 w-fit-content rounded-pill"> {{$pedido->status->name}} </p>
+            @elseif($pedido->status->value == App\Enums\StatusPedido::EmPreparo->value)
+                <p class="m-0 bgc-orange fc-orange py-1 px-3 w-fit-content rounded-pill"> Em Preparo </p>
+            @elseif($pedido->status->value == App\Enums\StatusPedido::AguardandoRetirada->value)
+                <p class="m-0 bgc-gray fc-black py-1 px-3 w-fit-content rounded-pill"> Aguardando Retirada </p>
+            @elseif($pedido->status->value == App\Enums\StatusPedido::Finalizado->value)
+                <p class="m-0 bgc-green fc-green py-1 px-3 w-fit-content rounded-pill"> {{$pedido->status->name}} </p>
             @else
-                <p class="m-0 bgc-blue fc-light-blue py-1 px-3 w-fit-content rounded-pill"> {{$pedido->status}} </p>
+                <p class="m-0 bgc-red fc-red py-1 px-3 w-fit-content rounded-pill"> {{$pedido->status->name}} </p>
             @endif
         </td>
         <td>
-            <a href="{{ $pedido->id }}/edit" class="btn-clean" title="Editar produto"><i class="bi bi-eye fs-20 btn-color-default hover-default"></i></a>
+            <a href="/pedidos/{{$estabelecimento}}/show/{{ $pedido->id }}" class="btn-clean" title="Editar produto"><i class="bi bi-eye fs-20 btn-color-default hover-default"></i></a>
         </td>
     </tr>
 @endforeach
