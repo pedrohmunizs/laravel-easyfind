@@ -1,24 +1,23 @@
 @extends('layouts.main')
 
-@section('title', 'Pedidos')
+@section('title', 'Histórico de pedidos')
 
 @section('content')
 @include('includes.header-comerciante')
 @include('includes.menu', ['estabelecimento' => $estabelecimento])
 <div class="col-md-10 offset-md-2 px-4 py-5 d-flex flex-column gap-2">
-    <h3 class="m-0">Pedidos</h3>
+    <h3 class="m-0">Histórico de pedidos</h3>
     <div class="d-flex flex-row gap-2">
-        <p class="fc-primary">Pedidos</p>
+        <p class="fc-primary">Histórico</p>
     </div>
     <div class="d-flex flex-row justify-content-between">
-        <div class="d-flex flex-row bg-white p-1 container-default date">
-            <button class="btn-default px-3 py-1 date_filter" id="0">Todos</button>
-            <button class="btn-cancel border-0 px-3 py-1 date_filter" id="30">30 dias</button>
-            <button class="btn-cancel border-0 px-3 py-1 date_filter" id="7">7 dias</button>
-            <button class="btn-cancel border-0 px-3 py-1 date_filter" id="1">24 horas</button>
-        </div>
+        <select id="per_page" class="bg-white py-2 px-3 border-0 br-8 fs-14">
+            <option value="10"><p class="m-0">10</p></option>
+            <option value="25"><p class="m-0">25</p></option>
+            <option value="50"><p class="m-0">50</p></option>
+        </select>
         <div class="d-flex flex-row gap-4">
-            <select name="produto[is_ativo]" id="order" class="px-3 py-2 input-default w-100">
+            <select id="order" class="bg-white py-1 px-3 border-0 br-8 fs-14">
                 <option value="DESC"><p class="m-0">Mais recentes</p></option>
                 <option value="ASC"><p class="m-0">Mais antigo</p></option>
             </select>
@@ -37,7 +36,7 @@
                         <select name="filter[status]" class="px-3 py-2 input-default">
                             <option value="">Indiferente</option>
                             @foreach(App\Enums\StatusPedido::cases() as $status)
-                                @if($status->value != 'cancelado' && $status->value != 'finalizado')
+                                @if($status->value == 'cancelado' || $status->value == 'finalizado')
                                     <option value="{{ $status->value }}">{{ $status->name }}</option>
                                 @endif
                             @endforeach
@@ -50,6 +49,14 @@
                             <option value="1">Pagamento no site</option>
                             <option value="0">Pagamento na loja</option>
                         </select>
+                    </div>
+                    <div class="d-flex flex-column">
+                        <label class="fs-13" for="nome">Desde</label>
+                        <input type="date" name="filter[data_min]" class="px-3 py-2 input-default">
+                    </div>
+                    <div class="d-flex flex-column">
+                        <label class="fs-13" for="nome">Até</label>
+                        <input type="date" name="filter[data_max]" class="px-3 py-2 input-default">
                     </div>
                 </div>
             </form>
@@ -65,10 +72,10 @@
                 <thead class="table-dark">
                     <tr>
                         <th scope="col"><h6 class="m-0">Id</h6></th>
-                        <th scope="col"><h6 class="m-0">Consumidor</h6></th>
-                        <th scope="col"><h6 class="m-0">Valor</h6></th>
+                        <th scope="col"><h6 class="m-0">Data do pedido</h6></th>
+                        <th scope="col"><h6 class="m-0">CPF do cliente</h6></th>
                         <th scope="col"><h6 class="m-0">Modo compra</h6></th>
-                        <th scope="col"><h6 class="m-0">Status</h6></th>
+                        <th scope="col"><h6 class="m-0">Valor</h6></th>
                         <th scope="col"><h6 class="m-0">Ação</h6></th>
                     </tr>
                 </thead>
@@ -77,58 +84,34 @@
             <div class="pagination px-4"></div>
         </div>
     </div>
-
 </div>
 @endsection
 @section('script')
 <script>
-    let range = 0;
-    let order = "DESC"
+    let per_page = 10;
+    let order = $('#order').val();
 
     $(document).ready(function(){
-        load()
+        load();
     })
 
     function load (){
         let formData = $('#form_filter').serialize();
         
         $.ajax({
-            url: `/pedidos/{{$estabelecimento->id}}/load?page=${page}&range=${range}&order=${order}&${formData}`,
+            url: `/pedidos/{{$estabelecimento->id}}/historico/load?${formData}&page=${page}&per_page=${per_page}&order=${order}`,
             type: 'GET',
             success: function(response) {
                 $('#table-content').html(response.tableContent);
                 $('.pagination').html(response.pagination);
+                $('.cpf').mask('000.000.000-00');
             },
             error: function(xhr, status, error) {
                 console.error(error);
-                alert('Erro ao carregar o evento.');
+                alert('Erro ao carregar o histórico de pedidos');
             }
         });
     }
-
-
-    $(".date_filter").on('click', function(){
-        let buttons = document.getElementsByClassName('date_filter');
-
-        Array.from(buttons).forEach(button => {
-            button.classList.remove('btn-default');
-            button.classList.add('btn-cancel');
-            button.classList.add('border-0');
-        });
-        this.classList.add('btn-default')
-        this.classList.remove('btn-cancel');
-        this.classList.remove('border-0');
-        range = this.id;
-
-        load();
-    })
-
-    document.getElementById('order').addEventListener('change', function(){
-        order = this.value;
-
-        load()
-    });
-
     $('#filtro').on('click', function() {
         if ($("#card-filter").hasClass('d-none')) {
             $("#card-filter").removeClass('d-none')
@@ -140,6 +123,7 @@
     })
 
     $('#apply-filter').on('click', function() {
+        page = 1;
         load();
     });
 
@@ -147,5 +131,11 @@
         $('#form_filter')[0].reset();
         load();
     });
+
+    $('#order').on('change', function(){
+        order = this.value
+        load()
+    })
+
 </script>
 @endsection

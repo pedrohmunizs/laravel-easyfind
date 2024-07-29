@@ -99,6 +99,7 @@ class PedidoController extends Controller
                         ->join('metodos_pagamento_aceitos', 'metodos_pagamento_aceitos.fk_metodo_pagamento', '=', 'bandeiras_metodos.id')
                         ->join('estabelecimentos', 'metodos_pagamento_aceitos.fk_estabelecimento', '=', 'estabelecimentos.id')
                         ->where('estabelecimentos.id', $idEstabelecimento)
+                        ->whereNotIn('pedidos.status', [StatusPedido::Cancelado->value, StatusPedido::Finalizado->value])
                         ->select('pedidos.*')
                         ->groupBy('pedidos.id');
 
@@ -164,5 +165,68 @@ class PedidoController extends Controller
         $pedido = $this->service->changeStatus($id, $request['status']);
 
         return $pedido;
+    }
+
+    public function historic($idEstabelecimento)
+    {
+        $estabelecimento = Estabelecimento::find($idEstabelecimento);
+
+        $pedidos = Pedido::join('bandeiras_metodos', 'bandeiras_metodos.id', '=', 'pedidos.fk_metodo_aceito')
+            ->join('metodos_pagamento_aceitos', 'metodos_pagamento_aceitos.fk_metodo_pagamento', '=', 'bandeiras_metodos.id')
+            ->join('estabelecimentos', 'metodos_pagamento_aceitos.fk_estabelecimento', '=', 'estabelecimentos.id')
+            ->where('estabelecimentos.id', $idEstabelecimento)
+            ->select('pedidos.*')
+            ->groupBy('pedidos.id');
+
+        return view('pedidos.comerciantes.historic', [
+            'estabelecimento' => $estabelecimento
+        ]);
+    }
+
+    public function loadHistoric($idEstabelecimento, Request $request)
+    {
+        $filter = array_filter($request['filter']);
+
+        $pedidos = Pedido::join('bandeiras_metodos', 'bandeiras_metodos.id', '=', 'pedidos.fk_metodo_aceito')
+            ->join('metodos_pagamento_aceitos', 'metodos_pagamento_aceitos.fk_metodo_pagamento', '=', 'bandeiras_metodos.id')
+            ->join('estabelecimentos', 'metodos_pagamento_aceitos.fk_estabelecimento', '=', 'estabelecimentos.id')
+            ->where('estabelecimentos.id', $idEstabelecimento)
+            ->whereIn('pedidos.status', [StatusPedido::Cancelado->value, StatusPedido::Finalizado->value])
+            ->orderBy('pedidos.created_at', $request['order'])
+            ->select('pedidos.*')
+            ->groupBy('pedidos.id');
+
+        if(!empty($filter)){
+
+            if(isset($filter['status'])){
+                $pedidos->where('pedidos.status', $filter['status']);
+            }
+
+            if(isset($filter['is_pagamento_online'])){
+                $pedidos->where('pedidos.is_pagamento_online', $filter['is_pagamento_online']);
+            }
+
+            if (isset($filter['data_min'])) {
+                $pedidos->dateRange($filter['data_min'], null);
+            }
+            
+            if (isset($filter['data_max'])) {
+                $pedidos->dateRange(null, $filter['data_max']);
+            }
+        }
+
+        $pedidos = $pedidos->paginate($request['per_page'], ['*'], 'page', $request['page']);
+
+        $tableContent = view('pedidos.comerciantes.historic-table-content', [
+            'pedidos' => $pedidos,
+            'estabelecimento' => $idEstabelecimento
+        ])->render();
+
+        $pagination = $pedidos->links('pagination::bootstrap-5')->render();
+
+        return response()->json([
+            'tableContent' => $tableContent,
+            'pagination' => $pagination
+        ]);
     }
 }

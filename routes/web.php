@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('/')->namespace('App\Http\Controllers')->group(function () {
-   // Route::get('/',['uses' => 'UserController@index', 'as' => 'home'] );
     Route::get('/',['uses' => 'EasyFindController@index', 'as' => 'home'] );
 });
 
@@ -87,6 +86,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/',['uses' => 'PedidoController@index', 'as' => 'pedidos.index']);
         Route::get('/{idEstabelecimento}/index',['uses' => 'PedidoController@indexComerciante', 'as' => 'pedidos.indexComerciante']);
         Route::get('/{idEstabelecimento}/load',['uses' => 'PedidoController@loadComerciante', 'as' => 'pedidos.loadComerciante']);
+        Route::get('/{idEstabelecimento}/historico',['uses' => 'PedidoController@historic', 'as' => 'pedidos.historico']);
+        Route::get('/{idEstabelecimento}/historico/load',['uses' => 'PedidoController@loadHistoric', 'as' => 'pedidos.loadHistorico']);
         Route::get('/{idEstabelecimento}/show/{id}',['uses' => 'PedidoController@showComerciante', 'as' => 'pedidos.showComerciante']);
         Route::patch('/{id}',['uses' => 'PedidoController@changeStatus', 'as' => 'pedidos.status'] );
         Route::post('/', ['uses' => 'PedidoController@store', 'as' => 'pedidos.store']);

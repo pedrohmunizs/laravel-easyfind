@@ -40,7 +40,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-white d-flex flex-row align-items-center gap-2 br-8" href="#">
+            <a class="nav-link text-white d-flex flex-row align-items-center gap-2 br-8" href="{{ route('pedidos.historico', ['idEstabelecimento' => $estabelecimento->id]) }}">
                 <i class="bi bi-people"></i>
                 <p class="m-0 fs-13">Histórico de vendas</p>
             </a>
