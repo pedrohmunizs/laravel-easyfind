@@ -47,10 +47,12 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::group(['prefix' => 'secoes', 'namespace' => 'App\Http\Controllers'], function(){
+        Route::get('/{id}/edit', ['uses' => 'SecaoController@edit', 'as' => 'secoes.edit'] );
         Route::get('/{idEstabelecimento}', ['uses' => 'SecaoController@index', 'as' => 'secoes.index'] );
         Route::get('/{idEstabelecimento}/load', ['uses' => 'SecaoController@load', 'as' => 'secoes.load'] );
         Route::get('/{idEstabelecimento}/create', ['uses' => 'SecaoController@create', 'as' => 'secoes.create'] );
         Route::post('/',['uses' => 'SecaoController@store', 'as' => 'secoes.store'] );
+        Route::put('/{id}',['uses' => 'SecaoController@update', 'as' => 'secoes.update'] );
         Route::delete('/{id}',['uses' => 'SecaoController@destroy', 'as' => 'secoes.destroy'] );
     });
     

@@ -10,7 +10,7 @@
     <div class="d-flex flex-row gap-2">
         <p class="fc-primary">Produtos</p>
         <i class="bi bi-chevron-right fc-gray"></i>
-        <p class="fc-gray">Lista de seções</p>
+        <p class="fc-gray">Seções</p>
     </div>
     <div class="d-flex flex-row justify-content-between">
         <div class="input-group mb-3" style="width: 50%;">
@@ -34,9 +34,9 @@
         <table class="table">
             <thead class="table-dark">
                 <tr>
-                    <th scope="col">Nome</th>
-                    <th scope="col">Qtd Produtos</th>
-                    <th scope="col">Ação</th>
+                    <th scope="col"><h6 class="m-0">Nome</h6></th>
+                    <th scope="col"><h6 class="m-0">Qtd Produtos</h6></th>
+                    <th scope="col"><h6 class="m-0">Ação</h6></th>
                 </tr>
             </thead>
             <tbody id="table-content"></tbody>
