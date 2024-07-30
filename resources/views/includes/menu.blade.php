@@ -1,6 +1,6 @@
-<nav class="col-md-2 sidebar vh-100 position-fixed px-3 py-1">
+<nav class="col-md-2 sidebar vh-100 position-fixed px-3 pt-3">
     <ul class="nav flex-column">
-        <li class="nav-item mb-4">
+        <li class="nav-item mb-2">
             <div class="d-flex flex-row align-items-center gap-3">
                 @if ($estabelecimento->imagem && $estabelecimento->imagem->nome_referencia)
                     <img src="/img/estabelecimentos/{{ $estabelecimento->imagem->nome_referencia }}" class="rounded-circle" alt="" style="height: 43px;">

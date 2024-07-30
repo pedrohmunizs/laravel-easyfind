@@ -1,5 +1,5 @@
 @foreach($estabelecimentos as $estabelecimento)
-    <div class="d-flex flex-column mb-3">
+    <div class="d-flex flex-column mb-3 bg-white br-8">
         @if($estabelecimento->imagem)
             <img src="/img/estabelecimentos/{{ $estabelecimento->imagem->nome_referencia }}" style="width: 270px; height:170px;" class="brt-8" alt="{{ $estabelecimento->nome }}">
         @else

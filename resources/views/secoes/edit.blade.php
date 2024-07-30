@@ -3,7 +3,7 @@
 @section('title', 'Seções')
 
 @section('content')
-@include('includes.header-comerciante')
+@include('includes.header')
 @include('includes.menu', ['estabelecimento' => $estabelecimento])
 <div class="col-md-10 offset-md-2 px-4 py-5 d-flex flex-column gap-2">
     <h3 class="m-0">Seções</h3>
@@ -39,11 +39,11 @@
                 <table class="table">
                     <thead class="table-dark">
                         <tr>
-                            <th scope="col">Produto</th>
-                            <th scope="col">SKU</th>
-                            <th scope="col">Preço</th>
-                            <th scope="col">Adicionado</th>
-                            <th scope="col">Status</th>
+                            <th scope="col"><h6 class="m-0">Produto</h6></th>
+                            <th scope="col"><h6 class="m-0">SKU</h6></th>
+                            <th scope="col"><h6 class="m-0">Preço</h6></th>
+                            <th scope="col"><h6 class="m-0">Adicionado</h6></th>
+                            <th scope="col"><h6 class="m-0">Status</h6></th>
                         </tr>
                     </thead>
                     <tbody id="table-content">

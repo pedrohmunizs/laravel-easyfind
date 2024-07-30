@@ -23,10 +23,12 @@ class ProdutoController extends Controller
 
     public function index($idEstabelecimento)
     {
-        $estabelecimento = Estabelecimento::where('id', $idEstabelecimento)->first();
+        $estabelecimento = Estabelecimento::find($idEstabelecimento);
+        $secoes = $estabelecimento->secoes;
 
         return view('produtos.index',[
-            'estabelecimento' => $estabelecimento
+            'estabelecimento' => $estabelecimento,
+            'secoes' => $secoes
         ]);
     }
 
@@ -73,6 +75,12 @@ class ProdutoController extends Controller
             
             if (isset($filter['data_max'])) {
                 $produtosQuery->dateRange(null, $filter['data_max']);
+            }
+
+            if(isset($filter['secao'])){
+                $produtosQuery->whereHas('secao', function ($query) use ($filter) {
+                    $query->where('id', $filter['secao']);
+                });
             }
         }
 

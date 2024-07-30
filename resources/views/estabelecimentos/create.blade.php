@@ -5,8 +5,8 @@
 @include('includes.header')
 <form id="form_estabelecimento" action="/estabelecimentos" method="POST" class="needs-validation" novalidate enctype="multipart/form-data">
     @csrf
-    <div class="col-md-12 d-flex flex-column mt-5 px-5">
-        <h3 class="m-0">Cadastrar Estabelecimento</h3>
+    <div class="col-md-12 d-flex flex-column gap-2 mt-5 px-5">
+        <h3 class="m-0">Estabelecimentos</h3>
         <div class="d-flex flex-row gap-2">
             <p class="fc-primary">Estabelecimentos</p>
             <i class="bi bi-chevron-right fc-gray"></i>

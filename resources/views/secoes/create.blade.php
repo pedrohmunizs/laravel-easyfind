@@ -3,7 +3,7 @@
 @section('title', 'Criar seção')
 
 @section('content')
-@include('includes.header-comerciante')
+@include('includes.header')
 @include('includes.menu', ['estabelecimento' => $estabelecimento])
 <form id="form_secao" action="/secoes" method="POST">
     @csrf
@@ -12,7 +12,9 @@
         <div class="d-flex flex-row gap-2">
             <p class="fc-primary">Produtos</p>
             <i class="bi bi-chevron-right fc-gray"></i>
-            <p class="fc-primary">Lista de seções</p>
+            <a href="/secoes/{{$estabelecimento->id}}" class="a-default">
+                <p class="fc-primary">Seções</p>
+            </a>
             <i class="bi bi-chevron-right fc-gray"></i>
             <p class="fc-gray">Cadastrar seção</p>
         </div>
@@ -36,28 +38,28 @@
 @section('script')
 <script>
     $('#form_secao').on('submit', function(e) {
-            e.preventDefault();
-            var formData = $(this).serialize();
-            $.ajax({
-                url: $(this).attr('action'),
-                type: 'POST',
-                data: formData,
-                success: function(response) {
-                    toastr.success('Seção cadastrada com sucesso!', 'Sucesso');
-                    setTimeout(function() {
-                         window.location.href = `/secoes/{{$estabelecimento->id}}`;
-                    }, 3000);
-                },
-                error: function(xhr, status, error) {
-                    if(xhr.status == 409){
-                        toastr.error(xhr.responseJSON.error);
-                    }else if(xhr.status == 400){
-                        toastr.error(xhr.responseJSON.error);                        
-                    }else{
-                        toastr.error('Erro ao cadastrar seção!', 'Erro');
-                    }
+        e.preventDefault();
+        var formData = $(this).serialize();
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                toastr.success('Seção cadastrada com sucesso!', 'Sucesso');
+                setTimeout(function() {
+                     window.location.href = `/secoes/{{$estabelecimento->id}}`;
+                }, 3000);
+            },
+            error: function(xhr, status, error) {
+                if(xhr.status == 409){
+                    toastr.error(xhr.responseJSON.error);
+                }else if(xhr.status == 400){
+                    toastr.error(xhr.responseJSON.error);                        
+                }else{
+                    toastr.error('Erro ao cadastrar seção!', 'Erro');
                 }
-            });
+            }
         });
+    });
 </script>
 @endsection

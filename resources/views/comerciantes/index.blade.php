@@ -3,7 +3,7 @@
 @section('title', 'Lojas')
 
 @section('content')
-@include('includes.header-comerciante')
+@include('includes.header')
 <div class="main-content w-100" style="margin-top: 53px;">
     <div class="col-md-12 pt-5 px-9">
         <div class="d-flex flex-column gap-2 mb-5">

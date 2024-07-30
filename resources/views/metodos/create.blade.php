@@ -3,16 +3,16 @@
 @section('title', 'Adicionar método de pagamento')
 
 @section('content')
-@include('includes.header-comerciante')
+@include('includes.header')
 @include('includes.menu', ['estabelecimento' => $estabelecimento])
 <form id="form_metodo" action="/metodos" method="POST">
     @csrf
     <div class="col-md-10 offset-md-2 px-4 py-5 d-flex flex-column gap-2">
-        <h3 class="m-0">Métodos de pagamentos</h3>
+        <h3 class="m-0">Métodos de pagamento aceitos</h3>
         <div class="d-flex flex-row gap-2">
-            <p class="fc-primary">Métodos de pagamentos</p>
-            <i class="bi bi-chevron-right fc-gray"></i>
-            <p class="fc-primary">Lista de métodos</p>
+            <a href="/metodos/{{$estabelecimento->id}}" class="a-default">
+                <p class="fc-primary">Métodos de pagamento</p>
+            </a>
             <i class="bi bi-chevron-right fc-gray"></i>
             <p class="fc-gray">Cadastrar método</p>
         </div>

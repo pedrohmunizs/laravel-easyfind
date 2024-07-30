@@ -3,7 +3,7 @@
 @section('title', 'Criar produto')
 
 @section('content')
-@include('includes.header-comerciante')
+@include('includes.header')
 @include('includes.menu', ['estabelecimento' => $estabelecimento])
 <form id="form_produto" action="/produtos" method="POST" novalidate enctype="multipart/form-data">
     @csrf
@@ -12,7 +12,9 @@
         <div class="d-flex flex-row gap-2">
             <p class="fc-primary">Produtos</p>
             <i class="bi bi-chevron-right fc-gray"></i>
-            <p class="fc-primary">Lista de produtos</p>
+            <a href="/produtos/{{$estabelecimento->id}}" class="a-default">
+                <p class="fc-primary">Lista de produtos</p>
+            </a>
             <i class="bi bi-chevron-right fc-gray"></i>
             <p class="fc-gray">Cadastrar produto</p>
         </div>

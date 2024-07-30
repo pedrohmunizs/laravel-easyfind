@@ -3,7 +3,7 @@
 @section('title', 'Seções')
 
 @section('content')
-@include('includes.header-comerciante')
+@include('includes.header')
 @include('includes.menu', ['estabelecimento' => $estabelecimento])
 <div class="col-md-10 offset-md-2 px-4 py-5 d-flex flex-column gap-2">
     <h3 class="m-0">Seções</h3>
@@ -20,7 +20,7 @@
             </div>
         </div>
         <div class="d-flex flex-row gap-3">
-            <a href="/secoes/{{$estabelecimento->id}}/create" class="btn-default small a-button px-3 py-2 d-flex flex-row gap-2"><i class="bi bi-plus-lg"></i><p class="m-0">Cadastrar Seção</p></a>
+            <a href="/secoes/{{$estabelecimento->id}}/create" class="btn-default small a-button px-3 py-2 d-flex flex-row gap-1 container-primary"><i class="bi bi-plus-lg"></i><p class="m-0">Cadastrar Seção</p></a>
         </div>
     </div>
     <div>

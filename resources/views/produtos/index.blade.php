@@ -3,7 +3,7 @@
 @section('title', 'Produtos')
 
 @section('content')
-@include('includes.header-comerciante')
+@include('includes.header')
 @include('includes.menu', ['estabelecimento' => $estabelecimento])
     <div class="col-md-10 offset-md-2 px-4 py-5 d-flex flex-column gap-2">
         <h3 class="m-0">Produtos</h3>
@@ -20,17 +20,17 @@
                 </div>
             </div>
             <div class="d-flex flex-row gap-3">
-                <button class="btn-default py-2 px-3 small d-flex flex-row gap-2 container-default bg-white" id="filtro"><i class="bi bi-filter"></i><p class="m-0">Filtro</p></button>
+                <button class="btn-default py-2 px-3 small d-flex flex-row gap-2 container-default bg-white" id="filtro"><i class="bi bi-funnel fc-gray"></i><p class="m-0 fc-gray">Filtro</p></button>
                 <a href="/produtos/{{$estabelecimento->id}}/create" class="btn-default small a-button px-3 py-2 d-flex flex-row gap-1 container-primary"><i class="bi bi-plus-lg"></i><p class="m-0">Cadastrar Produto</p></a>
             </div>
         </div>
         <div class="d-flex flex-row gap-2">
-            <select name="" id="per_page" class="bg-white py-1 px-3 border-0 br-8">
+            <select name="" id="per_page" class="bg-white py-2 px-3 border-0 br-8 fs-14">
                 <option value="10">10</option>
                 <option value="20">20</option>
                 <option value="50">50</option>
             </select>
-            <select name="" id="order_page" class="bg-white py-1 px-3 border-0 br-8 fs-14">
+            <select name="" id="order_page" class="bg-white py-2 px-3 border-0 br-8 fs-14">
                 <option value="created_at,ASC">Do mais antigo</option>
                 <option value="created_at,DESC">Do mais novo</option>
                 <option value="preco,DESC">Do mais caro</option>
@@ -47,6 +47,15 @@
                             <option value="1">Ativado</option>
                             <option value="0">Desativado</option>
                             <option value="">Indiferente</option>
+                        </select>
+                    </div>
+                    <div class="d-flex flex-column">
+                        <label class="fs-13" for="nome">Seção</label>
+                        <select name="filter[secao]" class="px-3 py-2 input-default">
+                            <option value="">Indiferente</option>
+                            @foreach($secoes as $secao)
+                                <option value="{{$secao->id}}">{{$secao->descricao}}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="d-flex flex-column">
@@ -76,12 +85,12 @@
             <table class="table">
                 <thead class="table-dark">
                     <tr>
-                        <th scope="col">Produto</th>
-                        <th scope="col">SKU</th>
-                        <th scope="col">Seção</th>
-                        <th scope="col">Preço</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Ação</th>
+                        <th scope="col"><h6 class="m-0">Produto</h6></th>
+                        <th scope="col"><h6 class="m-0">SKU</h6></th>
+                        <th scope="col"><h6 class="m-0">Seção</h6></th>
+                        <th scope="col"><h6 class="m-0">Preço</h6></th>
+                        <th scope="col"><h6 class="m-0">Status</h6></th>
+                        <th scope="col"><h6 class="m-0">Ação</h6></th>
                     </tr>
                 </thead>
                 <tbody id="table-content"></tbody>

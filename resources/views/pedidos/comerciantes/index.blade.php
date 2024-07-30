@@ -3,7 +3,7 @@
 @section('title', 'Pedidos')
 
 @section('content')
-@include('includes.header-comerciante')
+@include('includes.header')
 @include('includes.menu', ['estabelecimento' => $estabelecimento])
 <div class="col-md-10 offset-md-2 px-4 py-5 d-flex flex-column gap-2">
     <h3 class="m-0">Pedidos</h3>
