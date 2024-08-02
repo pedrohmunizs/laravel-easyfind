@@ -125,6 +125,16 @@ class ProdutoController extends Controller
             $produto['is_promocao_ativa'] = true;
         }
         
+        $produto['preco'] = trim(substr($produto['preco'], 2));
+        $produto['preco'] = str_replace(".", "", $produto['preco']);
+        $produto['preco'] = str_replace(',', '.', $produto['preco']);
+        $produto['preco'] = number_format((float) $produto['preco'], 2, '.', '');
+
+        $produto['preco_oferta'] = trim(substr($produto['preco_oferta'], 2));
+        $produto['preco_oferta'] = str_replace(".", "", $produto['preco_oferta']);
+        $produto['preco_oferta'] = str_replace(',', '.', $produto['preco_oferta']);
+        $produto['preco_oferta'] = number_format((float) $produto['preco_oferta'], 2, '.', '');
+        
         $produto = $this->service->store($produto, $request['produto_tag']);
 
         return $produto;

@@ -111,8 +111,7 @@
                 $('.cpf').mask('000.000.000-00');
             },
             error: function(xhr, status, error) {
-                console.error(error);
-                alert('Erro ao carregar o histórico de pedidos');
+                toastr.error('Erro ao carregar o histórico de pedidos!', 'Erro');
             }
         });
     }

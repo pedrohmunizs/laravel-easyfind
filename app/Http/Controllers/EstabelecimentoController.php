@@ -30,13 +30,13 @@ class EstabelecimentoController extends Controller
         $existeEmail = Estabelecimento::where('email', $request['estabelecimento.email'])->first();
 
         if ($existeEmail) {
-            return response()->json(['error' => 'Esse email já está em uso!'], 409);
+            return response()->json(['message' => 'Esse email já está em uso!'], 409);
         }
 
         $existeTelefone = Estabelecimento::where('telefone', $request['estabelecimento.telefone'])->first();
 
         if ($existeTelefone) {
-            return response()->json(['error' => 'Esse telefone já está em uso!'], 409);
+            return response()->json(['message' => 'Esse telefone já está em uso!'], 409);
         }
 
         $estabelecimento = $this->estabelecimentoService->store($request);

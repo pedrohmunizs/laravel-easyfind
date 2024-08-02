@@ -37,7 +37,7 @@ class ComercianteController extends Controller
             ]);
         
             if ($cpf->fails()) {
-                return response()->json(['error' => "Esse CPF não é válido!"], 400);
+                return response()->json(['message' => "Esse CPF não é válido!"], 400);
             }
 
             $cnpj = Validator::make($request->all(), [
@@ -45,32 +45,32 @@ class ComercianteController extends Controller
             ]);
         
             if ($cnpj->fails()) {
-                return response()->json(['error' => "Esse CNPJ não é válido!"], 400);
+                return response()->json(['message' => "Esse CNPJ não é válido!"], 400);
             }
 
             $existeEmail = User::where("email", $request['usuario.email'])->first();
             
             if($existeEmail){
-                return response()->json(['error' => "Esse email já está em uso!"], 409);
+                return response()->json(['message' => "Esse email já está em uso!"], 409);
             }
 
             $existeCnpj = Comerciante::where("cnpj", $request['comerciante.cnpj'])->first();
             
             if($existeCnpj){
-                return response()->json(['error' => "Esse CNPJ já foi cadastrado!"], 409);
+                return response()->json(['message' => "Esse CNPJ já foi cadastrado!"], 409);
             }
 
             $existeCpf = Comerciante::where("cpf", $request['comerciante.cpf'])->first();
 
             if($existeCpf){
-                return response()->json(['error' => "Esse CPF já foi cadastrado!"], 409);
+                return response()->json(['message' => "Esse CPF já foi cadastrado!"], 409);
             }
 
             $comerciante = $this->comercianteService->store($request);
             return $comerciante;
         }catch(Exception $e){
             if ($e->getCode() == 409) {
-                return response()->json(['error' => $e->getMessage()], 409);
+                return response()->json(['message' => $e->getMessage()], 409);
             }
         }
     }

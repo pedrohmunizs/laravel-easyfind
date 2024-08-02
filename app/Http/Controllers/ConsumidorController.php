@@ -28,7 +28,7 @@ class ConsumidorController extends Controller
         ]);
 
         if ($email->fails()) {
-            return response()->json(['error' => "Esse e-mail não é válido!"], 400);
+            return response()->json(['message' => "Esse e-mail não é válido!"], 400);
         }
 
         $cpf = Validator::make($request->all(), [
@@ -36,19 +36,19 @@ class ConsumidorController extends Controller
         ]);
     
         if ($cpf->fails()) {
-            return response()->json(['error' => "Esse CPF não é válido!"], 400);
+            return response()->json(['message' => "Esse CPF não é válido!"], 400);
         }
 
         $existeCpf = Consumidor::where('cpf', $request['consumidor.cpf'])->first();
 
         if($existeCpf){
-            return response()->json(['error' => "Esse CPF já está em uso!"], 409);
+            return response()->json(['message' => "Esse CPF já está em uso!"], 409);
         }
 
         $existeEmail = User::where('email', $request['user.email'])->first();
             
         if($existeEmail){
-            return response()->json(['error' => "Esse email já está em uso!"], 409);
+            return response()->json(['message' => "Esse email já está em uso!"], 409);
         }
 
         $consumidor = $this->service->store($request);

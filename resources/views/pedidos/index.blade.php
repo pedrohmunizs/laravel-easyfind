@@ -41,8 +41,7 @@
                 $('#pedidos').html(response);
             },
             error: function(xhr, status, error) {
-                console.error(error);
-                alert('Erro ao carregar o evento.');
+                alert('Erro ao carregar o pedidos.');
             }
         });
     }

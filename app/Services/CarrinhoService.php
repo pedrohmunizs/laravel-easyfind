@@ -15,7 +15,7 @@ class CarrinhoService
             $carrinho->fk_consumidor = $idConsumidor;
             $carrinho->save();
             
-            return response()->json(['success' => 'Produto adicionado o carrinho com sucesso!', 201]);
+            return response()->json(['message' => 'Produto adicionado o carrinho com sucesso!', 201]);
         }catch(Exception $e){
             return $e;
         }
@@ -27,9 +27,9 @@ class CarrinhoService
             $carrinho->quantidade = ($quantidade + $carrinho->quantidade);
             $carrinho->save();
 
-            return response()->json(['success' => 'Quantidade atualizado com sucesso!', 201]);
+            return response()->json(['message' => 'Quantidade atualizado com sucesso!', 201]);
         }catch(Exception $e){
-            return response()->json(['error' => 'Erro ao atualizar a quantidade do produto no carrinho!'], 500);
+            throw $e;
         }
     }
 }

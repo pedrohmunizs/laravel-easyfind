@@ -45,16 +45,16 @@
             type: 'POST',
             data: formData,
             success: function(response) {
-                toastr.success('Seção cadastrada com sucesso!', 'Sucesso');
+                toastr.success(response.message, 'Sucesso');
                 setTimeout(function() {
                      window.location.href = `/secoes/{{$estabelecimento->id}}`;
                 }, 3000);
             },
             error: function(xhr, status, error) {
                 if(xhr.status == 409){
-                    toastr.error(xhr.responseJSON.error);
+                    toastr.error(xhr.responseJSON.message);
                 }else if(xhr.status == 400){
-                    toastr.error(xhr.responseJSON.error);                        
+                    toastr.error(xhr.responseJSON.message);                        
                 }else{
                     toastr.error('Erro ao cadastrar seção!', 'Erro');
                 }

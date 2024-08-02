@@ -3,32 +3,44 @@
 namespace App\Services;
 
 use App\Models\Agenda;
+use Exception;
 
 class AgendaService{
     
     public function store($request, $fk_estabelecimento)
     {
-        foreach($request as $day){
-            $agenda = new Agenda();
-            $agenda->fill($day);
-            $agenda->fk_estabelecimento = $fk_estabelecimento;
-            $agenda->save();
+        try{
+            foreach($request as $day){
+                $agenda = new Agenda();
+                $agenda->fill($day);
+                $agenda->fk_estabelecimento = $fk_estabelecimento;
+                $agenda->save();                
+            }
 
-            return $agenda;
+            return response()->json(null, 201);
+
+        }catch(Exception $e){
+            throw $e;
         }
     }
 
     public function update($agendas, $idEstabelecimento)
     {
-        Agenda::where('fk_estabelecimento', $idEstabelecimento)->delete();
+        try{
+            Agenda::where('fk_estabelecimento', $idEstabelecimento)->delete();
+            
+            foreach($agendas as $agenda){
+                $new = new Agenda();
+                
+                $new->fill($agenda);
+                $new->fk_estabelecimento = $idEstabelecimento;
+                $new->save();
+            }
 
-        foreach($agendas as $agenda){
-            $new = new Agenda();
+            return response()->json(null, 201);
 
-            $new->fill($agenda);
-            $new->fk_estabelecimento = $idEstabelecimento;
-            $new->save();
+        }catch(Exception $e){
+            throw $e;
         }
-        return response()->json(null, 201);
     }
 }

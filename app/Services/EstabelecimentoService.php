@@ -12,9 +12,9 @@ use Illuminate\Support\Collection;
 
 class EstabelecimentoService
 {
-    protected $enderecoService = null;
-    protected $agendaService = null;
-    protected $imagemService = null;
+    protected $enderecoService;
+    protected $agendaService;
+    protected $imagemService;
     
     public function __construct( EnderecoService $enderecoService, AgendaService $agendaService, ImagemService $imagemService) {
         $this->enderecoService = $enderecoService;
@@ -25,7 +25,6 @@ class EstabelecimentoService
     public function store($request)
     {
         try{
-
             $user = auth()->user();
             
             $data = $request['endereco'];
@@ -36,13 +35,17 @@ class EstabelecimentoService
             $data = $request['estabelecimento'];
             $data['telefone'] = str_replace(['(', ')', '-', ' '], '', $data['telefone']);
 
-            $estabelecimento = new Estabelecimento();
-            $estabelecimento->fill($data);
-            $estabelecimento->is_ativo = true;
-            $estabelecimento->fk_endereco = $endereco->id;
-            $estabelecimento->fk_comerciante = $user->comerciante->id;
-            if(!$estabelecimento->save()){
-                return response()->json(['error' => 'Erro ao salvar estabelecimento.'], 500);
+            try{
+                $estabelecimento = new Estabelecimento();
+                $estabelecimento->fill($data);
+                $estabelecimento->is_ativo = true;
+                $estabelecimento->fk_endereco = $endereco->id;
+                $estabelecimento->fk_comerciante = $user->comerciante->id;
+
+                $estabelecimento->save();
+
+            }catch(Exception $e){
+                throw $e;
             }
             
             if($request['agenda']){
@@ -53,7 +56,7 @@ class EstabelecimentoService
                 $this->imagemService->storeEstabelecimento($request->file('image'), $estabelecimento->id);
             }
 
-            return response()->json($estabelecimento, 201);
+            return response()->json(['message' => 'Estabelecimento cadastrado com sucesso!'], 201);
 
         }catch(Exception $e){
             throw $e;

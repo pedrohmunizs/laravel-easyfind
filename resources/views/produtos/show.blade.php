@@ -163,12 +163,14 @@
                         <textarea name="" id="comentario" class="px-3 py-2 input-default w-100" maxlength="255"></textarea>
                     </div>
                 </div>
-                <button class="btn-default px-3 py-2" id="publish">Publicar</button>
+                @auth
+                    <button class="btn-default px-3 py-2" id="publish">Publicar</button>
+                @endauth
+                @guest
+                    <button class="btn-default px-3 py-2" id="publish" disabled>Publicar</button>
+                @endguest
             </div>
             <div class="col-md-12 d-flex flex-row">
-                <div class="col-md-6">
-                    
-                </div>
                 <div class="col-md-6 d-flex flex-column gap-4">
                     @foreach($avaliacoes as $avaliacao)
                         <div class="d-flex flex-column">
@@ -191,7 +193,6 @@
                             </div>
                             <p>{{$avaliacao->comentario}}</p>
                         </div>
-
                     @endforeach
                 </div>
             </div>
@@ -262,16 +263,13 @@
                 _token: "{{ csrf_token() }}",
             },
             success: function(response) {
-                toastr.success('Avaliacao publicada com sucesso!', 'Sucesso');
-                setTimeout(function() {
-                     //window.location.href = `/secoes/`;
-                }, 3000);
+                toastr.success(response.message, 'Sucesso');
             },
             error: function(xhr, status, error) {
                 if(xhr.status == 409){
-                    toastr.error(xhr.responseJSON.error);
+                    toastr.error(xhr.responseJSON.message);
                 }else if(xhr.status == 400){
-                    toastr.error(xhr.responseJSON.error);                        
+                    toastr.error(xhr.responseJSON.message);                        
                 }else{
                     toastr.error('Erro ao publicar avaliação!', 'Erro');
                 }
@@ -318,15 +316,12 @@
             },
             success: function(response) {
                 toastr.success('Produto adicionado ao carrinho!', 'Sucesso');
-                setTimeout(function() {
-                     //window.location.href = `/secoes/`;
-                }, 3000);
             },
             error: function(xhr, status, error) {
                 if(xhr.status == 409){
-                    toastr.error(xhr.responseJSON.error);
+                    toastr.error(xhr.responseJSON.message);
                 }else if(xhr.status == 400){
-                    toastr.error(xhr.responseJSON.error);
+                    toastr.error(xhr.responseJSON.message);
                 }else{
                     toastr.error('Erro ao adicionar produto ao carrinho!', 'Erro');
                 }

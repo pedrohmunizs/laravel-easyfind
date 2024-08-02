@@ -207,9 +207,9 @@
                 },
                 error: function(xhr, status, error) {
                     if (xhr.status == 409) {
-                        toastr.error(xhr.responseJSON.error);
+                        toastr.error(xhr.responseJSON.message);
                     } else if (xhr.status == 400) {
-                        toastr.error(xhr.responseJSON.error);
+                        toastr.error(xhr.responseJSON.message);
                     } else {
                         toastr.error('Erro ao realizar o cadastro!', 'Erro');
                     }

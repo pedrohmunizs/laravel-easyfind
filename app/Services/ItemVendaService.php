@@ -27,7 +27,7 @@ class ItemVendaService
             
             return $itemVenda;
         }catch(Exception $e){
-            return response()->json(['Error' => 'Erro ao realizar pedido', 500]);
+            throw $e;
         }
     }
 }

@@ -185,8 +185,7 @@
                 $('.pagination').html(response.pagination);
             },
             error: function(xhr, status, error) {
-                console.error(error);
-                alert('Erro ao carregar o evento.');
+                toastr.error('Erro ao carregar produtos!', 'Erro');
             }
         });
     }

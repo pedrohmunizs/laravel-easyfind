@@ -16,9 +16,9 @@ class AvaliacaoService
             $avaliacao->fk_consumidor = $idConsumidor;
             $avaliacao->save();
             
-            return response()->json(['success' => 'Avaliação publicada com sucesso', 201]);
+            return response()->json(['message' => 'Avaliação publicada com sucesso', 201]);
         }catch(Exception $e){
-            return response()->json(['error' => 'Erro ao publicar avaliação!'], 500);
+            throw $e;
         }
     }
 }

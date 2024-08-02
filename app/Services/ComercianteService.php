@@ -13,8 +13,8 @@ use Illuminate\Support\Facades\Log;
 
 class ComercianteService
 {
-    protected $userService = null;
-    protected $enderecoService = null;
+    protected $userService;
+    protected $enderecoService;
     
     public function __construct(UserService $userService, EnderecoService $enderecoService) {
         $this->userService = $userService;
@@ -39,16 +39,20 @@ class ComercianteService
             $data['cnpj'] = str_replace(['.', '/', '-'], '', $data['cnpj']);
             $data['telefone'] = str_replace(['(', ')', '-', ' '], '', $data['telefone']);
 
-            $comerciante = new Comerciante();
-            $comerciante->fill($data);
-            $comerciante->fk_usuario =  $user->id;
-            $comerciante->fk_endereco =  $endereco->id;
-            
-            if ($comerciante->save()) {                
-                return response()->json($comerciante, 201);
-            } else {
-                return response()->json(['error' => 'Erro ao salvar comerciante.'], 500);
+            try{
+                $comerciante = new Comerciante();
+                $comerciante->fill($data);
+                $comerciante->fk_usuario =  $user->id;
+                $comerciante->fk_endereco =  $endereco->id;
+
+                $comerciante->save();
+
+            }catch(Exception $e){
+                throw $e;
             }
+            
+            return response()->json(['message' => 'Usuário cadastrado com sucesso!'], 201);
+
         }catch(Exception $e){
             throw $e;
         }

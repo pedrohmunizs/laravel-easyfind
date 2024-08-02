@@ -14,7 +14,7 @@ class SecaoService{
             $secao->fill($request);
             $secao->save();
             
-            return response()->json(['sucess' => 'Seção criado com sucesso!'], 201);
+            return response()->json(['message' => 'Seção criado com sucesso!'], 201);
             
         }catch(Exception $e){
             throw $e;
@@ -26,7 +26,7 @@ class SecaoService{
         $secao = Secao::where('id', $id)->first();
         $secao->delete();
         
-        return response()->json(null, 204);
+        return response()->json(['message' => 'Seção removida com sucesso!'], 204);        
     }
 
     public function update($id, $descricao)
@@ -36,7 +36,8 @@ class SecaoService{
             $secao->descricao = $descricao;
             $secao->save();
 
-            return response()->json(['success' => 'Seção atualizado com sucesso!'], 201);
+            return response()->json(['message' => 'Seção atualizado com sucesso!'], 201);
+
         }catch(Exception $e){
             throw $e;
         }

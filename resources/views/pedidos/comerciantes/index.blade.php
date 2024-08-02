@@ -91,7 +91,7 @@
 
     function load (){
         let formData = $('#form_filter').serialize();
-        
+
         $.ajax({
             url: `/pedidos/{{$estabelecimento->id}}/load?page=${page}&range=${range}&order=${order}&${formData}`,
             type: 'GET',
@@ -100,8 +100,7 @@
                 $('.pagination').html(response.pagination);
             },
             error: function(xhr, status, error) {
-                console.error(error);
-                alert('Erro ao carregar o evento.');
+                toastr.error('Erro ao carregar os pedidos!', 'Erro');
             }
         });
     }

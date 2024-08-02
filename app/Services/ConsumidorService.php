@@ -7,7 +7,7 @@ use Exception;
 
 class ConsumidorService
 {
-    protected $userService = null;
+    protected $userService;
 
     public function __construct(UserService $userService) {
         $this->userService = $userService;
@@ -20,17 +20,24 @@ class ConsumidorService
             $usuario['type'] = 'consumidor';
             $user = $this->userService->store($usuario);
             
-            $consumidor = new Consumidor();
-
             $data = $request['consumidor'];
             $data['cpf'] = str_replace(['.', '-'], '', $data['cpf']);
             $data['telefone'] = str_replace(['(', ')', '-', ' '], '', $data['telefone']);
 
-            $consumidor->fill($data);
-            $consumidor->fk_usuario = $user->id;
-            $consumidor->save();
-            
-            return response()->json(['success' => 'Usuário cadastrado com sucesso!'], 201);
+            try{
+                $consumidor = new Consumidor();
+                
+                $consumidor->fill($data);
+                $consumidor->fk_usuario = $user->id;
+
+                $consumidor->save();
+
+            }catch(Exception $e){
+                throw $e;
+            }
+
+            return response()->json(['message' => 'Usuário cadastrado com sucesso!'], 201);
+
         }catch(Exception $e){
             throw $e;
         }
