@@ -13,7 +13,7 @@
     <div class="d-flex flex-column gap-2 mb-2">
         <label class="label-default">Status</label>
         <select name="" id="status" class="bg-white py-1 px-3 border-0 br-8 w-fit-content">
-            <option value=""></option>
+            <option value="">Indiferente</option>
             <option value="pendente">Pendente</option>
             <option value="em_preparo">Em Preparo</option>
             <option value="aguardando_retirada">Aguardado Retirada</option>

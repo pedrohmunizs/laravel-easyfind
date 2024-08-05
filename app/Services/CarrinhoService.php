@@ -24,8 +24,19 @@ class CarrinhoService
     public function update(Carrinho $carrinho, $quantidade)
     {
         try{
-            $carrinho->quantidade = ($quantidade + $carrinho->quantidade);
+            $carrinho->quantidade = $quantidade;
             $carrinho->save();
+
+            return response()->json(['message' => 'Quantidade atualizado com sucesso!', 201]);
+        }catch(Exception $e){
+            throw $e;
+        }
+    }
+
+    public function destroy(Carrinho $carrinho)
+    {
+        try{
+            $carrinho->delete();
 
             return response()->json(['message' => 'Quantidade atualizado com sucesso!', 201]);
         }catch(Exception $e){

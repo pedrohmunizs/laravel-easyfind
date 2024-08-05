@@ -3,7 +3,9 @@
 namespace App\Services;
 
 use App\Enums\StatusPedido;
+use App\Models\Carrinho;
 use App\Models\Pedido;
+use App\Models\Produto;
 use Exception;
 
 class PedidoService
@@ -34,6 +36,17 @@ class PedidoService
         $itemVenda = $this->itemService->store($request, $pedido->id);
 
         $this->transacaoService->store($itemVenda, $pedido->id);
+
+        if($data['origem'] == 'carrinho'){
+
+            $produto = Produto::find($request['itemVenda'][0]['fk_produto']);
+            $estabelecimentoId = $produto->secao->estabelecimento->id;
+
+            Carrinho::where('fk_consumidor', auth()->user()->consumidor->id)
+                ->whereHas('produto.secao.estabelecimento', function ($query) use ($estabelecimentoId) {
+                    $query->where('id', $estabelecimentoId);
+                })->delete();
+        }
 
         return response()->json(['message' => 'Pedido realizado com sucesso!'], 201);
     }

@@ -14,6 +14,16 @@ class CarrinhoController extends Controller
         $this->service = $carrinhoSerivce;
     }
 
+    public function index()
+    {
+        $consumidor = auth()->user()->consumidor;
+        $carrinhos = Carrinho::where('fk_consumidor', $consumidor->id)->get();
+
+        return view('carrinhos.index', [
+            'carrinhos' => $carrinhos
+        ]);
+    }
+
     public function store(Request $request)
     {
         $user = auth()->user();
@@ -24,12 +34,43 @@ class CarrinhoController extends Controller
         $existe = Carrinho::where('fk_produto', $data['fk_produto'])->where('fk_consumidor', $consumidor->id)->first();
 
         if($existe){
-            $carrinho = $this->service->update($existe, $data['quantidade']);
+            $quantidade = ($existe->quantidade + $data['quantidade']);
+            $carrinho = $this->service->update($existe, $quantidade);
             return $carrinho;
         }
         
         $carrinho = $this->service->store($data, $consumidor->id);
 
         return $carrinho;
+    }
+
+    public function load()
+    {
+        $consumidor = auth()->user()->consumidor;
+
+        $carrinhos = Carrinho::where('fk_consumidor', $consumidor->id)->get();
+
+        $cards = view('components.carrinhos.card', [
+            'carrinhos' => $carrinhos
+        ])->render();
+            
+        return $cards;
+    }
+
+    public function update($id, Request $request)
+    {
+        $carrinho = Carrinho::find($id);
+        $quantidade = null; 
+
+        if($request['action'] == 'add'){
+            $quantidade = $carrinho->quantidade + 1;
+        }else{
+            $quantidade = $carrinho->quantidade - 1;
+        }
+
+        if(!$quantidade){
+            return $this->service->destroy($carrinho);
+        }
+        return $this->service->update($carrinho, $quantidade);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\StatusPedido;
 use App\Models\BandeiraMetodo;
+use App\Models\Carrinho;
 use App\Models\Estabelecimento;
 use App\Models\ItemVenda;
 use App\Models\MetodoPagamento;
@@ -32,7 +33,7 @@ class PedidoController extends Controller
 
         $itensVenda = ItemVenda::where('fk_consumidor', auth()->user()->consumidor->id)->get();
         $pedidos = array_unique($itensVenda->pluck('fk_pedido')->toArray());
-        $pedidos = Pedido::whereIn('id', $pedidos);
+        $pedidos = Pedido::whereIn('id', $pedidos)->orderBy('created_at', 'DESC');
 
         if($status){
             $pedidos->where('status', $status);
@@ -46,9 +47,34 @@ class PedidoController extends Controller
 
     public function create(Request $request)
     {
-        $produto = Produto::find($request['idProduto']);
+        $origem = $request['origem'];
         $mp = [];
-        $metodos = $produto->secao->estabelecimento->metodosPagamentosAceito;
+
+        if($origem == 'carrinho'){
+
+            $estabelecimentoId = $request['estabelecimento'];
+
+            $carrinhos = Carrinho::where('fk_consumidor', auth()->user()->consumidor->id)
+                ->whereHas('produto.secao.estabelecimento', function ($query) use ($estabelecimentoId) {
+                    $query->where('id', $estabelecimentoId);
+                })
+                ->get();
+            
+            $produtos = Produto::whereIn('id', $carrinhos->pluck('fk_produto'))->get();
+
+            foreach ($produtos as $produto) {
+                $produto->quantidade = $carrinhos->firstWhere('fk_produto', $produto->id)->quantidade;
+            }
+
+            $metodos = $produtos[0]->secao->estabelecimento->metodosPagamentosAceito;            
+            $bandeirasMetodos = $produtos[0]->secao->estabelecimento->metodosPagamentosAceito;
+        }else{
+            $produtos = Produto::where('id' ,$request['idProduto'])->get();
+            $produtos[0]->quantidade = $request['quantidade'];
+            $metodos = $produtos[0]->secao->estabelecimento->metodosPagamentosAceito;
+            $bandeirasMetodos = $produtos[0]->secao->estabelecimento->metodosPagamentosAceito;
+        }
+
         foreach($metodos as $metodo){
             $bandeirametodo = $metodo->bandeiraMetodo;
             $mp[] += $bandeirametodo->fk_metodo_pagamento;
@@ -56,12 +82,12 @@ class PedidoController extends Controller
 
         $mp = array_unique($mp);
         $metodos = MetodoPagamento::whereIn('id', $mp)->get();
-        $bandeirasMetodos = $produto->secao->estabelecimento->metodosPagamentosAceito;
+
         return view('pedidos.create',[
-            'produto' => $produto,
-            'quantidade' => $request['quantidade'],
+            'produtos' => $produtos,
             'metodos' => $metodos,
-            'aceitos' => $bandeirasMetodos
+            'aceitos' => $bandeirasMetodos,
+            'origem' => $origem
         ]);
     }
 

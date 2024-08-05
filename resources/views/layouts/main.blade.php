@@ -53,34 +53,34 @@
         });
 
         $(document).on('change', '#per_page', function(){
-        per_page = $('#per_page').val();
-        page = 1;
+            per_page = $('#per_page').val();
+            page = 1;
 
-        load()
-    })
+            load()
+        })
 
-    $(document).on('click','.page-link', function(){
-        event.preventDefault();
-        page = this.text
+        $(document).on('click','.page-link', function(){
+            event.preventDefault();
+            page = this.text
 
-        if(page == "›" || page == "‹"){
-            let href = this.href;
-            let url = new URL(href);
-            page =  url.searchParams.get('page');
+            if(page == "›" || page == "‹"){
+                let href = this.href;
+                let url = new URL(href);
+                page =  url.searchParams.get('page');
+            }
+
+            load();
+        })
+
+        function actualPage(){
+            let div = $('.active');
+            let span = div.find('span');
+            page = span.text();
         }
 
-        load();
-    })
-
-    function actualPage(){
-        let div = $('.active');
-        let span = div.find('span');
-        page = span.text();
-    }
-
-    $('#search').on('keyup', function(){
-        load();
-    })
+        $('#search').on('keyup', function(){
+            load();
+        })
     </script>
 </body>
 </html>

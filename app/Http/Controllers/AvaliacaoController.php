@@ -23,7 +23,7 @@ class AvaliacaoController extends Controller
         $compra = ItemVenda::where('fk_consumidor', $consumidor->id)->where('fk_produto', $request['avaliacao.fk_produto'])->first();
 
         if(!$compra){
-            return response()->json(['message' => 'Você não comprou este produto!'], 409);
+            return response()->json(['message' => 'Você não comprou este produto!'], 400);
         }
 
         $existe = Avaliacao::where('fk_consumidor', $consumidor->id)->where('fk_produto', $request['avaliacao.fk_produto'])->first();

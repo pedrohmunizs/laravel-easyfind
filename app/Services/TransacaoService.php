@@ -7,11 +7,11 @@ use Exception;
 
 class TransacaoService
 {
-    public function store($item, $idPedido)
+    public function store($valor, $idPedido)
     {
         try{
             $transacao = new Transacao();
-            $transacao->valor = ($item->valor * $item->quantidade);
+            $transacao->valor = ($valor);
             $transacao->fk_pedido = $idPedido;
 
             $transacao->save();

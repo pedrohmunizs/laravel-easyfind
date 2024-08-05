@@ -197,6 +197,14 @@ body{
     z-index: 1000;
 }
 
+.card-carrinho {
+    position: absolute;
+    top: 55px;
+    right: 100px;
+    display: none;
+    z-index: 1000;
+}
+
 .px-9{
     padding-left: 9rem;
     padding-right: 9rem;

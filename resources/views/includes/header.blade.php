@@ -10,7 +10,7 @@
         <div class="d-flex flex-row gap-5 align-items-center">
             @auth
                 @if(auth()->user()->consumidor)
-                    <a href="#"><i class="bi bi-cart3 text-white h5"></i></a>
+                    <a href="/carrinhos"><i class="bi bi-cart3 text-white h5"></i></a>
                 @endif
                 <a class="navbar-brand m-0 d-flex flex-row gap-2 align-items-center" href="#" id="logo">
                     <p class="m-0 fs-13 text-white">{{ auth()->user()->nome }}</p>

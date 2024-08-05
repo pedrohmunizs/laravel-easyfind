@@ -78,7 +78,10 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::group(['prefix' =>'carrinhos', 'namespace' => 'App\Http\Controllers'], function(){
+        Route::get('/load', ['uses' => 'CarrinhoController@load', 'as' => 'carrinhos.load']);
+        Route::get('/', ['uses' => 'CarrinhoController@index', 'as' => 'carrinhos.index']);
         Route::post('/', ['uses' => 'CarrinhoController@store', 'as' => 'carrinhos.store']);
+        Route::patch('/{id}', ['uses' => 'CarrinhoController@update', 'as' => 'carrinhos.update']);
     });
 
     Route::group(['prefix' =>'pedidos', 'namespace' => 'App\Http\Controllers'], function(){

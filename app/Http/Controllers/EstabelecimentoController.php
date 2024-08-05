@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\StatusPedido;
 use App\Models\Estabelecimento;
+use App\Models\Pedido;
 use App\Services\EstabelecimentoService;
 use Illuminate\Http\Request;
 
@@ -66,6 +68,17 @@ class EstabelecimentoController extends Controller
                     $estabelecimento->total_produtos += count($produtos);
                 }
             }
+
+            $pedidos = Pedido::join('bandeiras_metodos', 'bandeiras_metodos.id', '=', 'pedidos.fk_metodo_aceito')
+                ->join('metodos_pagamento_aceitos', 'metodos_pagamento_aceitos.fk_metodo_pagamento', '=', 'bandeiras_metodos.id')
+                ->join('estabelecimentos', 'metodos_pagamento_aceitos.fk_estabelecimento', '=', 'estabelecimentos.id')
+                ->where('estabelecimentos.id', $estabelecimento->id)
+                ->where('pedidos.status', StatusPedido::Pendente->value)
+                ->select('pedidos.*')
+                ->groupBy('pedidos.id')
+                ->get();
+
+            $estabelecimento->pedidos = count($pedidos);
         }
 
         return view('components.estabelecimentos.card', [

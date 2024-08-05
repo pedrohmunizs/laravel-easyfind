@@ -53,60 +53,68 @@
                 <hr>
                 <h6>Finalizar</h6>
                 <div class="d-none flex-row align-items-center finalizar gap-3">
-                    @if($produto->is_promocao_ativa)
-                        @php
-                            $preco = $produto->preco_oferta * $quantidade;
-                        @endphp
-                        <h5 class="m-0">Total do pedido: R$ {{ number_format($preco, 2, ',', '.') }}</h5>
-                    @else
-                        @php
-                            $preco = $produto->preco * $quantidade;
-                        @endphp
-                        <h5 class="m-0">Total do pedido: R$ {{ number_format($preco, 2, ',', '.') }}</h5>
-                    @endif
-                    <input type="text" value="{{$produto->id}}" name="itemVenda[fk_produto]" class="d-none">
-                    <input type="text" value="{{$quantidade}}" name="itemVenda[quantidade]" class="d-none">
+                    @php
+                        $preco = 0;
+                    @endphp
+                    @foreach($produtos as $produto)
+                        @if($produto->is_promocao_ativa)
+                            @php
+                                $preco += $produto->preco_oferta * $produto->quantidade;
+                            @endphp
+                        @else
+                            @php
+                                $preco += $produto->preco * $produto->quantidade;
+                            @endphp
+                        @endif
+                    @endforeach
+                    <h5 class="m-0">Total do pedido: R$ {{ number_format($preco, 2, ',', '.') }}</h5>
+                    @foreach($produtos as $produto)
+                        <input type="hidden" value="{{ $produto->id }}" name="itemVenda[{{ $loop->index }}][fk_produto]">
+                        <input type="hidden" value="{{ $produto->quantidade }}" name="itemVenda[{{ $loop->index }}][quantidade]">
+                    @endforeach
+                    <input type="hidden" value="{{ $origem }}" name="pedido[origem]">
                     <button type="submit" class="btn-default px-3 py-1 fs-14 mt-1" id="finalizar">Finalizar</button>
                 </div>
             </div>
             <div class="d-flex flex-column col-md-4">
                 <div class="d-flex flex-column bg-white container-default px-4 py-3 gap-2">
                     <h3>Resumo do pedido</h3>
-                    <div class="d-flex flex-row">
-                        <img src="/img/produtos/{{$produto->imagens[0]['nome_referencia']}}" alt="" style="height: 50px; width:50px">
-                        <div class="d-flex flex-column">
-                            <p class="m-0">{{$produto->nome}}</p>
-                            @if($produto->is_promocao_ativa)
-                                <h6 class="m-0">R$ {{ number_format($produto->preco_oferta, 2, ',', '.') }}</h6>
-                            @else
-                                <h6 class="m-0">R$ {{ number_format($produto->preco, 2, ',', '.') }}</h6>
-                            @endif
+                    @php
+                        $preco = 0;
+                    @endphp
+                    @foreach($produtos as $produto)
+                        <div class="d-flex flex-row">
+                            <img src="/img/produtos/{{$produto->imagens[0]['nome_referencia']}}" alt="" style="height: 50px; width:50px">
+                            <div class="d-flex flex-column">
+                                <p class="m-0">{{$produto->nome}}</p>
+                                @if($produto->is_promocao_ativa)
+                                    @php
+                                        $preco += $produto->preco_oferta * $produto->quantidade;
+                                    @endphp
+                                    <h6 class="m-0">R$ {{ number_format($produto->preco_oferta, 2, ',', '.') }}</h6>
+                                @else
+                                    @php
+                                        $preco += $produto->preco * $produto->quantidade;
+                                    @endphp
+                                    <h6 class="m-0">R$ {{ number_format($produto->preco, 2, ',', '.') }}</h6>
+                                @endif
+                            </div>
+                            <div class="d-flex align-items-center ms-3">
+                                <p class="m-0">Unidades: {{$produto->quantidade}}</p>
+                            </div>
                         </div>
-                        <div class="d-flex align-items-center ms-3">
-                            <p class="m-0">Unidades: {{$quantidade}}</p>
-                        </div>
-                        
-                    </div>
-                    @if($produto->is_promocao_ativa)
-                        @php
-                            $preco = $produto->preco_oferta * $quantidade;
-                        @endphp
-                        <h6 class="m-0">Total do pedido: R${{ number_format($preco, 2, ',', '.') }}</h6>
-                    @else
-                        @php
-                            $preco = $produto->preco * $quantidade;
-                        @endphp
-                        <h6 class="m-0">Total do pedido: R${{ number_format($preco, 2, ',', '.') }}</h6>
-                    @endif
+                    @endforeach
+                    <h6 class="m-0">Total do pedido: R$ {{ number_format($preco, 2, ',', '.') }}</h6>
                 </div>
             </div>
         </div>
     </div>
 </form>
 @endsection
+
 @section('script')
 <script>
-     document.querySelectorAll('.momento input[type="checkbox"]').forEach(checkbox => {
+    document.querySelectorAll('.momento input[type="checkbox"]').forEach(checkbox => {
         checkbox.addEventListener('change', function() {
             if (this.checked) {
                 document.querySelectorAll('.momento input[type="checkbox"]').forEach(otherCheckbox => {
@@ -140,7 +148,7 @@
         });
 
         if (isSelected) {
-            const metodos = document.getElementsByClassName('metodos')
+            const metodos = document.getElementsByClassName('metodos');
             Array.from(metodos).forEach(metodo => {
                 metodo.classList.remove('d-none');
                 metodo.classList.add('d-flex');
@@ -160,32 +168,31 @@
         });
 
         if (isSelected) {
-            const finalizar = document.getElementsByClassName('finalizar')
+            const finalizar = document.getElementsByClassName('finalizar');
             Array.from(finalizar).forEach(f => {
                 f.classList.remove('d-none');
                 f.classList.add('d-flex');
-            })
+            });
         } else {
             toastr.error("Selecione uma bandeira!");
         }
     });
 
-    document.getElementById('select_metodo').addEventListener('change', function(){
-
-        const bandeiras = document.getElementsByClassName('bandeiras')
+    document.getElementById('select_metodo').addEventListener('change', function() {
+        const bandeiras = document.getElementsByClassName('bandeiras');
 
         Array.from(bandeiras).forEach(bandeira => {
-            bandeira.classList.remove('d-flex')
-            bandeira.classList.add('d-none')
-        })
+            bandeira.classList.remove('d-flex');
+            bandeira.classList.add('d-none');
+        });
 
         let div = document.getElementById(this.value);
 
         div.classList.remove('d-none');
         div.classList.add('d-flex');
-    })
+    });
 
-    document.getElementById('form_pedido').addEventListener('submit', function(e){
+    document.getElementById('form_pedido').addEventListener('submit', function(e) {
         e.preventDefault();
         var formData = $(this).serialize();
         $.ajax({
@@ -195,13 +202,13 @@
             success: function(response) {
                 toastr.success('Sucesso ao realizar pedido!', 'Sucesso');
                 setTimeout(function() {
-                    window.location.href='/pedidos';
+                    window.location.href = '/pedidos';
                 }, 3000);
             },
             error: function(xhr, status, error) {
                 toastr.error('Erro ao realizar pedido!', 'Erro');
             }
         });
-    })
+    });
 </script>
 @endsection

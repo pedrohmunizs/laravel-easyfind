@@ -15,15 +15,11 @@
             <div class="d-flex flex-row justify-content-between">
                 <div class="d-flex flex-column align-items-center">
                     <p class="fs-13 text-white">Pedidos pendentes</p>
-                    <p class="fs-13 text-white">0</p>
+                    <p class="fs-13 text-white">{{$estabelecimento->pedidos}}</p>
                 </div>
                 <div class="d-flex flex-column align-items-center">
                     <p class="fs-13 text-white">Produtos ativos</p>
-                    @if($estabelecimento->total_produtos)
-                        <p class="fs-13 text-white">{{$estabelecimento->total_produtos}}</p>
-                    @else
-                        <p class="fs-13 text-white">0</p>
-                    @endif
+                    <p class="fs-13 text-white">{{$estabelecimento->total_produtos}}</p>
                 </div>
             </div>
             <a href="javascript:void(0)" class="btn-default btn-large a-button btnGerenciarEstabelecimento" id="btnGerenciar" data-id-estabelecimento="{{$estabelecimento->id}}">Gerenciar</a>
