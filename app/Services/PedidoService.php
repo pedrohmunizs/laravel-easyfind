@@ -57,6 +57,15 @@ class PedidoService
             $pedido = Pedido::find($id);
             $pedido->status = $status;
             $pedido->save();
+
+            if($status = StatusPedido::Finalizado->value){
+                $itens = $pedido->itensVenda;
+                foreach($itens as $item){
+                    $produto = $item->produto;
+                    $produto->qtd_vendas += $item->quantidade;
+                    $produto->save();
+                }
+            }
     
             return response()->json(['message' => 'Status do pedido atualizado com sucesso!'], 201);
 

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\StatusPedido;
 use App\Models\Avaliacao;
 use App\Models\Estabelecimento;
 use App\Models\MetodoPagamento;
+use App\Models\Pedido;
 use App\Models\Produto;
 use App\Models\Secao;
 use App\Models\Tag;
@@ -166,14 +168,22 @@ class ProdutoController extends Controller
         $produtos = Produto::whereIn('fk_secao', $secoes)->get();
         
         $avaliacoesEstabelecimento = Avaliacao::whereIn('fk_produto', $produtos->pluck('id'))->get()->toArray();
-        $totalEstabelecimento = $produtos->sum('qtd_vendas');
+        
+        $vendas = Pedido::join('bandeiras_metodos', 'bandeiras_metodos.id', '=', 'pedidos.fk_metodo_aceito')
+            ->join('metodos_pagamento_aceitos', 'metodos_pagamento_aceitos.fk_metodo_pagamento', '=', 'bandeiras_metodos.id')
+            ->join('estabelecimentos', 'metodos_pagamento_aceitos.fk_estabelecimento', '=', 'estabelecimentos.id')
+            ->where('estabelecimentos.id', $produto->secao->estabelecimento->id)
+            ->whereNotIn('pedidos.status', [StatusPedido::Finalizado->value])
+            ->select('pedidos.*')
+            ->groupBy('pedidos.id')
+            ->get();
 
         return view('produtos.show',[
             'produto' => $produto,
             'metodos' => $metodos,
             'avaliacoes' => $avaliacoes,
             'avaliacoesEstabelecimento' => $avaliacoesEstabelecimento,
-            'totalVendidosEstabelecimento' => $totalEstabelecimento,
+            'totalVendidosEstabelecimento' => count($vendas),
             'totalProdutos' => count($produtos->where('is_ativo', true))
         ]);
     }
