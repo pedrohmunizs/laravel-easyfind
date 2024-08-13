@@ -15,6 +15,7 @@ class ImagemService
             if($imagem){
                 $this->deleteImagem($imagem->id);
             }
+
             $imagem = new Imagem();
             
             $image = $request;

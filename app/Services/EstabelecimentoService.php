@@ -25,8 +25,6 @@ class EstabelecimentoService
     public function store($request)
     {
         try{
-            $user = auth()->user();
-            
             $data = $request['endereco'];
             $data['cep'] = str_replace('-', '', $data['cep']);
 
@@ -40,7 +38,7 @@ class EstabelecimentoService
                 $estabelecimento->fill($data);
                 $estabelecimento->is_ativo = true;
                 $estabelecimento->fk_endereco = $endereco->id;
-                $estabelecimento->fk_comerciante = $user->comerciante->id;
+                $estabelecimento->fk_comerciante = auth()->user()->comerciante->id;
 
                 $estabelecimento->save();
 
