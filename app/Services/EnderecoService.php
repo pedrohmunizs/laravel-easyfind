@@ -20,4 +20,18 @@ class EnderecoService
             throw $e;
         }
     }
+
+    public function update($id, $data)
+    {
+        try{
+            $endereco = Endereco::find($id);
+            $endereco->fill($data);
+            $endereco->save();
+
+            return $endereco;
+
+        }catch(Exception $e){
+            throw $e;
+        }
+    }
 }

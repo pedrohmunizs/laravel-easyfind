@@ -33,8 +33,10 @@ Route::middleware('auth')->group(function () {
     Route::group(['prefix' => 'estabelecimentos', 'namespace' => 'App\Http\Controllers'], function(){
         Route::get('/load', ['uses' => 'EstabelecimentoController@load', 'as' => 'estabelecimentos.load'] );
         Route::get('/create', ['uses' => 'EstabelecimentoController@create', 'as' => 'estabelecimentos.create'] );
+        Route::get('/{id}/edit', ['uses' => 'EstabelecimentoController@edit', 'as' => 'estabelecimentos.edit'] );
         Route::get('/', ['uses' => 'EstabelecimentoController@index', 'as' => 'estabelecimentos.index'] );
         Route::post('/',['uses' => 'EstabelecimentoController@store', 'as' => 'estabelecimentos.store'] );
+        Route::put('/{id}',['uses' => 'EstabelecimentoController@update', 'as' => 'estabelecimentos.update'] );
     });
 
     Route::group(['prefix' => 'produtos', 'namespace' => 'App\Http\Controllers'], function(){

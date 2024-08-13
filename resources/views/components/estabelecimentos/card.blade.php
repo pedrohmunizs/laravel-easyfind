@@ -8,7 +8,7 @@
         <div class="bgc-primary p-3 bg-black brb-8" style="width: 270px;">
             <div class="d-flex flex-row justify-content-between">
                 <p class="text-white fs-13 m-0">{{$estabelecimento->nome}}</p>
-                <button class="fit-content border-0 fc-primary h6 m-0" style="background-color: transparent;"> <i class="bi bi-gear-fill"></i></button>
+                <a href="/estabelecimentos/{{$estabelecimento->id}}/edit" class="a-default fit-content border-0 fc-primary h6 m-0"><i class="bi bi-gear-fill"></i></a>
             </div>
             <p class="fc-primary fs-13">{{$estabelecimento->segmento}}</p>
             <hr class="bg-white">

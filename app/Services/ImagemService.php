@@ -10,6 +10,11 @@ class ImagemService
     public function storeEstabelecimento($request, $fk_estabelecimento)
     {
         try{
+            $imagem = Imagem::where('fk_estabelecimento', $fk_estabelecimento)->first();
+
+            if($imagem){
+                $this->deleteImagem($imagem->id);
+            }
             $imagem = new Imagem();
             
             $image = $request;
@@ -49,6 +54,26 @@ class ImagemService
             return response()->json(null, 201);
 
         }catch(Exception $e){
+            throw $e;
+        }
+    }
+
+    private function deleteImagem($imagemId)
+    {
+        try {
+            $imagem = Imagem::findOrFail($imagemId);
+            
+            $imagePath = public_path('img/estabelecimentos/' . $imagem->nome_referencia);
+
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
+
+            $imagem->delete();
+
+            return response()->json(['message' => 'Imagem deletada com sucesso!'], 200);
+
+        } catch (Exception $e) {
             throw $e;
         }
     }

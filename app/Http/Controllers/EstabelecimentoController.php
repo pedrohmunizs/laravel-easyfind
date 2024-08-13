@@ -85,4 +85,19 @@ class EstabelecimentoController extends Controller
             'estabelecimentos' => $estabelecimentos
         ]);
     }
+
+    public function edit($id)
+    {
+        $estabelecimento = Estabelecimento::find($id);
+
+        return view('estabelecimentos.edit', [
+            'estabelecimento' => $estabelecimento
+        ]);
+    }
+
+    public function update($id, Request $request)
+    {
+        $estabelecimento = $this->estabelecimentoService->update($id, $request);
+        return $estabelecimento;
+    }
 }
