@@ -62,6 +62,15 @@ class Produto extends Model
         return $query;
     }
 
+    public function scopePromocao($query, $status)
+    {
+        if ($status !== null) {
+            return $query->where('is_promocao_ativa', $status);
+        }
+
+        return $query;
+    }
+
     public function scopePriceRange($query, $min, $max)
     {
         if ($min !== null) {

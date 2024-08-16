@@ -38,6 +38,7 @@ class ProdutoController extends Controller
     {
         $filter = $request['filter'];
         $search = $request['search'];
+
         list($column, $direction) = explode(',', $request['order']);
 
         $estabelecimento = Estabelecimento::where('id', $idEstabelecimento)->first();
@@ -48,7 +49,11 @@ class ProdutoController extends Controller
             if (isset($filter['status'])) {
                 $produtosQuery->status($filter['status']);
             }
-            
+
+            if (isset($filter['promocao'])) {
+                $produtosQuery->promocao($filter['promocao']);
+            }
+
             if (isset($filter['preco_min'])) {
 
                 $filter['preco_min'] = str_replace(".", "", $filter['preco_min']);
@@ -138,6 +143,44 @@ class ProdutoController extends Controller
         $produto['preco_oferta'] = number_format((float) $produto['preco_oferta'], 2, '.', '');
         
         $produto = $this->service->store($produto, $request['produto_tag']);
+
+        return $produto;
+    }
+
+    public function edit($id)
+    {
+        $produto = Produto::find($id);
+        $estabelecimento = Estabelecimento::find($produto->secao->estabelecimento->id);
+
+        return view('produtos.edit', [
+            'estabelecimento' => $estabelecimento,
+            'produto' => $produto,
+            'secoes' => $estabelecimento->secoes,
+            'tags' => Tag::all()
+        ]);
+    }
+
+    public function update($id, Request $request)
+    {
+        $produto = $request['produto']; 
+
+        if(!isset($produto['is_promocao_ativa'])){
+            $produto['is_promocao_ativa'] = false;
+        }else{
+            $produto['is_promocao_ativa'] = true;
+        }
+
+        $produto['preco'] = trim(substr($produto['preco'], 2));
+        $produto['preco'] = str_replace(".", "", $produto['preco']);
+        $produto['preco'] = str_replace(',', '.', $produto['preco']);
+        $produto['preco'] = number_format((float) $produto['preco'], 2, '.', '');
+
+        $produto['preco_oferta'] = trim(substr($produto['preco_oferta'], 2));
+        $produto['preco_oferta'] = str_replace(".", "", $produto['preco_oferta']);
+        $produto['preco_oferta'] = str_replace(',', '.', $produto['preco_oferta']);
+        $produto['preco_oferta'] = number_format((float) $produto['preco_oferta'], 2, '.', '');
+        
+        $produto = $this->service->update($id, $produto, $request['produto_tag']);
 
         return $produto;
     }

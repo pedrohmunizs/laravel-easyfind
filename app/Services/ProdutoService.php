@@ -34,4 +34,30 @@ class ProdutoService{
             throw $e;
         }
     }
+
+    public function update($id, $data, $tags)
+    {
+        try{   
+            $produto = Produto::find($id);
+            $produto->fill($data);
+            $produto->save();
+
+            if(json_decode($tags['fk_tag'])){
+                $this->produtoTagService->update($tags, $produto->id);
+            }
+
+            if($data['images_existing']){
+                $this->imagemService->deleteProdutoImagem($data['images_existing'], $produto->id);
+            }
+
+            if(isset($data['images'])){
+                $this->imagemService->storeProduto($data['images'], $produto->id);
+            }
+
+            return response()->json(['message' => 'Produto editado com sucesso!'], 201);
+
+        }catch(Exception $e){
+            throw $e;
+        }
+    }
 }

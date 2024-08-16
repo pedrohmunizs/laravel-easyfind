@@ -43,8 +43,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/{idEstabelecimento}', ['uses' => 'ProdutoController@index', 'as' => 'produtos.index'] );
         Route::get('/{idEstabelecimento}/create', ['uses' => 'ProdutoController@create', 'as' => 'produtos.create'] );
         Route::get('/{idEstabelecimento}/load', ['uses' => 'ProdutoController@load', 'as' => 'produtos.load'] );
+        Route::get('/{id}/edit', ['uses' => 'ProdutoController@edit', 'as' => 'produtos.edit'] );
         Route::post('/',['uses' => 'ProdutoController@store', 'as' => 'produtos.store'] );
         Route::patch('/{id}',['uses' => 'ProdutoController@active', 'as' => 'produtos.active'] );
+        Route::post('/{id}',['uses' => 'ProdutoController@update', 'as' => 'produtos.update'] );
         Route::delete('/{id}',['uses' => 'ProdutoController@destroy', 'as' => 'produtos.destroy'] );
     });
 

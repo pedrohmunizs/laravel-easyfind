@@ -40,39 +40,52 @@
         <div class="d-none flex-column flex-wrap bg-white p-3 gap-3 border border-2 br-8" id="card-filter">
             <h4 class="m-0">Filtro</h4>
             <form action="form_filter" id="form_filter">
-                <div class="d-flex flex-row justify-content-between">
-                    <div class="d-flex flex-column">
-                        <label class="fs-13" for="nome">Status</label>
-                        <select name="filter[status]" class="px-3 py-2 input-default">
-                            <option value="1">Ativado</option>
-                            <option value="0">Desativado</option>
-                            <option value="">Indiferente</option>
-                        </select>
+                <div class="d-flex flex-column gap-1">
+                    <div class="d-flex flex-row gap-5">
+                        <div class="d-flex flex-column">
+                            <label class="fs-13" for="nome">Preço mínimo</label>
+                            <input type="text" name="filter[preco_min]" id="preco-min" class="px-3 py-2 input-default">
+                        </div>
+                        <div class="d-flex flex-column">
+                            <label class="fs-13" for="nome">Preço máximo</label>
+                            <input type="text" name="filter[preco_max]" id="preco-max" class="px-3 py-2 input-default">
+                        </div>
+                        <div class="d-flex flex-column">
+                            <label class="fs-13" for="nome">Desde</label>
+                            <input type="date" name="filter[data_min]" class="px-3 py-2 input-default">
+                        </div>
+                        <div class="d-flex flex-column">
+                            <label class="fs-13" for="nome">Até</label>
+                            <input type="date" name="filter[data_max]" class="px-3 py-2 input-default">
+                        </div>
+                        <div class="d-flex flex-column">
+                            <label class="fs-13" for="nome">Seção</label>
+                            <select name="filter[secao]" class="px-3 py-2 input-default">
+                                <option value="">Indiferente</option>
+                                @foreach($secoes as $secao)
+                                    <option value="{{$secao->id}}">{{$secao->descricao}}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
-                    <div class="d-flex flex-column">
-                        <label class="fs-13" for="nome">Seção</label>
-                        <select name="filter[secao]" class="px-3 py-2 input-default">
-                            <option value="">Indiferente</option>
-                            @foreach($secoes as $secao)
-                                <option value="{{$secao->id}}">{{$secao->descricao}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="d-flex flex-column">
-                        <label class="fs-13" for="nome">Preço mínimo</label>
-                        <input type="text" name="filter[preco_min]" id="preco-min" class="px-3 py-2 input-default">
-                    </div>
-                    <div class="d-flex flex-column">
-                        <label class="fs-13" for="nome">Preço máximo</label>
-                        <input type="text" name="filter[preco_max]" id="preco-max" class="px-3 py-2 input-default">
-                    </div>
-                    <div class="d-flex flex-column">
-                        <label class="fs-13" for="nome">Desde</label>
-                        <input type="date" name="filter[data_min]" class="px-3 py-2 input-default">
-                    </div>
-                    <div class="d-flex flex-column">
-                        <label class="fs-13" for="nome">Até</label>
-                        <input type="date" name="filter[data_max]" class="px-3 py-2 input-default">
+
+                    <div class="d-flex flex-row gap-5">
+                        <div class="d-flex flex-column">
+                            <label class="fs-13" for="nome">Status</label>
+                            <select name="filter[status]" class="px-3 py-2 input-default">
+                                <option value="">Indiferente</option>
+                                <option value="1">Ativado</option>
+                                <option value="0">Desativado</option>
+                            </select>
+                        </div>
+                        <div class="d-flex flex-column">
+                            <label class="fs-13" for="nome">Promoção</label>
+                            <select name="filter[promocao]" class="px-3 py-2 input-default">
+                                <option value="">Indiferente</option>
+                                <option value="1">Ativado</option>
+                                <option value="0">Desativado</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </form>
@@ -86,10 +99,11 @@
                 <thead class="table-dark">
                     <tr>
                         <th scope="col"><h6 class="m-0">Produto</h6></th>
-                        <th scope="col"><h6 class="m-0">SKU</h6></th>
-                        <th scope="col"><h6 class="m-0">Seção</h6></th>
-                        <th scope="col"><h6 class="m-0">Preço</h6></th>
                         <th scope="col"><h6 class="m-0">Status</h6></th>
+                        <th scope="col"><h6 class="m-0">Seção</h6></th>
+                        <th scope="col"><h6 class="m-0">SKU</h6></th>
+                        <th scope="col"><h6 class="m-0">Preço</h6></th>
+                        <th scope="col"><h6 class="m-0">Promoção</h6></th>
                         <th scope="col"><h6 class="m-0">Ação</h6></th>
                     </tr>
                 </thead>
