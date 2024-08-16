@@ -52,6 +52,10 @@ class PedidoController extends Controller
 
     public function create(Request $request)
     {
+        if (Gate::denies('consumidor')) {
+            abort(404);
+        }
+
         $origem = $request['origem'];
         $mp = [];
 
@@ -104,6 +108,10 @@ class PedidoController extends Controller
 
     public function show($id)
     {
+        if (Gate::denies('consumidor')) {
+            abort(404);
+        }
+
         $pedido = Pedido::find($id);
 
         return view('pedidos.show',[
@@ -113,6 +121,10 @@ class PedidoController extends Controller
 
     public function indexComerciante($idEstabelecimento)
     {
+        if (Gate::denies('comerciante')) {
+            abort(404);
+        }
+
         $estabelecimento = Estabelecimento::where('id', $idEstabelecimento)->first();
 
         return view('pedidos.comerciantes.index',[
@@ -171,6 +183,10 @@ class PedidoController extends Controller
 
     public function showComerciante($idEstabelecimento, $id)
     {
+        if (Gate::denies('comerciante')) {
+            abort(404);
+        }
+
         $estabelecimento = Estabelecimento::find($idEstabelecimento);
         $pedido = Pedido::find($id);
 
@@ -200,14 +216,11 @@ class PedidoController extends Controller
 
     public function historic($idEstabelecimento)
     {
-        $estabelecimento = Estabelecimento::find($idEstabelecimento);
+        if (Gate::denies('comerciante')) {
+            abort(404);
+        }
 
-        $pedidos = Pedido::join('bandeiras_metodos', 'bandeiras_metodos.id', '=', 'pedidos.fk_metodo_aceito')
-            ->join('metodos_pagamento_aceitos', 'metodos_pagamento_aceitos.fk_metodo_pagamento', '=', 'bandeiras_metodos.id')
-            ->join('estabelecimentos', 'metodos_pagamento_aceitos.fk_estabelecimento', '=', 'estabelecimentos.id')
-            ->where('estabelecimentos.id', $idEstabelecimento)
-            ->select('pedidos.*')
-            ->groupBy('pedidos.id');
+        $estabelecimento = Estabelecimento::find($idEstabelecimento);
 
         return view('pedidos.comerciantes.historic', [
             'estabelecimento' => $estabelecimento

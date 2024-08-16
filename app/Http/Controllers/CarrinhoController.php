@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Carrinho;
 use App\Services\CarrinhoService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class CarrinhoController extends Controller
 {
@@ -16,6 +17,10 @@ class CarrinhoController extends Controller
 
     public function index()
     {
+        if (Gate::denies('consumidor')) {
+            abort(404);
+        }
+
         $consumidor = auth()->user()->consumidor;
         $carrinhos = Carrinho::where('fk_consumidor', $consumidor->id)->get();
 

@@ -7,6 +7,7 @@ use App\Models\Estabelecimento;
 use App\Models\Pedido;
 use App\Services\EstabelecimentoService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class EstabelecimentoController extends Controller
 {
@@ -19,11 +20,19 @@ class EstabelecimentoController extends Controller
 
     public function index()
     {
+        if (Gate::denies('comerciante')) {
+            abort(404);
+        }
+
         return view('estabelecimentos.index');
     }
 
     public function create()
     {
+        if (Gate::denies('comerciante')) {
+            abort(404);
+        }
+
         return view('estabelecimentos.create');
     }
 
@@ -88,6 +97,10 @@ class EstabelecimentoController extends Controller
 
     public function edit($id)
     {
+        if (Gate::denies('comerciante')) {
+            abort(404);
+        }
+
         $estabelecimento = Estabelecimento::find($id);
 
         return view('estabelecimentos.edit', [

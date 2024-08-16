@@ -4,7 +4,7 @@
 
 @section('content')
 @include('includes.header')
-<div class="col-md-12 px-7 py-5 d-flex flex-column gap-3">
+<div class="col-md-12 px-7 py-5 d-flex flex-column gap-4">
     <div class="d-flex flex-row gap-5">
         <img src="/img/institucional/home-1.png" alt="" style="height:500px">
         <div class="d-flex flex-column gap-4 justify-content-center">
@@ -12,10 +12,10 @@
             <p class="col-md-8">
                 Nosso propósito é conectar comerciantes e consumidores, simplificando a busca por produtos e fortalecendo o mercado local  impulsionando o empreendedorismo
             </p>
-            <button class="btn-default px-4 py-1">Saiba mais</button>
+            <button class="btn-default px-4 py-1" id="scrollButton">Saiba mais</button>
         </div>
     </div>
-    <div class="d-flex flex-row">
+    <div class="d-flex flex-row" id="saiba">
         <div class="d-flex flex-column">
             <img src="/img/institucional/home-2.png" alt="" style="height:450px; width:450px">
             <p class="col-md-7">
@@ -28,7 +28,15 @@
             </p>
             <img src="/img/institucional/home-3.png" alt="" style="height:500px">
         </div>
-
     </div>
 </div>
+@endsection
+@section('script')
+<script>
+    $('#scrollButton').click(function() {
+            $('html, body').animate({
+                scrollTop: $('#saiba').offset().top
+            }, 800);
+        });
+</script>
 @endsection

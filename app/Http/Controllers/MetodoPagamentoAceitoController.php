@@ -9,6 +9,7 @@ use App\Models\MetodoPagamento;
 use App\Models\MetodoPagamentoAceito;
 use App\Services\MetodoPagamentoAceitoService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class MetodoPagamentoAceitoController extends Controller
 {
@@ -20,6 +21,10 @@ class MetodoPagamentoAceitoController extends Controller
 
     public function index($idEstabelecimento)
     {
+        if (Gate::denies('comerciante')) {
+            abort(404);
+        }
+
         $estabelecimento = Estabelecimento::where('id', $idEstabelecimento)->first();
         $metodos = MetodoPagamento::all();
         $bandeiras = BandeiraPagamento::all();
@@ -71,6 +76,10 @@ class MetodoPagamentoAceitoController extends Controller
 
     public function create($idEstabelecimento)
     {
+        if (Gate::denies('comerciante')) {
+            abort(404);
+        }
+
         $estabelecimento = Estabelecimento::where('id', $idEstabelecimento)->first();
 
         $metodosEstabelecimento = MetodoPagamentoAceito::where('fk_estabelecimento', $idEstabelecimento)->where('status', 1)->pluck('fk_metodo_pagamento');

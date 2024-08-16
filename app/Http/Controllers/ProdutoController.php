@@ -13,6 +13,7 @@ use App\Models\Tag;
 use App\Services\ProdutoService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 
 class ProdutoController extends Controller
 {
@@ -25,6 +26,10 @@ class ProdutoController extends Controller
 
     public function index($idEstabelecimento)
     {
+        if (Gate::denies('comerciante')) {
+            abort(404);
+        }
+
         $estabelecimento = Estabelecimento::find($idEstabelecimento);
         $secoes = $estabelecimento->secoes;
 
@@ -114,6 +119,10 @@ class ProdutoController extends Controller
 
     public function create($idEstabelecimento)
     {
+        if (Gate::denies('comerciante')) {
+            abort(404);
+        }
+
         $estabelecimento = Estabelecimento::where('id', $idEstabelecimento)->first();
         return view('produtos.create',[
             'estabelecimento' => $estabelecimento,
@@ -149,6 +158,10 @@ class ProdutoController extends Controller
 
     public function edit($id)
     {
+        if (Gate::denies('comerciante')) {
+            abort(404);
+        }
+
         $produto = Produto::find($id);
         $estabelecimento = Estabelecimento::find($produto->secao->estabelecimento->id);
 
@@ -203,6 +216,10 @@ class ProdutoController extends Controller
 
     public function show($id)
     {
+        if (Gate::denies('consumidor')) {
+            abort(404);
+        }
+
         $produto = Produto::find($id);
         $metodos = MetodoPagamento::all();
         $avaliacoes = $produto->avaliacoes;
@@ -233,6 +250,10 @@ class ProdutoController extends Controller
 
     public function search(Request $request)
     {
+        if (Gate::denies('consumidor')) {
+            abort(404);
+        }
+
         $origem = $request['origem'];
         $tags = Tag::all();
         $metodos = MetodoPagamento::all();

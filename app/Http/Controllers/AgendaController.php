@@ -6,6 +6,7 @@ use App\Models\Agenda;
 use App\Models\Estabelecimento;
 use App\Services\AgendaService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class AgendaController extends Controller
 {
@@ -17,6 +18,10 @@ class AgendaController extends Controller
 
     public function index($idEstabelecimento)
     {
+        if (Gate::denies('comerciante')) {
+            abort(404);
+        }
+
         $estabelecimento = Estabelecimento::where('id', $idEstabelecimento)->first();
         $agendas = Agenda::where('fk_estabelecimento', $idEstabelecimento)->get();
 

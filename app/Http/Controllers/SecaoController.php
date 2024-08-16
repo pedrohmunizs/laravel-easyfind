@@ -8,6 +8,7 @@ use App\Models\Secao;
 use App\Services\SecaoService;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Gate;
 
 class SecaoController extends Controller
 {
@@ -19,6 +20,10 @@ class SecaoController extends Controller
 
     public function index($idEstabelecimento)
     {
+        if (Gate::denies('comerciante')) {
+            abort(404);
+        }
+
         $estabelecimento = Estabelecimento::find($idEstabelecimento);
 
         $secoes = $estabelecimento->secoes;
@@ -66,6 +71,10 @@ class SecaoController extends Controller
 
     public function create($idEstabelecimento)
     {
+        if (Gate::denies('comerciante')) {
+            abort(404);
+        }
+
         $estabelecimento = Estabelecimento::find($idEstabelecimento);
         return view('secoes.create',[
             'estabelecimento' => $estabelecimento
@@ -89,6 +98,10 @@ class SecaoController extends Controller
 
     public function edit($id)
     {
+        if (Gate::denies('comerciante')) {
+            abort(404);
+        }
+
         $secao = Secao::find($id);
         $estabelecimento = Estabelecimento::find($secao->fk_estabelecimento);
         $produtos = Produto::where('fk_secao', $id)->get();
