@@ -81,6 +81,41 @@
         $('#search').on('keyup', function(){
             load();
         })
+        
+        document.getElementById('utensilios').addEventListener('click', function() {
+            toggleMenu('menuUtensilios');
+        });
+
+        document.getElementById('roupas').addEventListener('click', function() {
+            toggleMenu('menuRoupas');
+        });
+
+        document.getElementById('eletronicos').addEventListener('click', function() {
+            toggleMenu('menuEletronicos');
+        });
+
+        function toggleMenu(menuId) {
+            var menu = document.getElementById(menuId);
+            if (menu.style.display === 'none' || menu.style.display === '') {
+                menu.style.display = 'block';
+            } else {
+                menu.style.display = 'none';
+            }
+        }
+
+        $(document).on('click','.tag',  function(){
+
+            let filter = {
+                'tag' : this.id
+            }
+
+            let filterString = JSON.stringify(filter);
+            let encodedFilter = encodeURIComponent(filterString);
+
+            window.location.href = `/produtos/pesquisa?origem=home&filter=${encodedFilter}`;
+
+        })
+        
     </script>
 </body>
 </html>

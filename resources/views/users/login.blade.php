@@ -45,26 +45,24 @@
 <script>
     document.getElementById('form_login').addEventListener('submit', function(e){
         e.preventDefault();
-        var formData = $(this).serialize();
-        console.log($('meta[name="csrf-token"]').attr('content'));
 
-        console.log(formData)
-            $.ajax({
-                type: 'POST',
-                url: $(this).attr('action'),
-                data: formData,
-                success: function (response) {
-                    window.location.href = response.url;
-                },
-                
-                error: function (xhr, status, error) {
-                    if (xhr.status == 401 || xhr.status == 404) {
-                        toastr.error(xhr.responseJSON.message);
-                    } else {
-                        toastr.error('Erro ao realizar o login!', 'Erro');
-                    }
+        var formData = $(this).serialize();
+
+        $.ajax({
+            type: 'POST',
+            url: $(this).attr('action'),
+            data: formData,
+            success: function (response) {
+                window.location.href = response.url;
+            },
+            error: function (xhr, status, error) {
+                if (xhr.status == 401 || xhr.status == 404) {
+                    toastr.error(xhr.responseJSON.message);
+                } else {
+                    toastr.error('Erro ao realizar o login!', 'Erro');
                 }
-            });
+            }
+        });
     })
 </script>
 @endsection

@@ -24,21 +24,84 @@
         </div>
     </div>
     <div class="col-md-12 d-flex flex-row justify-content-center gap-5">
-        <a class="navbar-brand m-0 d-flex flex-row gap-2 align-items-center" href="#" id="logo">
-            <i class="bi bi-cup fc-primary"></i>
-            <p class="m-0 fs-14 text-white">Utensílios</p>
-            <i class="bi bi-chevron-down fs-13 text-white"></i>
-        </a>
-        <a class="navbar-brand m-0 d-flex flex-row gap-2 align-items-center" href="#" id="logo">
-            <i class="bi bi-backpack2 fc-primary"></i>
-            <p class="m-0 fs-14 text-white">Roupas</p>
-            <i class="bi bi-chevron-down fs-13 text-white"></i>
-        </a>
-        <a class="navbar-brand m-0 d-flex flex-row gap-2 align-items-center" href="#" id="logo">
-            <i class="bi bi-cpu fc-primary"></i>
-            <p class="m-0 fs-14 text-white">Eletrônicos</p>
-            <i class="bi bi-chevron-down fs-13 text-white"></i>
-        </a>
+        <div class="d-flex flex-column col-md-2">
+            <a class="navbar-brand m-0 d-flex flex-row gap-2 align-items-center px-3" href="#" id="utensilios">
+                <i class="bi bi-cup fc-primary"></i>
+                <p class="m-0 fs-14 text-white">Utensílios</p>
+                <i class="bi bi-chevron-down fs-13 text-white"></i>
+            </a>
+            <div class="dropdown-menu bg-black" id="menuUtensilios" style="margin-top: 35px;">
+                <ul class="list-group list-group-flush nav">
+                    <li class="nav-item">
+                        <a class="nav-link text-white br-8 tag" href="#" id="104">
+                            <p class="m-0 fs-13">Talheres</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white br-8 tag" href="#" id="105">
+                            <p class="m-0 fs-13">Copos</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white br-8 tag" href="#" id="106">
+                            <p class="m-0 fs-13">Panelas</p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="d-flex flex-column col-md-2">
+            <a class="navbar-brand m-0 d-flex flex-row gap-2 align-items-center px-3" href="#" id="roupas">
+                <i class="bi bi-backpack2 fc-primary"></i>
+                <p class="m-0 fs-14 text-white">Roupas</p>
+                <i class="bi bi-chevron-down fs-13 text-white"></i>
+            </a>
+            <div class="dropdown-menu bg-black" id="menuRoupas" style="margin-top: 35px;">
+                <ul class="list-group list-group-flush nav">
+                    <li class="nav-item">
+                        <a class="nav-link text-white br-8 tag" href="#" id="103">
+                            <p class="m-0 fs-13">Camisas</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white br-8 tag" href="#" id="102">
+                            <p class="m-0 fs-13">Tênis</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white br-8 tag" href="#" id="102">
+                            <p class="m-0 fs-13">Meias</p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="d-flex flex-column col-md-2">
+            <a class="navbar-brand m-0 d-flex flex-row gap-2 align-items-center px-3" href="#" id="eletronicos">
+                <i class="bi bi-cpu fc-primary"></i>
+                <p class="m-0 fs-14 text-white">Eletrônicos</p>
+                <i class="bi bi-chevron-down fs-13 text-white"></i>
+            </a>
+            <div class="dropdown-menu bg-black" id="menuEletronicos" style="margin-top: 35px;">
+                <ul class="list-group list-group-flush nav">
+                    <li class="nav-item">
+                        <a class="nav-link text-white br-8 tag" href="#" id="107">
+                            <p class="m-0 fs-13">Carregadores</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white br-8 tag" href="#" id="108">
+                            <p class="m-0 fs-13">Fones</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white br-8 tag" href="#" id="96">
+                            <p class="m-0 fs-13">Smartphones</p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
 </header>
 <div class="card card-options bg-black" id="optionsCard">

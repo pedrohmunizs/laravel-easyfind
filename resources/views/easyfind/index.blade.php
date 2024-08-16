@@ -57,7 +57,6 @@
             </div>
         </div>
     </div>
-
     <div class="d-flex flex-column gap-5">
         <div class="d-flex flex-row align-items-center justify-content-center gap-2">
             <h6 class="m-0">Ofertas do dia</h6>
@@ -66,7 +65,7 @@
         <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
             <ol class="carousel-indicators">
                 @foreach($ofertas->chunk(2) as $chunk)
-                <li data-bs-target="#myCarousel" data-bs-slide-to="{{ $loop->index }}" class="{{ $loop->first ? 'active' : '' }}"></li>
+                    <li data-bs-target="#myCarousel" data-bs-slide-to="{{ $loop->index }}" class="{{ $loop->first ? 'active' : '' }}"></li>
                 @endforeach
             </ol>
             <div class="carousel-inner">

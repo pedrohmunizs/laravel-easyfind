@@ -250,10 +250,6 @@ class ProdutoController extends Controller
 
     public function search(Request $request)
     {
-        if (Gate::denies('consumidor')) {
-            abort(404);
-        }
-
         $origem = $request['origem'];
         $tags = Tag::all();
         $metodos = MetodoPagamento::all();

@@ -301,7 +301,6 @@
 
         let tags = document.getElementById('tags-select');
         let tagRemove = tags.querySelector(`.tag_${this.id}`);
-        console.log(tags, this)
         tags.removeChild(tagRemove);
 
         index = tagsArray.indexOf(this.id);

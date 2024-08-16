@@ -47,7 +47,7 @@
                                 $notas = array_column($avaliacoes->toArray(), 'qtd_estrela');
                                 $media = array_sum($notas)/count($avaliacoes);
                                 $estrelasCheias = floor($media);
-                                $meiaEstrela = $media - $estrelasCheias >= 0.5 ? 1 : 0; // Meia estrela
+                                $meiaEstrela = $media - $estrelasCheias >= 0.5 ? 1 : 0;
                                 $estrelasVazias = 5 - $estrelasCheias - $meiaEstrela;
                             @endphp
                             <div class="d-flex flex-column">
