@@ -37,7 +37,11 @@ class UserController extends Controller
                     $defaultUrl = '/estabelecimentos';
                 }
 
-                return redirect()->intended($defaultUrl);
+                $previousUrl = session('url.intended', $defaultUrl);
+
+                return response()->json([
+                    'url' => $previousUrl
+                ]);
 
             } else {
                 return response()->json([
@@ -46,7 +50,7 @@ class UserController extends Controller
             }
         } else {
             return response()->json([
-                'message' => 'Login failed. Invalid credentials.',
+                'message' => 'Erro ao realizar o login!',
             ], 401);
         }
     }

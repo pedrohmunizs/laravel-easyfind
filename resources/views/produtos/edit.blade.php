@@ -7,6 +7,7 @@
 @include('includes.menu', ['estabelecimento' => $estabelecimento])
 <form id="form_produto" action="/produtos/{{ $produto->id }}" method="POST" novalidate enctype="multipart/form-data">
     @csrf
+    @method('PUT')
     <div class="col-md-10 offset-md-2 px-4 py-5 d-flex flex-column gap-2">
         <h3 class="m-0">Produtos</h3>
         <div class="d-flex flex-row gap-2">

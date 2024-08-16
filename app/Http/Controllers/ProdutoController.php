@@ -263,7 +263,7 @@ class ProdutoController extends Controller
         if(isset($filter)){
 
             if (isset($filter['promocao'])) {
-                $produtos->where('is_promocao_ativa',($filter['promocao']));
+                $produtos->promocao($filter['promocao']);
             }
 
             if (isset($filter['metodo'])) {

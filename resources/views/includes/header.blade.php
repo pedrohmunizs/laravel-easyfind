@@ -1,12 +1,8 @@
 <header class="col-md-12 d-flex flex-column bg-black w-100">
     <nav class="px-5 py-2 d-flex flex-row justify-content-between w-100 align-items-center">
         <a class="navbar-brand" href="/">
-                @if(auth()->user()->consumidor)
-                    <img src="/img/logo.png" alt="" style="height: 40px; width: auto;">
-                @else
-                    <img src="" alt="" style="height: 40px; width: auto;">
-                @endif
-            </a>
+            <img src="/img/logo.png" alt="" style="height: 40px; width: auto;">
+        </a>
         <div class="d-flex flex-row gap-5 align-items-center">
             @auth
                 @if(auth()->user()->consumidor)
@@ -24,56 +20,58 @@
         </div>
     </nav>
 </header>
-@if(auth()->user()->consumidor)
-    <div class="card card-options bg-black" id="optionsCard">
-        <div class="p-2">
-            <ul class="list-group list-group-flush nav">
-                <a href=""></a>
-                <li class="nav-item">
-                    <a class="nav-link text-white d-flex flex-row align-items-center gap-2 br-8" href="#">
-                        <i class="bi bi-file-earmark-text"></i>
-                        <p class="m-0 fs-13">Dados cadastrais</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white d-flex flex-row align-items-center gap-2 br-8" href="{{ route('pedidos.index') }}">
-                        <i class="bi bi-file-earmark-text"></i>
-                        <p class="m-0 fs-13">Pedidos</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white d-flex flex-row align-items-center gap-2 br-8" href="{{route('usuarios.logout')}}">
-                        <i class="bi bi-door-open"></i>
-                        <p class="m-0 fs-13">Sair</p>
-                    </a>
-                </li>
-            </ul>
+@auth
+    @if(auth()->user()->consumidor)
+        <div class="card card-options bg-black" id="optionsCard">
+            <div class="p-2">
+                <ul class="list-group list-group-flush nav">
+                    <a href=""></a>
+                    <li class="nav-item">
+                        <a class="nav-link text-white d-flex flex-row align-items-center gap-2 br-8" href="#">
+                            <i class="bi bi-file-earmark-text"></i>
+                            <p class="m-0 fs-13">Dados cadastrais</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white d-flex flex-row align-items-center gap-2 br-8" href="{{ route('pedidos.index') }}">
+                            <i class="bi bi-file-earmark-text"></i>
+                            <p class="m-0 fs-13">Pedidos</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white d-flex flex-row align-items-center gap-2 br-8" href="{{route('usuarios.logout')}}">
+                            <i class="bi bi-door-open"></i>
+                            <p class="m-0 fs-13">Sair</p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </div>
-@else
-    <div class="card card-options bg-black" id="optionsCard">
-        <div class="p-2">
-            <ul class="list-group list-group-flush nav">
-                <a href=""></a>
-                <li class="nav-item">
-                    <a class="nav-link text-white d-flex flex-row align-items-center gap-2 br-8" href="#">
-                        <i class="bi bi-file-earmark-text"></i>
-                        <p class="m-0 fs-13">Dados cadastrais</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white d-flex flex-row align-items-center gap-2 br-8" href="/estabelecimentos">
-                        <i class="bi bi-shop"></i>
-                        <p class="m-0 fs-13">Lojas</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white d-flex flex-row align-items-center gap-2 br-8" href="{{route('usuarios.logout')}}">
-                        <i class="bi bi-door-open"></i>
-                        <p class="m-0 fs-13">Sair</p>
-                    </a>
-                </li>
-            </ul>
+    @else
+        <div class="card card-options bg-black" id="optionsCard">
+            <div class="p-2">
+                <ul class="list-group list-group-flush nav">
+                    <a href=""></a>
+                    <li class="nav-item">
+                        <a class="nav-link text-white d-flex flex-row align-items-center gap-2 br-8" href="#">
+                            <i class="bi bi-file-earmark-text"></i>
+                            <p class="m-0 fs-13">Dados cadastrais</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white d-flex flex-row align-items-center gap-2 br-8" href="/estabelecimentos">
+                            <i class="bi bi-shop"></i>
+                            <p class="m-0 fs-13">Lojas</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white d-flex flex-row align-items-center gap-2 br-8" href="{{route('usuarios.logout')}}">
+                            <i class="bi bi-door-open"></i>
+                            <p class="m-0 fs-13">Sair</p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </div>
-@endif
+    @endif
+@endauth

@@ -13,6 +13,7 @@ use App\Models\Produto;
 use App\Services\PedidoService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class PedidoController extends Controller
 {
@@ -24,6 +25,10 @@ class PedidoController extends Controller
 
     public function index()
     {
+        if (Gate::denies('consumidor')) {
+            abort(404);
+        }
+
         return view('pedidos.index');
     }
 
