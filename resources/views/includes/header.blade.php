@@ -27,7 +27,7 @@
                 <ul class="list-group list-group-flush nav">
                     <a href=""></a>
                     <li class="nav-item">
-                        <a class="nav-link text-white d-flex flex-row align-items-center gap-2 br-8" href="#">
+                        <a class="nav-link text-white d-flex flex-row align-items-center gap-2 br-8" href="{{ route('consumidores.edit', [ 'id' => auth()->user()->id ]) }}">
                             <i class="bi bi-file-earmark-text"></i>
                             <p class="m-0 fs-13">Dados cadastrais</p>
                         </a>

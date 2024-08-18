@@ -101,4 +101,9 @@ Route::middleware('auth')->group(function () {
         Route::patch('/{id}',['uses' => 'PedidoController@changeStatus', 'as' => 'pedidos.status'] );
         Route::post('/', ['uses' => 'PedidoController@store', 'as' => 'pedidos.store']);
     });
+
+    Route::group(['prefix' => 'consumidores', 'namespace' => 'App\Http\Controllers'], function(){
+        Route::get('/{id}/edit',['uses' => 'ConsumidorController@edit', 'as' => 'consumidores.edit'] );
+        Route::put('/{id}',['uses' => 'ConsumidorController@update', 'as' => 'consumidores.update'] );
+    });
 });

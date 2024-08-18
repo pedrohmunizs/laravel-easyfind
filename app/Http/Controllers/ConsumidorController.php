@@ -55,4 +55,36 @@ class ConsumidorController extends Controller
 
         return $consumidor;
     }
+
+    public function edit($id)
+    {
+        $usuario = User::find($id);
+
+        return view('consumidores.edit', [
+            'usuario' => $usuario
+        ]);
+    }
+
+    public function update($id, Request $request)
+    {
+        $email = Validator::make($request->all(), [
+            'user.email' => 'required|email',
+        ]);
+
+        if ($email->fails()) {
+            return response()->json(['message' => "Esse e-mail não é válido!"], 400);
+        }
+
+        $cpf = Validator::make($request->all(), [
+            'consumidor.cpf' => 'required|cpf',
+        ]);
+    
+        if ($cpf->fails()) {
+            return response()->json(['message' => "Esse CPF não é válido!"], 400);
+        }
+
+        $consumidor = $this->service->update($id, $request);
+
+        return $consumidor;
+    }
 }

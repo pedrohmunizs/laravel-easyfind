@@ -42,4 +42,32 @@ class ConsumidorService
             throw $e;
         }
     }
+
+    public function update($id, $request)
+    {
+        try{
+            $consumidor = Consumidor::where('fk_usuario', $id)->first();
+
+            $usuario = $this->userService->update( $id, $request['user']);
+
+            $data = $request['consumidor'];
+            $data['cpf'] = str_replace(['.', '-'], '', $data['cpf']);
+            $data['telefone'] = str_replace(['(', ')', '-', ' '], '', $data['telefone']);
+
+            try{
+                $consumidor->fill($data);
+                $consumidor->fk_usuario = $usuario->id;
+
+                $consumidor->save();
+
+            }catch(Exception $e){
+                throw $e;
+            }
+
+            return response()->json(['message' => 'Usuário editado com sucesso!'], 201);
+
+        }catch(Exception $e){
+            throw $e;
+        }
+    }
 }

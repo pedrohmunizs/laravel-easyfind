@@ -23,4 +23,20 @@ class UserService
             }
         }
     }
+
+    public function update($id, $data)
+    {
+        try{
+            $user = User::find($id);
+            $user->nome = $data['nome'];
+            $user->email = $data['email'];
+            $user->save();
+            return $user;
+            
+        }catch(QueryException $e){
+            if($e->errorInfo[1] == 1062) {
+                throw new Exception('O email informado já está em uso.', 409);
+            }
+        }
+    }
 }
