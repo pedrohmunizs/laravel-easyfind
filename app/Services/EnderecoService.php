@@ -7,11 +7,15 @@ use Exception;
 
 class EnderecoService
 {
-    public function store($request)
+    public function store($request, $cepData)
     {
         try{
+            $cepData = json_decode($cepData, true);
+
             $endereco = new Endereco();
             $endereco->fill($request);
+            $endereco->latitude = $cepData['latitude'];
+            $endereco->longitude = $cepData['longitude'];
             $endereco->save();
 
             return $endereco;

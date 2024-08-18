@@ -65,6 +65,11 @@
                                 <label class="fs-13" for="nome">Preço máximo</label>
                                 <input type="text" name="filter[preco_max]" id="preco-max" class="px-3 py-2 input-default">
                             </div>
+                            <div class="d-flex flex-column">
+                                <label for="customRange1" class="fs-13">Example range</label>
+                                <input type="range" class="form-range" name="filter[distancia]" min="" max="50" id="customRange1" oninput="updateValue(this.value)">
+                                <p><span id="rangeValue">25</span>km</p>
+                            </div>
                         </div>
                     </form>
                     <div class="d-flex flex-row-reverse gap-3">
@@ -84,6 +89,13 @@
 
 @section('script')
 <script>
+
+    let latitude = null;
+    let longitude = null;
+
+    function updateValue(val) {
+        document.getElementById('rangeValue').textContent = val;
+    }
 
     function formatCurrency(value) {
         let cleanedValue = value.replace(/\D/g, '');
@@ -134,6 +146,7 @@
         $('#form_filter')[0].reset();
         applyCurrencyFormatting(document.getElementById('preco-min'), '0');
         applyCurrencyFormatting(document.getElementById('preco-max'), '0');
+        $('#customRange1').removeAttr('name');
         load();
     }
 
@@ -142,14 +155,23 @@
         let formData = $('#form_filter').serialize();
         let search = $('#search_produto').val();
 
+        let localizacao = {
+            latitude : latitude,
+            longitude : longitude
+        };
+
+        let localizacaoString = JSON.stringify(localizacao);
+        let encodedLocalizacao = encodeURIComponent(localizacaoString);
+
         $.ajax({
-            url: `/produtos/loadSearch?${formData}&search=${search}`,
+            url: `/produtos/loadSearch?${formData}&search=${search}&localizacao=${encodedLocalizacao}`,
             type: 'GET',
             success: function(response) {
                 $('#produtos').html(response.produtos);
+                $('#customRange1').attr('name', 'filter[distancia]');
             },
             error: function(xhr, status, error) {
-                alert('Erro ao carregar o evento.');
+                toastr.error('Erro ao carregar produtos!', 'Erro');
             }
         });
     }
@@ -159,5 +181,40 @@
             load();
         }
     })
+
+    $(document).ready(function(){
+        getLocation()
+    })
+
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition, showError);
+        } else {
+            toastr.error('Geolocalização não é suportada por este navegador!', 'Erro');
+        }
+    }
+
+    function showPosition(position) {
+        latitude = position.coords.latitude;
+        longitude = position.coords.longitude;        
+    }
+
+    function showError(error) {
+        switch(error.code) {
+            case error.PERMISSION_DENIED:
+                toastr.error('Usuário negou a solicitação de Geolocalização!', 'Erro');
+                break;
+            case error.POSITION_UNAVAILABLE:
+                toastr.error('Informação de localização não está disponível!', 'Erro');
+                break;
+            case error.TIMEOUT:
+                toastr.error('A solicitação para obter a localização do usuário expirou!', 'Erro');
+                break;
+            case error.UNKNOWN_ERROR:
+                toastr.error('Ocorreu um erro desconhecido!', 'Erro');
+                break;
+        }
+    }
+
 </script>
 @endsection

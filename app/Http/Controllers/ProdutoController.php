@@ -270,6 +270,13 @@ class ProdutoController extends Controller
     {
         $filter = $request['filter'];
         $search = $request['search'];
+        $localizacao = json_decode(urldecode($request['localizacao']), true);
+
+        if($localizacao){   
+            $latitudeUser = $localizacao['latitude'];
+            $longitudeUser = $localizacao['longitude'];
+        }
+
 
         $produtos = Produto::where('produtos.is_ativo', true);
 
@@ -340,16 +347,48 @@ class ProdutoController extends Controller
             $produtos->where('nome','LIKE', "%".$search."%");
         }
 
+        $produtos = $produtos->get();
+
+        if (isset($filter['distancia'])) {
+            $distanciaMax = $filter['distancia'];
+    
+            $produtos = $produtos->filter(function ($produto) use ($latitudeUser, $longitudeUser, $distanciaMax) {
+                $endereco = $produto->secao->estabelecimento->endereco;
+                $latitudeProduto = $endereco->latitude;
+                $longitudeProduto = $endereco->longitude;
+    
+                $distancia = $this->haversineGreatCircleDistance($latitudeUser, $longitudeUser, $latitudeProduto, $longitudeProduto);
+    
+                return $distancia <= $distanciaMax;
+            })->values();
+        }
+
         if(isset($request['origem'])){
-            return $produtos->get();
+            return $produtos;
         }
 
         $produtos = view('components.produtos.card', [
-            'produtos' => $produtos->get()
+            'produtos' => $produtos
         ])->render();
 
         return response()->json([
             'produtos' => $produtos
         ]);
     }
+
+    private function haversineGreatCircleDistance($latitudeUser, $longitudeUser, $latitudeProduto, $longitudeProduto, $earthRadius = 6371)
+    {
+
+    $latUser = deg2rad($latitudeUser);
+    $lonUser = deg2rad($longitudeUser);
+    $latProduto = deg2rad($latitudeProduto);
+    $lonProduto = deg2rad($longitudeProduto);
+
+    $latDelta = $latProduto - $latUser;
+    $lonDelta = $lonProduto - $lonUser;
+
+    $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) + cos($latUser) * cos($latProduto) * pow(sin($lonDelta / 2), 2)));
+    return $angle * $earthRadius;
+    }
+
 }

@@ -15,11 +15,13 @@ class EstabelecimentoService
     protected $enderecoService;
     protected $agendaService;
     protected $imagemService;
+    protected $cepService;
     
-    public function __construct( EnderecoService $enderecoService, AgendaService $agendaService, ImagemService $imagemService) {
+    public function __construct( EnderecoService $enderecoService, AgendaService $agendaService, ImagemService $imagemService, CepAbertoService $cepAbertoService) {
         $this->enderecoService = $enderecoService;
         $this->agendaService = $agendaService;
         $this->imagemService = $imagemService;
+        $this->cepService = $cepAbertoService;
     }
 
     public function store($request)
@@ -28,7 +30,9 @@ class EstabelecimentoService
             $data = $request['endereco'];
             $data['cep'] = str_replace('-', '', $data['cep']);
 
-            $endereco = $this->enderecoService->store($data);
+            $cepData = $this->cepService->getCep($data['cep']);
+
+            $endereco = $this->enderecoService->store($data, $cepData);
 
             $data = $request['estabelecimento'];
             $data['telefone'] = str_replace(['(', ')', '-', ' '], '', $data['telefone']);

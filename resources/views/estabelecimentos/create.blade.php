@@ -234,6 +234,9 @@
                         contentType: false,
                         success: function(response) {
                             toastr.success(response.message, 'Sucesso');
+                            setTimeout(function() {
+                                window.location.href = '/estabelecimentos';
+                            }, 3000);
                         },
                         error: function(xhr, status, error) {
                             if (xhr.status == 409) {
