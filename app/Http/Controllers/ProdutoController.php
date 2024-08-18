@@ -216,10 +216,6 @@ class ProdutoController extends Controller
 
     public function show($id)
     {
-        if (Gate::denies('consumidor')) {
-            abort(404);
-        }
-
         $produto = Produto::find($id);
         $metodos = MetodoPagamento::all();
         $avaliacoes = $produto->avaliacoes;

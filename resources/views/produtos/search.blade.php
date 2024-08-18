@@ -66,8 +66,8 @@
                                 <input type="text" name="filter[preco_max]" id="preco-max" class="px-3 py-2 input-default">
                             </div>
                             <div class="d-flex flex-column">
-                                <label for="customRange1" class="fs-13">Example range</label>
-                                <input type="range" class="form-range" name="filter[distancia]" min="" max="50" id="customRange1" oninput="updateValue(this.value)">
+                                <label for="customRange1" class="fs-13">Distância</label>
+                                <input type="range" class="form-range" min="" max="50" id="customRange1" oninput="updateValue(this.value)">
                                 <p><span id="rangeValue">25</span>km</p>
                             </div>
                         </div>
@@ -75,6 +75,10 @@
                     <div class="d-flex flex-row-reverse gap-3">
                         <button class="btn-default py-2 px-3 small" id="apply-filter">Aplicar</button>
                         <button class="btn-default py-2 px-3 small" id="clear-filter">Limpar filtro</button>
+                        <div class="d-flex flex-row gap-2 align-items-baseline">
+                            <input class="form-check-input" name="produto[is_promocao_ativa]" type="checkbox" id="defaultCheck1">
+                            <label class="label-default" for="defaultCheck1">Habilitar distância</label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -146,9 +150,18 @@
         $('#form_filter')[0].reset();
         applyCurrencyFormatting(document.getElementById('preco-min'), '0');
         applyCurrencyFormatting(document.getElementById('preco-max'), '0');
+        $('#defaultCheck1').prop('checked', false);
         $('#customRange1').removeAttr('name');
         load();
     }
+    
+    $('#defaultCheck1').on('change', function(){
+        if($('#customRange1').attr('name')){
+            $('#customRange1').removeAttr('name');
+        }else{
+            $('#customRange1').attr('name', 'filter[distancia]');
+        }
+    })
 
     function load()
     {
@@ -168,7 +181,6 @@
             type: 'GET',
             success: function(response) {
                 $('#produtos').html(response.produtos);
-                $('#customRange1').attr('name', 'filter[distancia]');
             },
             error: function(xhr, status, error) {
                 toastr.error('Erro ao carregar produtos!', 'Erro');

@@ -5,7 +5,7 @@
 @section('content')
 @include('includes.header')
 @include('includes.menu', ['estabelecimento' => $estabelecimento])
-<form id="form_produto" action="/produtos" method="POST" novalidate enctype="multipart/form-data">
+<form id="form_produto" action="/produtos" method="POST" enctype="multipart/form-data">
     @csrf
     <div class="col-md-10 offset-md-2 px-4 py-5 d-flex flex-column gap-2">
         <h3 class="m-0">Produtos</h3>
@@ -24,11 +24,11 @@
                     <h5>Informações Gerais</h5>
                     <div class="d-flex flex-column">
                         <label class="label-default" for="nome">Nome do produto</label>
-                        <input type="text" name="produto[nome]" class=" px-3 py-2 input-default w-100" maxlength="15">
+                        <input type="text" name="produto[nome]" class=" px-3 py-2 input-default w-100" maxlength="15" required>
                     </div>
                     <div class="d-flex flex-column">
                         <label class="label-default" for="nome">Descrição</label>
-                        <textarea name="produto[descricao]" id="" class="px-3 py-2 input-default w-100" maxlength="255"></textarea>
+                        <textarea name="produto[descricao]" id="" class="px-3 py-2 input-default w-100" maxlength="255" required></textarea>
                     </div>
                 </div>
                 <div class="bg-white container-default p-3 gap-3">
@@ -82,7 +82,7 @@
                         <select id="tags" class="px-3 py-2 input-default w-100">
                             <option value="">Selecione as tags</option>
                             @foreach($tags as $tag)
-                            <option value="{{$tag->id}}">{{$tag->descricao}}</option>
+                                <option value="{{$tag->id}}">{{$tag->descricao}}</option>
                             @endforeach
                         </select>
                         <button type="button" id="add_tag" class="btn-default btn-large mt-2">Adicionar</button>
@@ -108,12 +108,12 @@
                         <select name="produto[fk_secao]" class="px-3 py-2 input-default w-100">
                             <option value="">Selecione a seção</option>
                             @foreach($secoes as $secao)
-                            <option value="{{$secao->id}}">{{$secao->descricao}}</option>
+                                <option value="{{$secao->id}}">{{$secao->descricao}}</option>
                             @endforeach
                         </select>
                         @else
-                        <p class="fs-13">Nenhuma seção cadatrada nesse estabelecimento</p>
-                        <a href="/secoes/{{$estabelecimento->id}}/create" class="btn-default btn-large a-button w-100" >Adicionar</p></a>
+                            <p class="fs-13">Nenhuma seção cadatrada nesse estabelecimento</p>
+                            <a href="/secoes/{{$estabelecimento->id}}/create" class="btn-default btn-large a-button w-100" >Adicionar</p></a>
                         @endif
                     </div>
                 </div>
@@ -256,8 +256,14 @@
         }
     });
 
-
     $('#form_produto').on('submit', function(e) {
+
+        if (!this.checkValidity()) {
+            e.preventDefault();
+            toastr.error('Preencha todos os campos obrigatórios!');
+            return;
+        }
+
         e.preventDefault();
         let formData = new FormData(this);
 
