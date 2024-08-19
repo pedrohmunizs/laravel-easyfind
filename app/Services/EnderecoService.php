@@ -25,11 +25,15 @@ class EnderecoService
         }
     }
 
-    public function update($id, $data)
+    public function update($id, $data, $cepData)
     {
         try{
+            $cepData = json_decode($cepData, true);
+
             $endereco = Endereco::find($id);
             $endereco->fill($data);
+            $endereco->latitude = $cepData['latitude'];
+            $endereco->longitude = $cepData['longitude'];
             $endereco->save();
 
             return $endereco;

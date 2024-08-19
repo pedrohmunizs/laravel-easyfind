@@ -74,4 +74,54 @@ class ComercianteController extends Controller
             }
         }
     }
+
+    public function edit($id)
+    {
+        $usuario = User::find($id);
+
+        return view ('comerciantes.edit', [
+            'usuario' => $usuario
+        ]);
+    }
+
+    public function update($id, Request $request)
+    {
+        $cpf = Validator::make($request->all(), [
+            'comerciante.cpf' => 'required|cpf',
+        ]);
+    
+        if ($cpf->fails()) {
+            return response()->json(['message' => "Esse CPF não é válido!"], 400);
+        }
+
+        $cnpj = Validator::make($request->all(), [
+            'comerciante.cnpj' => 'required|cnpj',
+        ]);
+    
+        if ($cnpj->fails()) {
+            return response()->json(['message' => "Esse CNPJ não é válido!"], 400);
+        }
+
+        $existeEmail = User::where("email", $request['usuario.email'])->whereNot("id", auth()->user()->id)->first();
+        
+        if($existeEmail){
+            return response()->json(['message' => "Esse email já está em uso!"], 409);
+        }
+
+        $existeCnpj = Comerciante::where("cnpj", $request['comerciante.cnpj'])->whereNot("id", $id)->first();
+        
+        if($existeCnpj){
+            return response()->json(['message' => "Esse CNPJ já foi cadastrado!"], 409);
+        }
+
+        $existeCpf = Comerciante::where("cpf", $request['comerciante.cpf'])->whereNot("id", $id)->first();
+
+        if($existeCpf){
+            return response()->json(['message' => "Esse CPF já foi cadastrado!"], 409);
+        }
+
+        $comerciante = $this->comercianteService->update($id, $request);
+
+        return $comerciante;
+    }
 }

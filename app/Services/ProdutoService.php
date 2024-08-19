@@ -46,7 +46,7 @@ class ProdutoService{
                 $this->produtoTagService->update($tags, $produto->id);
             }
 
-            if($data['images_existing']){
+            if(isset($data['images_existing'])){
                 $this->imagemService->deleteProdutoImagem($data['images_existing'], $produto->id);
             }
 

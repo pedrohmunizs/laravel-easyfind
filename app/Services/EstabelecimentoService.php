@@ -76,8 +76,10 @@ class EstabelecimentoService
 
             $endereco = $data['endereco'];
             $endereco['cep'] = str_replace('-', '', $endereco['cep']);
-            
-            $endereco = $this->enderecoService->update($estabelecimento->fk_endereco, $endereco);
+
+            $cepData = $this->cepService->getCep($endereco['cep']);
+
+            $endereco = $this->enderecoService->update($estabelecimento->fk_endereco, $endereco, $cepData);
 
             $dataEstabelecimento = $data['estabelecimento'];
             $dataEstabelecimento['telefone'] = str_replace(['(', ')', '-', ' '], '', $dataEstabelecimento['telefone']);

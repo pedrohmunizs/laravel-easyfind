@@ -28,5 +28,10 @@ class Endereco extends Model
         return $this->hasOne(Estabelecimento::class, "fk_endereco", 'id');
     }
 
+    public function comerciante()
+    {
+        return $this->hasOne(Comerciante::class, "fk_endereco", 'id');
+    }
+
     public $timestamps = false;
 }

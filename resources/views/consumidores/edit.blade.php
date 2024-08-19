@@ -8,14 +8,7 @@
     @csrf
     @method('PUT')
     <div class="col-md-12 d-flex flex-column mt-5 px-5">
-        <h3 class="m-0">Cadastrar Consumidor</h3>
-        <div class="d-flex flex-row gap-2">
-            <a href="/" class="a-default">
-                <p class="fc-primary">Home</p>
-            </a>
-            <i class="bi bi-chevron-right fc-gray"></i>
-            <p class="fc-gray">Editar consumidor</p>
-        </div>
+        <h3 class="m-0 mb-3">Dados Cadastrais</h3>
         <div class="d-flex flex-row gap-5 align-items-center">
             <div class="bg-white container-default d-flex flex-column p-4 gap-2">
                 <h5>Informações Gerais</h5>

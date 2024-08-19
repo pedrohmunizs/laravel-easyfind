@@ -106,4 +106,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/{id}/edit',['uses' => 'ConsumidorController@edit', 'as' => 'consumidores.edit'] );
         Route::put('/{id}',['uses' => 'ConsumidorController@update', 'as' => 'consumidores.update'] );
     });
+
+    Route::group(['prefix' => 'comerciantes', 'namespace' => 'App\Http\Controllers'], function(){
+        Route::get('/{id}/edit',['uses' => 'ComercianteController@edit', 'as' => 'comerciantes.edit'] );
+        Route::put('/{id}',['uses' => 'ComercianteController@update', 'as' => 'comerciantes.update'] );
+    });
 });

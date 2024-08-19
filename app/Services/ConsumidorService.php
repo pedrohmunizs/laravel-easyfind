@@ -48,7 +48,7 @@ class ConsumidorService
         try{
             $consumidor = Consumidor::where('fk_usuario', $id)->first();
 
-            $usuario = $this->userService->update( $id, $request['user']);
+            $usuario = $this->userService->update( $consumidor->user->id, $request['user']);
 
             $data = $request['consumidor'];
             $data['cpf'] = str_replace(['.', '-'], '', $data['cpf']);

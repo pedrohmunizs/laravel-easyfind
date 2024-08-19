@@ -21,7 +21,7 @@ class Comerciante extends Model
 
     public function endereco()
     {
-        return $this->belongsTo(Endereco::class);
+        return $this->belongsTo(Endereco::class, 'fk_endereco', 'id');
     }
 
     public function user()
