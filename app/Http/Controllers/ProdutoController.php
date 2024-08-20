@@ -263,7 +263,7 @@ class ProdutoController extends Controller
         $metodos = MetodoPagamento::all();
         $avaliacoes = $produto->avaliacoes;
 
-        $secoes = Secao::where('fk_estabelecimento', $produto->secao->estabelecimento->id)->pluck('id'); 
+        $secoes = Secao::where('fk_estabelecimento', $produto->secao->estabelecimento->id)->pluck('id');
         $produtos = Produto::whereIn('fk_secao', $secoes)->get();
         
         $avaliacoesEstabelecimento = Avaliacao::whereIn('fk_produto', $produtos->pluck('id'))->get()->toArray();
@@ -315,7 +315,6 @@ class ProdutoController extends Controller
             $latitudeUser = $localizacao['latitude'];
             $longitudeUser = $localizacao['longitude'];
         }
-
 
         $produtos = Produto::where('produtos.is_ativo', true);
 
@@ -418,16 +417,16 @@ class ProdutoController extends Controller
     private function haversineGreatCircleDistance($latitudeUser, $longitudeUser, $latitudeProduto, $longitudeProduto, $earthRadius = 6371)
     {
 
-    $latUser = deg2rad($latitudeUser);
-    $lonUser = deg2rad($longitudeUser);
-    $latProduto = deg2rad($latitudeProduto);
-    $lonProduto = deg2rad($longitudeProduto);
+        $latUser = deg2rad($latitudeUser);
+        $lonUser = deg2rad($longitudeUser);
+        $latProduto = deg2rad($latitudeProduto);
+        $lonProduto = deg2rad($longitudeProduto);
 
-    $latDelta = $latProduto - $latUser;
-    $lonDelta = $lonProduto - $lonUser;
+        $latDelta = $latProduto - $latUser;
+        $lonDelta = $lonProduto - $lonUser;
 
-    $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) + cos($latUser) * cos($latProduto) * pow(sin($lonDelta / 2), 2)));
-    return $angle * $earthRadius;
+        $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) + cos($latUser) * cos($latProduto) * pow(sin($lonDelta / 2), 2)));
+        return $angle * $earthRadius;
     }
 
 }

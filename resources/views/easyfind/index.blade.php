@@ -19,7 +19,7 @@
     <div class="d-flex flex-column gap-5">
         <div class="d-flex flex-row align-items-center justify-content-center gap-2">
             <h6 class="m-0">Conheça novas lojas</h6>
-            <a href="#" class="a-default fc-blue">Ver mais lojas</a>
+            <a href="/estabelecimentos/search" class="a-default fc-blue">Ver mais lojas</a>
         </div>
         <div class="d-flex flex-row justify-content-between">
             @foreach($estabelecimentos as $estabelecimento)

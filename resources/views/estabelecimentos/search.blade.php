@@ -6,27 +6,24 @@
 @include('includes.header-easyfind')
 <div class="d-flex flex-column col-md-12 align-items-center pt-5">
     <div class="d-flex flex-column col-md-11">
-    <h3 class="m-0 mb-3">Produtos</h3>
+        <h3 class="m-0 mb-3">Estabelecimentos</h3>
         <div class="d-flex flex-column gap-3">
-            <div class="d-flex flex-row-reverse">
+            <div class="d-flex flex-row justify-content-between">
+                <div class="input-group mb-3" style="width: 50%;">
+                    <i class="bi bi-search px-3 pr-0 py-2 fs-14 bg-white container-default border-end-0"></i>
+                    <div class="" style="width: 80%;">
+                        <input type="text" class="input-default px-3 py-2 w-100 fs-14 input-search" placeholder="Buscar estabelecimento" id="search" value="">
+                    </div>
+                </div>
                 <button class="btn-default py-2 px-3 small d-flex flex-row gap-2 container-default bg-white" id="filtro"><i class="bi bi-filter"></i>
                     <p class="m-0">Filtro</p>
                 </button>
             </div>
             <div class="d-flex flex-row-reverse">
-                <div class="d-none flex-column flex-wrap bg-white p-3 gap-3 border border-2 br-8 w-fit-content right-0" id="card-filter">
+                <div class="d-none flex-column flex-wrap bg-white p-4 gap-3 border border-2 br-8 w-fit-content right-0" id="card-filter">
                     <h4 class="m-0">Filtro</h4>
                     <form action="form_filter" id="form_filter">
-                        <div class="d-flex flex-row gap-3">
-                            <div class="d-flex flex-column">
-                                <label class="fs-13" for="nome">Tags</label>
-                                <select name="filter[tag]" class="px-3 py-2 input-default">
-                                    <option value="">Indiferente</option>
-                                    @foreach($tags as $tag)
-                                        <option value="{{ $tag->id }}">{{ $tag->descricao }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+                        <div class="d-flex flex-row gap-4">
                             <div class="d-flex flex-column">
                                 <label class="fs-13" for="nome">Segmento da loja</label>
                                 <select name="filter[segmento]" class="px-3 py-2 input-default">
@@ -51,22 +48,6 @@
                                 </select>
                             </div>
                             <div class="d-flex flex-column">
-                                <label class="fs-13" for="nome">Promoção</label>
-                                <select name="filter[promocao]" class="px-3 py-2 input-default">
-                                    <option value="">Indiferente</option>
-                                    <option value="1">Ativada</option>
-                                    <option value="0">Desativada</option>
-                                </select>
-                            </div>
-                            <div class="d-flex flex-column">
-                                <label class="fs-13" for="nome">Preço mínimo</label>
-                                <input type="text" name="filter[preco_min]" id="preco-min" class="px-3 py-2 input-default">
-                            </div>
-                            <div class="d-flex flex-column">
-                                <label class="fs-13" for="nome">Preço máximo</label>
-                                <input type="text" name="filter[preco_max]" id="preco-max" class="px-3 py-2 input-default">
-                            </div>
-                            <div class="d-flex flex-column">
                                 <label for="customRange1" class="fs-13">Distância</label>
                                 <input type="range" class="form-range" min="" max="50" id="customRange1" oninput="updateValue(this.value)">
                                 <p><span id="rangeValue">25</span>km</p>
@@ -84,8 +65,8 @@
                 </div>
             </div>
         </div>
-        <div class="d-flex flex-wrap gap-4 mt-3" id="produtos">
-            @component('components.produtos.card', ['produtos' => $produtos])
+        <div class="d-flex flex-wrap gap-4 mt-3" id="estabelecimentos">
+            @component('components.estabelecimentos.card-search', ['estabelecimentos' => $estabelecimentos])
             @endcomponent
         </div>
     </div>
@@ -94,50 +75,12 @@
 
 @section('script')
 <script>
-
     let latitude = null;
     let longitude = null;
 
     function updateValue(val) {
         document.getElementById('rangeValue').textContent = val;
     }
-
-    function formatCurrency(value) {
-        let cleanedValue = value.replace(/\D/g, '');
-
-        if (cleanedValue === '') return '';
-
-        let numericValue = parseInt(cleanedValue) / 100;
-
-        let formattedValue = numericValue.toLocaleString('pt-BR', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        });
-
-        return formattedValue;
-    }
-
-    function applyCurrencyFormatting(inputElement, initialValue = '0') {
-        inputElement.value = formatCurrency(initialValue);
-
-        inputElement.addEventListener('input', function(event) {
-            let input = event.target;
-            input.value = formatCurrency(input.value);
-        });
-    }
-
-    applyCurrencyFormatting(document.getElementById('preco-min'), '0');
-    applyCurrencyFormatting(document.getElementById('preco-max'), '0');
-    
-    $('#filtro').on('click', function() {
-        if ($("#card-filter").hasClass('d-none')) {
-            $("#card-filter").removeClass('d-none')
-            $("#card-filter").addClass('d-flex')
-        } else {
-            $("#card-filter").removeClass('d-flex')
-            $("#card-filter").addClass('d-none')
-        }
-    })
 
     $('#apply-filter').on('click', function() {
         load();
@@ -147,10 +90,13 @@
         resetFilter();
     });
 
+    $("#search").on('keyup', function() {
+        resetFilter();
+        load();
+    });
+
     function resetFilter() {
         $('#form_filter')[0].reset();
-        applyCurrencyFormatting(document.getElementById('preco-min'), '0');
-        applyCurrencyFormatting(document.getElementById('preco-max'), '0');
         $('#defaultCheck1').prop('checked', false);
         $('#customRange1').removeAttr('name');
         updateValue(25)
@@ -168,7 +114,7 @@
     function load()
     {
         let formData = $('#form_filter').serialize();
-        let search = $('#search_produto').val();
+        let search = $('#search').val();
 
         let localizacao = {
             latitude : latitude,
@@ -179,22 +125,16 @@
         let encodedLocalizacao = encodeURIComponent(localizacaoString);
 
         $.ajax({
-            url: `/produtos/loadSearch?${formData}&search=${search}&localizacao=${encodedLocalizacao}`,
+            url: `/estabelecimentos/loadSearch?${formData}&search=${search}&localizacao=${encodedLocalizacao}`,
             type: 'GET',
             success: function(response) {
-                $('#produtos').html(response.produtos);
+                $('#estabelecimentos').html(response.estabelecimentos);
             },
             error: function(xhr, status, error) {
-                toastr.error('Erro ao carregar produtos!', 'Erro');
+                toastr.error('Erro ao carregar estabeleciementos!', 'Erro');
             }
         });
     }
-
-    $('#search_produto').on('keydown', function(){
-        if (event.key === "Enter" || event.keyCode === 13) {
-            load();
-        }
-    })
 
     $(document).ready(function(){
         getLocation()
@@ -230,5 +170,21 @@
         }
     }
 
+    $('#filtro').on('click', function() {
+        if ($("#card-filter").hasClass('d-none')) {
+            $("#card-filter").removeClass('d-none')
+            $("#card-filter").addClass('d-flex')
+        } else {
+            $("#card-filter").removeClass('d-flex')
+            $("#card-filter").addClass('d-none')
+        }
+    })
+
+    $('#search_produto').on('keydown', function(){
+        if (event.key === "Enter" || event.keyCode === 13) {
+            let search = $('#search_produto').val();
+            window.location.href = `/produtos/pesquisa?origem=home&search=${search}`;
+        }
+    })
 </script>
 @endsection

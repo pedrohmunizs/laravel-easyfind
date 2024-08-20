@@ -6,6 +6,7 @@ use App\Models\Consumidor;
 use App\Models\User;
 use App\Services\ConsumidorService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 
 class ConsumidorController extends Controller
@@ -58,6 +59,10 @@ class ConsumidorController extends Controller
 
     public function edit($id)
     {
+        if (Gate::denies('comerciante')) {
+            abort(404);
+        }
+
         $usuario = User::find($id);
 
         return view('consumidores.edit', [

@@ -346,5 +346,12 @@
         document.getElementById('comprarBtn').href = `/pedidos/create?idProduto=${idProduto}&quantidade=${quantidade}`;
     }
 
+    $('#search_produto').on('keydown', function(){
+        if (event.key === "Enter" || event.keyCode === 13) {
+            let search = $('#search_produto').val();
+            window.location.href = `/produtos/pesquisa?origem=home&search=${search}`;
+        }
+    })
+
 </script>
 @endsection

@@ -10,6 +10,7 @@ use App\Services\UserService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 
 class ComercianteController extends Controller
@@ -77,6 +78,10 @@ class ComercianteController extends Controller
 
     public function edit($id)
     {
+        if (Gate::denies('comerciante')) {
+            abort(404);
+        }
+
         $usuario = User::find($id);
 
         return view ('comerciantes.edit', [

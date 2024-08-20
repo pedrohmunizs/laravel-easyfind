@@ -3,8 +3,14 @@
         <a class="navbar-brand" href="/">
             <img src="/img/logo.png" alt="" style="height: 40px; width: auto;">
         </a>
-        
-        <input type="text" class="input-default px-3 py-2 fit-content" id="search_produto" style="width: 700px;">
+        <div class="input-group" style="width: 700px;">
+            <div class="d-flex flex-row w-100">
+                <i class="bi bi-search px-3 pr-0 py-2 fs-14 bg-white container-default border-end-0" style="border-top-right-radius: 0px; border-bottom-right-radius: 0px;"></i>
+                <div class="" style="width: 100%;">
+                    <input type="text" class="input-default px-3 py-2 w-100 fs-14 input-search" placeholder="Buscar produto" id="search_produto">
+                </div>
+            </div>
+        </div>
         <div class="d-flex flex-row gap-5 align-items-center">
             @auth
                 <a href="/carrinhos"><i class="bi bi-cart3 text-white h5"></i></a>
