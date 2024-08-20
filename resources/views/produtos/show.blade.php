@@ -94,7 +94,14 @@
                 </div>
                 <div class="d-flex flex-column gap-2">
                     <div class="d-flex flex-row align-items-center gap-3">
-                        <img src="/img/estabelecimentos/{{$produto->secao->estabelecimento->imagem->nome_referencia}}" alt="" style="height: 100px; width: 100px;" class="rounded-circle">
+                        @php
+                            $imagens = $produto->secao->estabelecimento->imagem;
+                        @endphp
+                        @if(isset($imagens))
+                            <img src="/img/estabelecimentos/{{$produto->secao->estabelecimento->imagem->nome_referencia}}" style="height: 100px; width: 100px;" class="rounded-circle">
+                        @else
+                            <img src="/img/default.jpg" class="rounded-circle" style="height: 100px; width: 100px;">
+                        @endif
                         <h6 class="m-0">{{$produto->secao->estabelecimento->nome}}</h6>
                     </div>
                     <div class="d-flex flex-column">

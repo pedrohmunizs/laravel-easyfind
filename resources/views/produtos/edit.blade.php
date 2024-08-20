@@ -118,8 +118,8 @@
                     <div class="d-flex flex-column">
                         <label class="label-default" for="nome">Status do produto</label>
                         <select name="produto[is_ativo]" class="px-3 py-2 input-default w-100">
-                            <option value="1" {{ $produto->is_ativo == 1 ? 'selected' : '' }} >Ativado</option>
                             <option value="0">Desativado</option>
+                            <option value="1" {{ $produto->is_ativo == 1 ? 'selected' : '' }} >Ativado</option>
                         </select>
                     </div>
                 </div>

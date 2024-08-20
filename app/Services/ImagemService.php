@@ -101,4 +101,27 @@ class ImagemService
             throw $e;
         }
     }
+
+    public function destroyAll($idProduto)
+    {
+        try{
+            $imagens = Imagem::where('fk_produto', $idProduto)->get();
+
+            foreach($imagens as $imagem){
+
+                $imagePath = public_path('img/produtos/' . $imagem->nome_referencia);
+
+                if (file_exists($imagePath)) {
+                    unlink($imagePath);
+                }
+
+                $imagem->delete();
+            }
+
+            return response()->json(['message' => 'Imagem deletada com sucesso!'], 200);
+
+        }catch(Exception $e){
+            throw $e;
+        }
+    }
 }

@@ -231,9 +231,10 @@ class PedidoController extends Controller
     {
         $filter = array_filter($request['filter']);
 
-        $pedidos = Pedido::join('bandeiras_metodos', 'bandeiras_metodos.id', '=', 'pedidos.fk_metodo_aceito')
-            ->join('metodos_pagamento_aceitos', 'metodos_pagamento_aceitos.fk_metodo_pagamento', '=', 'bandeiras_metodos.id')
-            ->join('estabelecimentos', 'metodos_pagamento_aceitos.fk_estabelecimento', '=', 'estabelecimentos.id')
+        $pedidos = Pedido::join('itens_venda', 'pedidos.id', '=', 'itens_venda.fk_pedido')
+            ->join('produtos', 'produtos.id', '=', 'itens_venda.fk_produto')
+            ->join('secoes', 'secoes.id', '=', 'produtos.fk_secao')
+            ->join('estabelecimentos', 'estabelecimentos.id', '=', 'secoes.fk_estabelecimento')
             ->where('estabelecimentos.id', $idEstabelecimento)
             ->whereIn('pedidos.status', [StatusPedido::Cancelado->value, StatusPedido::Finalizado->value])
             ->orderBy('pedidos.created_at', $request['order'])

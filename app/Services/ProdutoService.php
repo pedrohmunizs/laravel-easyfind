@@ -26,8 +26,10 @@ class ProdutoService{
                 $this->produtoTagService->store($tags, $newProduto->id);
             }
 
-            $this->imagemService->storeProduto($produto['images'], $newProduto->id);
-            
+            if(isset($produto['images'])){
+                $this->imagemService->storeProduto($produto['images'], $newProduto->id);
+            }
+
             return response()->json(['message' => 'Produto cadastrado com sucesso!'], 201);
 
         }catch(Exception $e){
@@ -55,6 +57,19 @@ class ProdutoService{
             }
 
             return response()->json(['message' => 'Produto editado com sucesso!'], 201);
+
+        }catch(Exception $e){
+            throw $e;
+        }
+    }
+
+    public function destroy($id)
+    {
+        try{
+            $produto = Produto::find($id);
+            $produto->delete();
+
+            return response()->json(['message' => 'Produto excluído com sucesso!'], 204);
 
         }catch(Exception $e){
             throw $e;

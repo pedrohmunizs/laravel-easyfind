@@ -47,4 +47,15 @@ class ProdutoTagService{
             throw $e;
         }
     }
+
+    public function destroy($id)
+    {
+        try{
+            $tag = ProdutoTag::find($id);
+            $tag->delete();
+
+        }catch(Exception $e){
+            throw $e;
+        }
+    }
 }

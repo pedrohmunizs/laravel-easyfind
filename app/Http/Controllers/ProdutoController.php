@@ -4,13 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Enums\StatusPedido;
 use App\Models\Avaliacao;
+use App\Models\Carrinho;
 use App\Models\Estabelecimento;
+use App\Models\ItemVenda;
 use App\Models\MetodoPagamento;
 use App\Models\Pedido;
 use App\Models\Produto;
+use App\Models\ProdutoTag;
 use App\Models\Secao;
 use App\Models\Tag;
+use App\Services\CarrinhoService;
+use App\Services\ImagemService;
 use App\Services\ProdutoService;
+use App\Services\ProdutoTagService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
@@ -18,10 +24,16 @@ use Illuminate\Support\Facades\Gate;
 class ProdutoController extends Controller
 {
 
-    protected $service = null;
+    protected $service;
+    protected $carrinhoService;
+    protected $imagemService;
+    protected $produtoTagService;
 
-    public function __construct(ProdutoService $service) {
+    public function __construct(ProdutoService $service, CarrinhoService $carrinhoService, ImagemService $imagemService, ProdutoTagService $produtoTagService) {
         $this->service = $service;
+        $this->carrinhoService = $carrinhoService;
+        $this->imagemService = $imagemService;
+        $this->produtoTagService = $produtoTagService;
     }
 
     public function index($idEstabelecimento)
@@ -200,7 +212,38 @@ class ProdutoController extends Controller
 
     public function destroy($id)
     {
-        $produto = Produto::where('id', $id)->first();
+        $produto = Produto::find($id);
+
+        $pedidos = ItemVenda::where('fk_produto', $id)->first();
+
+        if(!$pedidos){
+
+            $carrinhos = Carrinho::where('fk_produto', $id)->get();
+
+            if($carrinhos){
+                foreach($carrinhos as $carrinho){
+                    $this->carrinhoService->destroy($carrinho);
+                }
+            }
+
+            $tags = ProdutoTag::where("fk_produto", $id)->get();
+
+            if($tags){
+                foreach($tags as $tag){
+                    $this->produtoTagService->destroy($tag->id);
+                }
+            }
+
+            if(isset($produto->imagens)){
+                foreach($produto->imagens as $imagem){
+                    $this->imagemService->destroyAll($produto->id);
+                }
+            }
+
+            $produto = $this->service->destroy($id);
+            return $produto;
+        }
+
         $produto->is_ativo = false;
         $produto->save();
         return $produto;
