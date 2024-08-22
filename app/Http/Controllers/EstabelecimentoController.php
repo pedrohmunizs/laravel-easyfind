@@ -82,13 +82,11 @@ class EstabelecimentoController extends Controller
                 }
             }
 
-            $pedidos = Pedido::join('bandeiras_metodos', 'bandeiras_metodos.id', '=', 'pedidos.fk_metodo_aceito')
-                ->join('metodos_pagamento_aceitos', 'metodos_pagamento_aceitos.fk_metodo_pagamento', '=', 'bandeiras_metodos.id')
-                ->join('estabelecimentos', 'metodos_pagamento_aceitos.fk_estabelecimento', '=', 'estabelecimentos.id')
-                ->where('estabelecimentos.id', $estabelecimento->id)
-                ->where('pedidos.status', StatusPedido::Pendente->value)
-                ->select('pedidos.*')
-                ->groupBy('pedidos.id')
+            $idEstabelecimento = $estabelecimento->id;
+            $pedidos = Pedido::whereHas('itensVenda.produto.secao.estabelecimento', function ($query) use ($idEstabelecimento) {
+                $query->where('estabelecimentos.id', $idEstabelecimento);
+            })
+                ->whereNotIn('status', [StatusPedido::Cancelado->value, StatusPedido::Finalizado->value])
                 ->get();
 
             $estabelecimento->pedidos = count($pedidos);
@@ -143,18 +141,14 @@ class EstabelecimentoController extends Controller
             }
 
             $secoes = Secao::where('fk_estabelecimento', $estabelecimento->id)->pluck('id');
-            
             $produtos = Produto::whereIn('fk_secao', $secoes)->get();
-            
             $avaliacoesEstabelecimento = Avaliacao::whereIn('fk_produto', $produtos->pluck('id'))->get()->toArray();
 
-            $vendas = Pedido::join('bandeiras_metodos', 'bandeiras_metodos.id', '=', 'pedidos.fk_metodo_aceito')
-                ->join('metodos_pagamento_aceitos', 'metodos_pagamento_aceitos.fk_metodo_pagamento', '=', 'bandeiras_metodos.id')
-                ->join('estabelecimentos', 'metodos_pagamento_aceitos.fk_estabelecimento', '=', 'estabelecimentos.id')
-                ->where('estabelecimentos.id', $produto->secao->estabelecimento->id)
-                ->whereNotIn('pedidos.status', [StatusPedido::Finalizado->value])
-                ->select('pedidos.*')
-                ->groupBy('pedidos.id')
+            $idEstabelecimento = $estabelecimento->id;
+            $vendas = Pedido::whereHas('itensVenda.produto.secao.estabelecimento', function ($query) use ($idEstabelecimento) {
+                $query->where('estabelecimentos.id', $idEstabelecimento);
+            })
+                ->where('status', StatusPedido::Finalizado->value)
                 ->get();
 
             $estabelecimento->avaliacoes = $avaliacoesEstabelecimento;
@@ -250,15 +244,15 @@ class EstabelecimentoController extends Controller
             
         $avaliacoes = Avaliacao::whereIn('fk_produto', $produtos->pluck('id'))->pluck('qtd_estrela');
 
-        $vendas = Pedido::join('itens_venda', 'pedidos.id', '=', 'itens_venda.fk_pedido')
-            ->join('produtos', 'produtos.id', '=', 'itens_venda.fk_produto')
-            ->join('secoes', 'secoes.id', '=', 'produtos.fk_secao')
-            ->join('estabelecimentos', 'estabelecimentos.id', '=', 'secoes.fk_estabelecimento')
-            ->where('estabelecimentos.id', $id)
-            ->where('pedidos.status', StatusPedido::Finalizado->value)
-            ->select('itens_venda.*')
-            ->groupBy('itens_venda.id')
-            ->get();
+        $idEstabelecimento = $estabelecimento->id;
+        $vendas = Pedido::whereHas('itensVenda.produto.secao.estabelecimento', function ($query) use ($idEstabelecimento) {
+                $query->where('estabelecimentos.id', $idEstabelecimento);
+        })
+            ->where('status', StatusPedido::Finalizado->value)
+            ->with(['itensVenda' => function($query) {
+                $query->select('itens_venda.*')
+                    ->groupBy('itens_venda.id');
+            }])->get();
 
         return view('estabelecimentos.show', [
             'estabelecimento' => $estabelecimento,

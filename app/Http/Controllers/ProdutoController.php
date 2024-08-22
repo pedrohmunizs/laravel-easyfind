@@ -45,9 +45,16 @@ class ProdutoController extends Controller
         $estabelecimento = Estabelecimento::find($idEstabelecimento);
         $secoes = $estabelecimento->secoes;
 
+        $pedidos = Pedido::whereHas('itensVenda.produto.secao.estabelecimento', function ($query) use ($idEstabelecimento) {
+            $query->where('estabelecimentos.id', $idEstabelecimento);
+        })
+            ->whereNotIn('status', [StatusPedido::Cancelado->value, StatusPedido::Finalizado->value])
+            ->get();
+
         return view('produtos.index',[
             'estabelecimento' => $estabelecimento,
-            'secoes' => $secoes
+            'secoes' => $secoes,
+            'pedidos' => count($pedidos)
         ]);
     }
 
@@ -135,11 +142,19 @@ class ProdutoController extends Controller
             abort(404);
         }
 
-        $estabelecimento = Estabelecimento::where('id', $idEstabelecimento)->first();
+        $estabelecimento = Estabelecimento::find($idEstabelecimento);
+
+        $pedidos = Pedido::whereHas('itensVenda.produto.secao.estabelecimento', function ($query) use ($idEstabelecimento) {
+            $query->where('estabelecimentos.id', $idEstabelecimento);
+        })
+            ->whereNotIn('status', [StatusPedido::Cancelado->value, StatusPedido::Finalizado->value])
+            ->get();
+
         return view('produtos.create',[
             'estabelecimento' => $estabelecimento,
             'secoes' => $estabelecimento->secoes,
-            'tags' => Tag::all()
+            'tags' => Tag::all(),
+            'pedidos' => count($pedidos)
         ]);
     }
 
@@ -177,11 +192,19 @@ class ProdutoController extends Controller
         $produto = Produto::find($id);
         $estabelecimento = Estabelecimento::find($produto->secao->estabelecimento->id);
 
+        $idEstabelecimento = $estabelecimento->id;
+        $pedidos = Pedido::whereHas('itensVenda.produto.secao.estabelecimento', function ($query) use ($idEstabelecimento) {
+            $query->where('estabelecimentos.id', $idEstabelecimento);
+        })
+            ->whereNotIn('status', [StatusPedido::Cancelado->value, StatusPedido::Finalizado->value])
+            ->get();
+
         return view('produtos.edit', [
             'estabelecimento' => $estabelecimento,
             'produto' => $produto,
             'secoes' => $estabelecimento->secoes,
-            'tags' => Tag::all()
+            'tags' => Tag::all(),
+            'pedidos' => count($pedidos)
         ]);
     }
 
@@ -267,16 +290,17 @@ class ProdutoController extends Controller
         $produtos = Produto::whereIn('fk_secao', $secoes)->get();
         
         $avaliacoesEstabelecimento = Avaliacao::whereIn('fk_produto', $produtos->pluck('id'))->get()->toArray();
-        
-        $vendas = Pedido::join('itens_venda', 'pedidos.id', '=', 'itens_venda.fk_pedido')
-            ->join('produtos', 'produtos.id', '=', 'itens_venda.fk_produto')
-            ->join('secoes', 'secoes.id', '=', 'produtos.fk_secao')
-            ->join('estabelecimentos', 'estabelecimentos.id', '=', 'secoes.fk_estabelecimento')
-            ->where('estabelecimentos.id', $produto->secao->estabelecimento->id)
-            ->where('pedidos.status', StatusPedido::Finalizado->value)
-            ->select('itens_venda.*')
-            ->groupBy('itens_venda.id')
-            ->get();
+
+            $idEstabelecimento = $produto->secao->estabelecimento->id;
+            $vendas = Pedido::whereHas('itensVenda.produto.secao.estabelecimento', function ($query) use ($idEstabelecimento) {
+                $query->where('estabelecimentos.id', $idEstabelecimento);
+            })
+                ->where('status', StatusPedido::Finalizado->value)
+                ->with(['itensVenda' => function($query) {
+                    $query->select('itens_venda.*')
+                        ->groupBy('itens_venda.id');
+                }])
+                ->get();
 
         return view('produtos.show',[
             'produto' => $produto,
@@ -325,11 +349,10 @@ class ProdutoController extends Controller
         }
 
         if(isset($estabelecimento)){
-            $produtos->join('secoes', 'produtos.fk_secao', '=', 'secoes.id')
-                ->join('estabelecimentos', 'secoes.fk_estabelecimento', '=', 'estabelecimentos.id')
-                ->where('estabelecimentos.id', $estabelecimento)
-                ->select('produtos.*')
-                ->groupBy('produtos.id');
+
+            $produtos->whereHas('secao.estabelecimento', function ($query) use ($estabelecimento) {
+                $query->where('estabelecimentos.id', $estabelecimento);
+            });
         }
 
         if(isset($filter)){
@@ -340,23 +363,18 @@ class ProdutoController extends Controller
 
             if (isset($filter['metodo'])) {
 
-                $produtos->join('secoes', 'produtos.fk_secao', '=', 'secoes.id')
-                ->join('estabelecimentos', 'secoes.fk_estabelecimento', '=', 'estabelecimentos.id')
-                ->join('metodos_pagamento_aceitos', 'metodos_pagamento_aceitos.fk_estabelecimento', '=', 'estabelecimentos.id')
-                ->join('bandeiras_metodos', 'metodos_pagamento_aceitos.fk_metodo_pagamento', '=', 'bandeiras_metodos.id')
-                ->join('metodos_pagamento', 'bandeiras_metodos.fk_metodo_pagamento', '=', 'metodos_pagamento.id')
-                ->where('metodos_pagamento.id',($filter['metodo']))
-                ->select('produtos.*')
-                ->groupBy('produtos.id');
+                $metodo = $filter['metodo'];
+                $produtos->whereHas('secao.estabelecimento.metodosPagamentosAceito.bandeiraMetodo.metodoPagamento', function ($query) use ($metodo) {
+                    $query->where('metodos_pagamento.id', $metodo);
+                });
             }
 
             if (isset($filter['tag'])) {
 
-                $produtos->join('produtos_tags', 'produtos.id', '=', 'produtos_tags.fk_produto')
-                     ->join('tags', 'produtos_tags.fk_tag', '=', 'tags.id')
-                     ->where('tags.id', $filter['tag'])
-                     ->select('produtos.*')
-                     ->groupBy('produtos.id');
+                $tag = $filter['tag'];
+                $produtos->whereHas('produtosTags.tag', function ($query) use ($tag) {
+                    $query->where('tags.id', $tag);
+                });
             }
             
             if (isset($filter['preco_min'])) {
@@ -383,18 +401,18 @@ class ProdutoController extends Controller
 
             if(isset($filter['segmento'])){
 
-                $produtos->join('secoes', 'produtos.fk_secao', '=', 'secoes.id')
-                ->join('estabelecimentos', 'secoes.fk_estabelecimento', '=', 'estabelecimentos.id')
-                ->where('estabelecimentos.segmento', $filter['segmento'])
-                ->select('produtos.*')
-                ->groupBy('produtos.id');
+                $segmento = $filter['segmento'];
+                $produtos->whereHas('secao.estabelecimento', function ($query) use ($segmento) {
+                    $query->where('estabelecimentos.segmento', $segmento);
+                });
             }
 
             if (isset($filter['secao'])) {
 
-                $produtos->where('secoes.id',($filter['secao']))
-                ->select('produtos.*')
-                ->groupBy('produtos.id');
+                $secao = $filter['secao'];
+                $produtos->whereHas('secao', function ($query) use ($secao) {
+                    $query->where('secoes.id', $secao);
+                });
             }
         }
 

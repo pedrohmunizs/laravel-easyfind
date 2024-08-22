@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\StatusPedido;
 use App\Models\Estabelecimento;
+use App\Models\Pedido;
 use App\Models\Produto;
 use App\Models\Secao;
 use App\Services\SecaoService;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Gate;
 
 class SecaoController extends Controller
 {
-    protected $service = null;
+    protected $service;
     
     public function __construct( SecaoService $secaoService) {
         $this->service = $secaoService;
@@ -32,9 +33,16 @@ class SecaoController extends Controller
             $secao->total_produto =count($secao->produtos);
         }
 
+        $pedidos = Pedido::whereHas('itensVenda.produto.secao.estabelecimento', function ($query) use ($idEstabelecimento) {
+            $query->where('estabelecimentos.id', $idEstabelecimento);
+        })
+            ->whereNotIn('status', [StatusPedido::Cancelado->value, StatusPedido::Finalizado->value])
+            ->get();
+
         return view('secoes.index',[
             'estabelecimento' => $estabelecimento,
-            'secoes' => $secoes
+            'secoes' => $secoes,
+            'pedidos' => count($pedidos)
         ]);
     }
 
@@ -76,8 +84,16 @@ class SecaoController extends Controller
         }
 
         $estabelecimento = Estabelecimento::find($idEstabelecimento);
+
+        $pedidos = Pedido::whereHas('itensVenda.produto.secao.estabelecimento', function ($query) use ($idEstabelecimento) {
+            $query->where('estabelecimentos.id', $idEstabelecimento);
+        })
+            ->whereNotIn('status', [StatusPedido::Cancelado->value, StatusPedido::Finalizado->value])
+            ->get();
+
         return view('secoes.create',[
-            'estabelecimento' => $estabelecimento
+            'estabelecimento' => $estabelecimento,
+            'pedidos' => count($pedidos)
         ]);
     }
 
@@ -106,10 +122,18 @@ class SecaoController extends Controller
         $estabelecimento = Estabelecimento::find($secao->fk_estabelecimento);
         $produtos = Produto::where('fk_secao', $id)->get();
 
+        $idEstabelecimento = $estabelecimento->id;
+        $pedidos = Pedido::whereHas('itensVenda.produto.secao.estabelecimento', function ($query) use ($idEstabelecimento) {
+            $query->where('estabelecimentos.id', $idEstabelecimento);
+        })
+            ->whereNotIn('status', [StatusPedido::Cancelado->value, StatusPedido::Finalizado->value])
+            ->get();
+
         return view('secoes.edit', [
             'estabelecimento' => $estabelecimento,
             'produtos' => $produtos,
-            'secao' => $secao
+            'secao' => $secao,
+            'pedidos' => count($pedidos)
         ]);
     }
 

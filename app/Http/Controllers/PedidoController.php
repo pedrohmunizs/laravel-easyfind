@@ -127,8 +127,15 @@ class PedidoController extends Controller
 
         $estabelecimento = Estabelecimento::where('id', $idEstabelecimento)->first();
 
+        $pedidos = Pedido::whereHas('itensVenda.produto.secao.estabelecimento', function ($query) use ($idEstabelecimento) {
+            $query->where('estabelecimentos.id', $idEstabelecimento);
+        })
+            ->whereNotIn('status', [StatusPedido::Cancelado->value, StatusPedido::Finalizado->value])
+            ->get();
+
         return view('pedidos.comerciantes.index',[
-            'estabelecimento' => $estabelecimento
+            'estabelecimento' => $estabelecimento,
+            'pedidos' => count($pedidos)
         ]);
     }
 
@@ -138,31 +145,28 @@ class PedidoController extends Controller
         $order = $request['order'];
         $filter = array_filter($request['filter']);
 
-        $pedidos = Pedido::join('bandeiras_metodos', 'bandeiras_metodos.id', '=', 'pedidos.fk_metodo_aceito')
-                        ->join('metodos_pagamento_aceitos', 'metodos_pagamento_aceitos.fk_metodo_pagamento', '=', 'bandeiras_metodos.id')
-                        ->join('estabelecimentos', 'metodos_pagamento_aceitos.fk_estabelecimento', '=', 'estabelecimentos.id')
-                        ->where('estabelecimentos.id', $idEstabelecimento)
-                        ->whereNotIn('pedidos.status', [StatusPedido::Cancelado->value, StatusPedido::Finalizado->value])
-                        ->select('pedidos.*')
-                        ->groupBy('pedidos.id');
+        $pedidos = Pedido::whereHas('itensVenda.produto.secao.estabelecimento', function ($query) use ($idEstabelecimento) {
+            $query->where('estabelecimentos.id', $idEstabelecimento);
+        })
+            ->whereNotIn('status', [StatusPedido::Cancelado->value, StatusPedido::Finalizado->value]);
 
         if(!empty($range)){
             $rangeDate = Carbon::now()->subDays($request['range']);
-            $pedidos->where('pedidos.created_at', '>=', $rangeDate);
+            $pedidos->where('created_at', '>=', $rangeDate);
         }
 
         if(!empty($order)){
-            $pedidos->orderBy('pedidos.created_at', $order);
+            $pedidos->orderBy('created_at', $order);
         }
 
         if(!empty($filter)){
 
             if(isset($filter['status'])){
-                $pedidos->where('pedidos.status', $filter['status']);
+                $pedidos->where('status', $filter['status']);
             }
             
             if(isset($filter['is_pagamento_online'])){
-                $pedidos->where('pedidos.is_pagamento_online', $filter['is_pagamento_online']);
+                $pedidos->where('is_pagamento_online', $filter['is_pagamento_online']);
             }
         }
 
@@ -188,11 +192,19 @@ class PedidoController extends Controller
         }
 
         $estabelecimento = Estabelecimento::find($idEstabelecimento);
+
+        $pedidos = Pedido::whereHas('itensVenda.produto.secao.estabelecimento', function ($query) use ($idEstabelecimento) {
+            $query->where('estabelecimentos.id', $idEstabelecimento);
+        })
+            ->whereNotIn('status', [StatusPedido::Cancelado->value, StatusPedido::Finalizado->value])
+            ->get();
+
         $pedido = Pedido::find($id);
 
         return view('pedidos.comerciantes.show', [
             'estabelecimento' => $estabelecimento,
-            'pedido' => $pedido
+            'pedido' => $pedido,
+            'pedidos' => count($pedidos)
         ]);
     }
 
@@ -222,8 +234,15 @@ class PedidoController extends Controller
 
         $estabelecimento = Estabelecimento::find($idEstabelecimento);
 
+        $pedidos = Pedido::whereHas('itensVenda.produto.secao.estabelecimento', function ($query) use ($idEstabelecimento) {
+            $query->where('estabelecimentos.id', $idEstabelecimento);
+        })
+            ->whereNotIn('status', [StatusPedido::Cancelado->value, StatusPedido::Finalizado->value])
+            ->get();
+
         return view('pedidos.comerciantes.historic', [
-            'estabelecimento' => $estabelecimento
+            'estabelecimento' => $estabelecimento,
+            'pedidos' => count($pedidos)
         ]);
     }
 
@@ -231,15 +250,11 @@ class PedidoController extends Controller
     {
         $filter = array_filter($request['filter']);
 
-        $pedidos = Pedido::join('itens_venda', 'pedidos.id', '=', 'itens_venda.fk_pedido')
-            ->join('produtos', 'produtos.id', '=', 'itens_venda.fk_produto')
-            ->join('secoes', 'secoes.id', '=', 'produtos.fk_secao')
-            ->join('estabelecimentos', 'estabelecimentos.id', '=', 'secoes.fk_estabelecimento')
-            ->where('estabelecimentos.id', $idEstabelecimento)
-            ->whereIn('pedidos.status', [StatusPedido::Cancelado->value, StatusPedido::Finalizado->value])
-            ->orderBy('pedidos.created_at', $request['order'])
-            ->select('pedidos.*')
-            ->groupBy('pedidos.id');
+        $pedidos = Pedido::whereHas('itensVenda.produto.secao.estabelecimento', function ($query) use ($idEstabelecimento) {
+            $query->where('estabelecimentos.id', $idEstabelecimento);
+        })
+            ->whereIn('status', [StatusPedido::Cancelado->value, StatusPedido::Finalizado->value])
+            ->orderBy('created_at', $request['order']);
 
         if(!empty($filter)){
 

@@ -36,7 +36,14 @@
         <li class="nav-item">
             <a class="nav-link text-white d-flex flex-row align-items-center gap-2 br-8" href="{{ route('pedidos.indexComerciante', ['idEstabelecimento' => $estabelecimento->id]) }}">
                 <i class="bi bi-cart3"></i>
-                <p class="m-0 fs-13">Pedidos</p>
+                <div class="d-flex flex-row justify-content-between align-items-end w-100">
+                    <p class="m-0 fs-13">Pedidos</p>
+                    @if($pedidos>0)
+                        <div class="px-2 py-1 red-color rounded-circle">
+                            <p class="m-0 fs-10">{{$pedidos}}</p>
+                        </div>
+                    @endif
+                </div>
             </a>
         </li>
         <li class="nav-item">

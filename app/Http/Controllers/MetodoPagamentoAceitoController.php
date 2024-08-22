@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\StatusPedido;
 use App\Models\BandeiraMetodo;
 use App\Models\BandeiraPagamento;
 use App\Models\Estabelecimento;
 use App\Models\MetodoPagamento;
 use App\Models\MetodoPagamentoAceito;
+use App\Models\Pedido;
 use App\Services\MetodoPagamentoAceitoService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -28,11 +30,17 @@ class MetodoPagamentoAceitoController extends Controller
         $estabelecimento = Estabelecimento::where('id', $idEstabelecimento)->first();
         $metodos = MetodoPagamento::all();
         $bandeiras = BandeiraPagamento::all();
-        
+        $pedidos = Pedido::whereHas('itensVenda.produto.secao.estabelecimento', function ($query) use ($idEstabelecimento) {
+            $query->where('estabelecimentos.id', $idEstabelecimento);
+        })
+            ->whereNotIn('status', [StatusPedido::Cancelado->value, StatusPedido::Finalizado->value])
+            ->get();
+
         return view('metodos.index',[
             'estabelecimento' => $estabelecimento,
             'metodos' =>$metodos,
-            'bandeiras' =>$bandeiras
+            'bandeiras' =>$bandeiras,
+            'pedidos' => count($pedidos)
         ]);
     }
 
@@ -93,10 +101,17 @@ class MetodoPagamentoAceitoController extends Controller
             $bandeiraMetodo->imagem = $bandeiraMetodo->bandeiraPagamento->imagem;
         }
         
+        $pedidos = Pedido::whereHas('itensVenda.produto.secao.estabelecimento', function ($query) use ($idEstabelecimento) {
+            $query->where('estabelecimentos.id', $idEstabelecimento);
+        })
+            ->whereNotIn('status', [StatusPedido::Cancelado->value, StatusPedido::Finalizado->value])
+            ->get();
+
         return view('metodos.create', [
             'estabelecimento' => $estabelecimento,
             'bandeirasMetodos' => $bandeirasMetodos,
-            'metodosPagamento' => $metodosPagamento
+            'metodosPagamento' => $metodosPagamento,
+            'pedidos' => count($pedidos)
         ]);
     }
 

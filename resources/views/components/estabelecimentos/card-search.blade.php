@@ -26,8 +26,7 @@
                     @endif
                 @else
                     <div class="d-flex flex-row gap-1">
-                        <p class="m-0 fc-black">0,0</p>
-                        <i style="color: gold;" class="bi bi-star-fill"></i>
+                        <p class="m-0 fc-black">Sem avaliação</p>
                     </div>
                 @endif
             </div>
