@@ -120,6 +120,11 @@ class EstabelecimentoController extends Controller
 
     public function search()
     {
+        if(auth()->user()){
+            if (Gate::denies('consumidor')) {
+                abort(404);
+            }
+        }
         $metodos = MetodoPagamento::all();
         $estabelecimentos = Estabelecimento::where('is_ativo', true)->get();
 
@@ -233,6 +238,34 @@ class EstabelecimentoController extends Controller
 
         return response()->json([
             'estabelecimentos' => $estabelecimentos
+        ]);
+    }
+
+    public function show($id)
+    {
+        $estabelecimento = Estabelecimento::find($id);
+        $metodos = MetodoPagamento::all();
+        $secoes = $estabelecimento->secoes->pluck('id');
+        $produtos = Produto::whereIn('fk_secao', $secoes)->where('is_ativo', true)->get();
+            
+        $avaliacoes = Avaliacao::whereIn('fk_produto', $produtos->pluck('id'))->pluck('qtd_estrela');
+
+        $vendas = Pedido::join('itens_venda', 'pedidos.id', '=', 'itens_venda.fk_pedido')
+            ->join('produtos', 'produtos.id', '=', 'itens_venda.fk_produto')
+            ->join('secoes', 'secoes.id', '=', 'produtos.fk_secao')
+            ->join('estabelecimentos', 'estabelecimentos.id', '=', 'secoes.fk_estabelecimento')
+            ->where('estabelecimentos.id', $id)
+            ->where('pedidos.status', StatusPedido::Finalizado->value)
+            ->select('itens_venda.*')
+            ->groupBy('itens_venda.id')
+            ->get();
+
+        return view('estabelecimentos.show', [
+            'estabelecimento' => $estabelecimento,
+            'produtos' => $produtos,
+            'vendas' => count($vendas),
+            'avaliacoes' => $avaliacoes,
+            'metodos' => $metodos
         ]);
     }
 

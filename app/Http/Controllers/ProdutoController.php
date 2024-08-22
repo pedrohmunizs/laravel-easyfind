@@ -268,13 +268,14 @@ class ProdutoController extends Controller
         
         $avaliacoesEstabelecimento = Avaliacao::whereIn('fk_produto', $produtos->pluck('id'))->get()->toArray();
         
-        $vendas = Pedido::join('bandeiras_metodos', 'bandeiras_metodos.id', '=', 'pedidos.fk_metodo_aceito')
-            ->join('metodos_pagamento_aceitos', 'metodos_pagamento_aceitos.fk_metodo_pagamento', '=', 'bandeiras_metodos.id')
-            ->join('estabelecimentos', 'metodos_pagamento_aceitos.fk_estabelecimento', '=', 'estabelecimentos.id')
+        $vendas = Pedido::join('itens_venda', 'pedidos.id', '=', 'itens_venda.fk_pedido')
+            ->join('produtos', 'produtos.id', '=', 'itens_venda.fk_produto')
+            ->join('secoes', 'secoes.id', '=', 'produtos.fk_secao')
+            ->join('estabelecimentos', 'estabelecimentos.id', '=', 'secoes.fk_estabelecimento')
             ->where('estabelecimentos.id', $produto->secao->estabelecimento->id)
-            ->whereNotIn('pedidos.status', [StatusPedido::Finalizado->value])
-            ->select('pedidos.*')
-            ->groupBy('pedidos.id')
+            ->where('pedidos.status', StatusPedido::Finalizado->value)
+            ->select('itens_venda.*')
+            ->groupBy('itens_venda.id')
             ->get();
 
         return view('produtos.show',[
@@ -309,6 +310,7 @@ class ProdutoController extends Controller
     {
         $filter = $request['filter'];
         $search = $request['search'];
+        $estabelecimento = $request['estabelecimento'];
         $localizacao = json_decode(urldecode($request['localizacao']), true);
 
         if($localizacao){   
@@ -320,6 +322,14 @@ class ProdutoController extends Controller
 
         if(isset($request['origem'])){
             $filter = json_decode(urldecode($filter), true);
+        }
+
+        if(isset($estabelecimento)){
+            $produtos->join('secoes', 'produtos.fk_secao', '=', 'secoes.id')
+                ->join('estabelecimentos', 'secoes.fk_estabelecimento', '=', 'estabelecimentos.id')
+                ->where('estabelecimentos.id', $estabelecimento)
+                ->select('produtos.*')
+                ->groupBy('produtos.id');
         }
 
         if(isset($filter)){
@@ -379,10 +389,17 @@ class ProdutoController extends Controller
                 ->select('produtos.*')
                 ->groupBy('produtos.id');
             }
+
+            if (isset($filter['secao'])) {
+
+                $produtos->where('secoes.id',($filter['secao']))
+                ->select('produtos.*')
+                ->groupBy('produtos.id');
+            }
         }
 
         if(isset($search)){
-            $produtos->where('nome','LIKE', "%".$search."%");
+            $produtos->where('produtos.nome','LIKE', "%".$search."%");
         }
 
         $produtos = $produtos->get();

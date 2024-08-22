@@ -73,13 +73,29 @@ class Produto extends Model
 
     public function scopePriceRange($query, $min, $max)
     {
-        if ($min !== null) {
-            $query->where('preco', '>=', $min);
-        }
-
-        if ($max !== null) {
-            $query->where('preco', '<=', $max);
-        }
+        $query->where(function($query) use ($min, $max) {
+            $query->where(function($query) use ($min, $max) {
+                $query->where('is_promocao_ativa', true)
+                    ->where(function($query) use ($min, $max) {
+                        if ($min !== null) {
+                            $query->where('preco_oferta', '>=', $min);
+                        }
+                        if ($max !== null) {
+                            $query->where('preco_oferta', '<=', $max);
+                        }
+                    });
+            })->orWhere(function($query) use ($min, $max) {
+                $query->where('is_promocao_ativa', false)
+                    ->where(function($query) use ($min, $max) {
+                        if ($min !== null) {
+                            $query->where('preco', '>=', $min);
+                        }
+                        if ($max !== null) {
+                            $query->where('preco', '<=', $max);
+                        }
+                    });
+            });
+        });
 
         return $query;
     }

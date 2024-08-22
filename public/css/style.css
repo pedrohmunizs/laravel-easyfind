@@ -90,6 +90,10 @@ body{
     border-radius: 8px;
 }
 
+.fs-10 {
+    font-size: 10px;
+}
+
 .fs-13 {
     font-size: 13px;
 }
@@ -443,4 +447,13 @@ nav.d-flex.justify-items-center.justify-content-between {
 
 .dropdown-item:hover {
     background-color: #ddd;
+}
+
+.gradiente{
+    background: rgb(252,166,34);
+    background: linear-gradient(180deg, rgba(252,166,34,1) 1%, rgba(240,243,244,1) 45%); 
+}
+
+.progress-bar{
+    background-color: #FCA622;
 }

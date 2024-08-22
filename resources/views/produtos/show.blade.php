@@ -122,6 +122,9 @@
                             <p>Vendas: {{$totalVendidosEstabelecimento}}</p>
                             <p>Total produtos: {{$totalProdutos}}</p>
                         </div>
+                        <div>
+                            <a href="/estabelecimentos/{{ $produto->secao->estabelecimento->id }}/show" class="a-default fc-blue">Ver produtos do estabelecimento</a>
+                        </div>
                     </div>
                     <div class="d-flex flex-column">
                         <button class="btn-clean w-fit-content d-flex flex-row gap-2 align-items-center mb-3" id="metodos">
