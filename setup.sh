@@ -1,13 +1,5 @@
 #!/bin/bash
 
-if grep -q Microsoft /proc/version; then
-  echo "Script está sendo executado no WSL"
-else
-  echo "Script está sendo executado no PowerShell. Abrindo WSL..."
-  wsl.exe bash -c "./path/to/your/script.sh"
-  exit 0
-fi
-
 # Inicia o Docker Desktop se ele não estiver em execução
 if ! pgrep -x "Docker Desktop" > /dev/null; then
   echo "Iniciando o Docker Desktop..."
