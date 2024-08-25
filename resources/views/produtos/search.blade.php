@@ -31,14 +31,11 @@
                                 <label class="fs-13" for="nome">Segmento da loja</label>
                                 <select name="filter[segmento]" class="px-3 py-2 input-default">
                                     <option value="">Indiferente</option>
-                                    <option value="Eletrônicos">Eletrônicos</option>
-                                    <option value="Informática">Informática</option>
-                                    <option value="Mercado">Mercado</option>
-                                    <option value="Produtos naturais">Produtos naturais</option>
-                                    <option value="Artigos esportivos">Artigos esportivos</option>
-                                    <option value="Vestuário">Vestuário</option>
-                                    <option value="Decoração">Decoração</option>
-                                    <option value="Livraria">Livraria</option>
+                                    @foreach(App\Enums\SegmentoEstabelecimento::cases() as $segmento)
+                                        <option value="{{ $segmento->value }}">
+                                            {{ $segmento->name }}
+                                        </option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="d-flex flex-column">

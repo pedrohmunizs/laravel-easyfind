@@ -27,14 +27,11 @@
                                 <label class="label-default" for="segmento">Segmento</label>
                                 <select name="estabelecimento[segmento]" id="segmento" class="form-control input-default w-100 px-3 py-2" required>
                                     <option value=""></option>
-                                    <option value="Eletrônicos">Eletrônicos</option>
-                                    <option value="Informática">Informática</option>
-                                    <option value="Mercado">Mercado</option>
-                                    <option value="Produtos naturais">Produtos naturais</option>
-                                    <option value="Artigos esportivos">Artigos esportivos</option>
-                                    <option value="Vestuário">Vestuário</option>
-                                    <option value="Decoração">Decoração</option>
-                                    <option value="Livraria">Livraria</option>
+                                    @foreach(App\Enums\SegmentoEstabelecimento::cases() as $segmento)
+                                        <option value="{{ $segmento->value }}">
+                                            {{ $segmento->name }}
+                                        </option>
+                                    @endforeach
                                 </select>
                                 <div class="invalid-feedback">Por favor, selecione o segmento da loja.</div>
                             </div>

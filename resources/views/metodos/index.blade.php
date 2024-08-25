@@ -87,7 +87,7 @@
                 $('.pagination').html(response.pagination);
             },
             error: function(xhr, status, error) {
-                alert('Erro ao carregar lojas.');
+                toastr.error('Erro ao carregar os metodos!', 'Erro');
             }
         });
     }

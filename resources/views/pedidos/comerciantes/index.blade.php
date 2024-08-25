@@ -12,10 +12,10 @@
     </div>
     <div class="d-flex flex-row justify-content-between">
         <div class="d-flex flex-row bg-white p-1 container-default date">
-            <button class="btn-default px-3 py-1 date_filter" id="0">Todos</button>
+            <button class="btn-cancel border-0 px-3 py-1 date_filter" id="0">Todos</button>
             <button class="btn-cancel border-0 px-3 py-1 date_filter" id="30">30 dias</button>
             <button class="btn-cancel border-0 px-3 py-1 date_filter" id="7">7 dias</button>
-            <button class="btn-cancel border-0 px-3 py-1 date_filter" id="1">24 horas</button>
+            <button class="btn-default px-3 py-1 date_filter" id="1">24 horas</button>
         </div>
         <div class="d-flex flex-row gap-4">
             <select name="produto[is_ativo]" id="order" class="px-3 py-2 input-default w-100">
@@ -82,7 +82,7 @@
 @endsection
 @section('script')
 <script>
-    let range = 0;
+    let range = 1;
     let order = "DESC"
 
     $(document).ready(function(){
@@ -124,7 +124,6 @@
 
     document.getElementById('order').addEventListener('change', function(){
         order = this.value;
-
         load()
     });
 

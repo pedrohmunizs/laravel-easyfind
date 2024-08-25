@@ -10,8 +10,6 @@
             <h3 class="m-0">Estabelecimentos</h3>
             <div class="d-flex flex-row gap-2">
                 <p class="fc-primary">Estabelecimentos</p>
-                <i class="bi bi-chevron-right fc-gray"></i>
-                <p class="fc-gray">Estabelecimentos</p>
             </div>
             <div class="d-flex flex-row justify-content-between">
                 <div class="input-group mb-3" style="width: 50%;">
@@ -61,7 +59,7 @@
                 $('#card').html(response);
             },
             error: function(xhr, status, error) {
-                alert('Erro ao carregar estabelecimentos.');
+                toastr.error('Erro ao carregar estabelecimentos.');
             }
         });
     }

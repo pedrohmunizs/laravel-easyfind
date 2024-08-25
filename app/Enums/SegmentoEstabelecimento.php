@@ -4,11 +4,11 @@ namespace App\Enums;
 
 enum SegmentoEstabelecimento: int
 {
-    const Informática = 1;
-    const Mercado = 2;
-    const ArtigosEsportivos = 3;
-    const Eletrônicos = 4;
-    const Vestuário = 5;
-    const Decoração = 6;
-    const Livraria = 7;
+    case Informática = 1;
+    case Mercado = 2;
+    case ArtigosEsportivos = 3;
+    case Eletrônicos = 4;
+    case Vestuário = 5;
+    case Decoração = 6;
+    case Livraria = 7;
 }

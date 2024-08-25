@@ -332,6 +332,7 @@ class ProdutoController extends Controller
 
     public function loadSearch(Request $request)
     {
+        dd($request);
         $filter = $request['filter'];
         $search = $request['search'];
         $estabelecimento = $request['estabelecimento'];

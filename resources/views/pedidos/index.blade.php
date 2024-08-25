@@ -41,7 +41,7 @@
                 $('#pedidos').html(response);
             },
             error: function(xhr, status, error) {
-                alert('Erro ao carregar o pedidos.');
+                toastr.error('Erro ao carregar o pedidos.');
             }
         });
     }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\SegmentoEstabelecimento;
 use App\Enums\StatusPedido;
 use App\Models\Avaliacao;
 use App\Models\Estabelecimento;
@@ -89,6 +90,12 @@ class EstabelecimentoController extends Controller
                 ->whereNotIn('status', [StatusPedido::Cancelado->value, StatusPedido::Finalizado->value])
                 ->get();
 
+            foreach (SegmentoEstabelecimento::cases() as $case) {
+                if ($case->value == $estabelecimento->segmento) {
+                    $estabelecimento->segmento = $case->name;
+                    break;
+                }
+            }
             $estabelecimento->pedidos = count($pedidos);
         }
 
