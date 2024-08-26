@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Enums\StatusPedido;
 use App\Jobs\SendEmailJob;
-use App\Mail\SendEmail;
-use App\Models\BandeiraMetodo;
 use App\Models\Carrinho;
 use App\Models\Consumidor;
 use App\Models\Estabelecimento;
@@ -13,12 +11,10 @@ use App\Models\ItemVenda;
 use App\Models\MetodoPagamento;
 use App\Models\Pedido;
 use App\Models\Produto;
-use App\Models\User;
 use App\Services\PedidoService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Mail;
 
 class PedidoController extends Controller
 {

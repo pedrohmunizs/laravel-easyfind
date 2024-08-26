@@ -2,13 +2,9 @@
 
 namespace App\Services;
 
-use App\Models\Agenda;
-use App\Models\Endereco;
 use App\Models\Estabelecimento;
 use App\Services\EnderecoService;
 use Exception;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
 
 class EstabelecimentoService
 {

@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Jobs\SaveImageEstabelecimentoJob;
 use App\Models\Imagem;
 use Exception;
+use Illuminate\Support\Facades\Storage;
 
 class ImagemService
 {
@@ -16,17 +18,9 @@ class ImagemService
                 $this->deleteImagem($imagem->id);
             }
 
-            $imagem = new Imagem();
+            $path = $request->store('temp', 'public');
             
-            $image = $request;
-            $extension = $image->extension();
-            $imageName = md5($image->getClientOriginalName() . strtotime("now")) . "." . $extension;
-            $request->move(public_path('img/estabelecimentos'), $imageName);
-            $imagem->nome_referencia = $imageName;
-            $imagem->nome_imagem = $request->getClientOriginalName();
-            $imagem->fk_estabelecimento = $fk_estabelecimento;
-            
-            $imagem->save();
+            SaveImageEstabelecimentoJob::dispatch($path, $fk_estabelecimento)->onQueue('saveImageEstabelecimento');
 
             return response()->json(null, 201);
 
