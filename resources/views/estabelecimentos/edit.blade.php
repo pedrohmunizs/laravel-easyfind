@@ -26,18 +26,6 @@
                             </div>
                             <div class="d-flex flex-column">
                                 <label class="label-default" for="segmento">Segmento</label>
-                                @php
-                                    $segmentos = [
-                                        "Eletrônicos",
-                                        "Informática",
-                                        "Mercado",
-                                        "Produtos naturais",
-                                        "Artigos esportivos",
-                                        "Vestuário",
-                                        "Decoração",
-                                        "Livraria"
-                                    ];
-                                @endphp
                                 <select name="estabelecimento[segmento]" id="segmento" class="form-control input-default w-100 px-3 py-2" required>
                                     <option value=""></option>
                                     @foreach(App\Enums\SegmentoEstabelecimento::cases() as $segmento)
