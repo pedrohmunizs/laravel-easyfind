@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Jobs\SaveImageEstabelecimentoJob;
+use App\Jobs\SaveImageProdutoJob;
 use App\Models\Imagem;
 use Exception;
 use Illuminate\Support\Facades\Storage;
@@ -33,17 +34,10 @@ class ImagemService
     {
         try{
             foreach($imagens as $img){
-                $imagem = new Imagem();
-                
-                $image = $img;
-                $extension = $image->extension();
-                $imageName = md5($image->getClientOriginalName() . strtotime("now")) . "." . $extension;
-                $img->move(public_path('img/produtos'), $imageName);
-                $imagem->nome_referencia = $imageName;
-                $imagem->nome_imagem = $img->getClientOriginalName();
-                $imagem->fk_produto = $fk_produto;
-                
-                $imagem->save();
+
+                $path = $img->store('temp', 'public');
+
+                SaveImageProdutoJob::dispatch($path, $fk_produto)->onQueue('saveImageProduto');
             }
 
             return response()->json(null, 201);
