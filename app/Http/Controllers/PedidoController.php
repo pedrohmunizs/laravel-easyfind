@@ -221,7 +221,7 @@ class PedidoController extends Controller
             return response()->json(['message' => 'Este pedido já foi finalizado!'], 400);
         }
 
-        $consumidor = Consumidor::find($pedido->itensVenda[0]->fk_consumidor);
+        $consumidor = Consumidor::find($pedido->itensVenda->first()->fk_consumidor);
 
         $pedido = $this->service->changeStatus($id, $request['status']);
 

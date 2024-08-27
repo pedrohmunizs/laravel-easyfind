@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Enums\StatusPedido;
+use App\Events\EsvaziarCarrinho;
+use App\Events\UpdateTotalProdutoSold;
 use App\Models\Carrinho;
 use App\Models\Pedido;
 use App\Models\Produto;
@@ -42,10 +44,7 @@ class PedidoService
             $produto = Produto::find($request['itemVenda'][0]['fk_produto']);
             $estabelecimentoId = $produto->secao->estabelecimento->id;
 
-            Carrinho::where('fk_consumidor', auth()->user()->consumidor->id)
-                ->whereHas('produto.secao.estabelecimento', function ($query) use ($estabelecimentoId) {
-                    $query->where('id', $estabelecimentoId);
-                })->delete();
+            event(new EsvaziarCarrinho($estabelecimentoId));
         }
 
         return response()->json(['message' => 'Pedido realizado com sucesso!'], 201);
@@ -58,15 +57,13 @@ class PedidoService
             $pedido->status = $status;
             $pedido->save();
 
-            if($status = StatusPedido::Finalizado->value){
+            if($status == StatusPedido::Finalizado->value){
                 $itens = $pedido->itensVenda;
                 foreach($itens as $item){
-                    $produto = $item->produto;
-                    $produto->qtd_vendas += $item->quantidade;
-                    $produto->save();
+                    event(new UpdateTotalProdutoSold($item->produto, $item->quantidade));
                 }
             }
-    
+
             return response()->json(['message' => 'Status do pedido atualizado com sucesso!'], 201);
 
         }catch(Exception $e){
