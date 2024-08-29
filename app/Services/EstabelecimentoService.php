@@ -24,73 +24,69 @@ class EstabelecimentoService
     {
         try{
             $data = $request['endereco'];
+
             $data['cep'] = str_replace('-', '', $data['cep']);
-
             $cepData = $this->cepService->getCep($data['cep']);
-
             $endereco = $this->enderecoService->store($data, $cepData);
 
             $data = $request['estabelecimento'];
+
             $data['telefone'] = str_replace(['(', ')', '-', ' '], '', $data['telefone']);
 
-            try{
-                $estabelecimento = new Estabelecimento();
-                $estabelecimento->fill($data);
-                $estabelecimento->is_ativo = true;
-                $estabelecimento->fk_endereco = $endereco->id;
-                $estabelecimento->fk_comerciante = auth()->user()->comerciante->id;
+            $estabelecimento = new Estabelecimento();
+            $estabelecimento->fill($data);
+            $estabelecimento->is_ativo = true;
+            $estabelecimento->fk_endereco = $endereco->id;
+            $estabelecimento->fk_comerciante = auth()->user()->comerciante->id;
 
-                $estabelecimento->save();
-
-            }catch(Exception $e){
-                throw $e;
-            }
+            $estabelecimento->save();
             
             if($request['agenda']){
-                $this->agendaService->store($request['agenda'], $estabelecimento->id);
+                $agenda = $this->agendaService->store($request['agenda'], $estabelecimento->id);
             }
             
             if($request->hasFile('image') && $request->file('image')->isValid()){
                 $this->imagemService->storeEstabelecimento($request->file('image'), $estabelecimento->id);
             }
 
-            return response()->json(['message' => 'Estabelecimento cadastrado com sucesso!'], 201);
+            return $estabelecimento;
 
         }catch(Exception $e){
-            throw $e;
+
+            if (isset($endereco)) {
+                $this->enderecoService->destroy($endereco->id);
+            }
+
+            if(isset($agenda)){
+                $this->agendaService->destroy($estabelecimento->id);
+            }
+
+            if(isset($estabelecimento)){
+                $this->destroy($estabelecimento->id);
+            }
+
+            throw new Exception("Erro ao criar o estabelecimento: " . $e->getMessage());
         }
     }
 
     public function update($id, $data)
     {
-        try{
             $estabelecimento = Estabelecimento::find($id);
-
-            if(!$estabelecimento){
-                return response()->json(['message' => 'Estabelecimento não existe!'], 409);
-            }
 
             $endereco = $data['endereco'];
             $endereco['cep'] = str_replace('-', '', $endereco['cep']);
-
             $cepData = $this->cepService->getCep($endereco['cep']);
-
             $endereco = $this->enderecoService->update($estabelecimento->fk_endereco, $endereco, $cepData);
 
             $dataEstabelecimento = $data['estabelecimento'];
             $dataEstabelecimento['telefone'] = str_replace(['(', ')', '-', ' '], '', $dataEstabelecimento['telefone']);
 
-            try{
-                $estabelecimento->fill($dataEstabelecimento);
-                $estabelecimento->is_ativo = true;
-                $estabelecimento->fk_endereco = $endereco->id;
-                $estabelecimento->fk_comerciante = auth()->user()->comerciante->id;
+            $estabelecimento->fill($dataEstabelecimento);
+            $estabelecimento->is_ativo = true;
+            $estabelecimento->fk_endereco = $endereco->id;
+            $estabelecimento->fk_comerciante = auth()->user()->comerciante->id;
 
-                $estabelecimento->save();
-
-            }catch(Exception $e){
-                throw $e;
-            }
+            $estabelecimento->save();
 
             if($data['agenda']){
                 $this->agendaService->update($data['agenda'], $estabelecimento->id);
@@ -100,10 +96,12 @@ class EstabelecimentoService
                 $this->imagemService->storeEstabelecimento($data->file('image'), $estabelecimento->id);
             }
 
-            return response()->json(['message' => 'Estabelecimento editado com sucesso!'], 201);
+            return $estabelecimento;
+    }
 
-        }catch(Exception $e){
-            throw $e;
-        }
+    private function destroy($id)
+    {
+        $estabelecimento = Estabelecimento::find($id);
+        $estabelecimento->delete();
     }
 }

@@ -42,4 +42,10 @@ class EnderecoService
             throw $e;
         }
     }
+
+    public function destroy($id)
+    {
+        $endereco = Endereco::find($id);
+        $endereco->delete();
+    }
 }

@@ -11,6 +11,7 @@ use App\Models\Pedido;
 use App\Models\Produto;
 use App\Models\Secao;
 use App\Services\EstabelecimentoService;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -55,8 +56,13 @@ class EstabelecimentoController extends Controller
             return response()->json(['message' => 'Esse telefone já está em uso!'], 409);
         }
 
-        $estabelecimento = $this->estabelecimentoService->store($request);
-        return $estabelecimento;
+        try{
+            $this->estabelecimentoService->store($request);
+
+            return response()->json(['message' => 'Estabelecimento cadastrado com sucesso!'], 201);
+        }catch(Exception $e){
+            return response()->json(['message' => 'Erro ao criar estabelecimento'], 500);
+        }
     }
 
     public function load(Request $request)
@@ -119,8 +125,19 @@ class EstabelecimentoController extends Controller
 
     public function update($id, Request $request)
     {
-        $estabelecimento = $this->estabelecimentoService->update($id, $request);
-        return $estabelecimento;
+        $estabelecimento = Estabelecimento::find($id);
+
+        if(!$estabelecimento){
+            return response()->json(['message' => 'Estabelecimento não existe!'], 409);
+        }
+
+        try{
+            $this->estabelecimentoService->update($id, $request);
+
+            return response()->json(['message' => 'Estabelecimento editado com sucesso!'], 201);
+        }catch(Exception $e){
+            return response()->json(['message' => 'Erro ao editar estabelecimento'], 500);
+        }
     }
 
     public function search()

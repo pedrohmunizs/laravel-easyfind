@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\StatusPedido;
+use App\Events\ChangeStatusPedido;
 use App\Jobs\SendEmailJob;
 use App\Models\Carrinho;
 use App\Models\Consumidor;
@@ -76,13 +77,13 @@ class PedidoController extends Controller
                 $produto->quantidade = $carrinhos->firstWhere('fk_produto', $produto->id)->quantidade;
             }
 
-            $metodos = $produtos[0]->secao->estabelecimento->metodosPagamentosAceito;            
-            $bandeirasMetodos = $produtos[0]->secao->estabelecimento->metodosPagamentosAceito;
+            $metodos = $produtos->first()->secao->estabelecimento->metodosPagamentosAceito;            
+            $bandeirasMetodos = $produtos->first()->secao->estabelecimento->metodosPagamentosAceito;
         }else{
             $produtos = Produto::where('id' ,$request['idProduto'])->get();
-            $produtos[0]->quantidade = $request['quantidade'];
-            $metodos = $produtos[0]->secao->estabelecimento->metodosPagamentosAceito;
-            $bandeirasMetodos = $produtos[0]->secao->estabelecimento->metodosPagamentosAceito;
+            $produtos->first()->quantidade = $request['quantidade'];
+            $metodos = $produtos->first()->secao->estabelecimento->metodosPagamentosAceito;
+            $bandeirasMetodos = $produtos->first()->secao->estabelecimento->metodosPagamentosAceito;
         }
 
         foreach($metodos as $metodo){
@@ -223,7 +224,7 @@ class PedidoController extends Controller
 
         $consumidor = Consumidor::find($pedido->itensVenda->first()->fk_consumidor);
 
-        $pedido = $this->service->changeStatus($id, $request['status']);
+        event(new ChangeStatusPedido($id, $request['status']));
 
         SendEmailJob::dispatch([
             'toName' => $consumidor->user->nome,
@@ -232,7 +233,7 @@ class PedidoController extends Controller
             'id' => $id
         ])->onQueue('changeStatus');
 
-        return $pedido;
+        return response()->json(['message' => 'Status do pedido atualizado com sucesso!'], 201);
     }
 
     public function historic($idEstabelecimento)
