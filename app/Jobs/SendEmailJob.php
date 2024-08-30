@@ -30,8 +30,10 @@ class SendEmailJob implements ShouldQueue
         Mail::to($this->data['toEmail'], $this->data['toName'])->send(new SendEmail([
             'fromName' => 'EasyFind',
             'fromEmail' => 'easyfindlaravel@gmail.com',
+            'toName' => $this->data['toName'],
             'subject' => $this->data['subject'],
-            'id' => $this->data['id']
+            'template' => $this->data['template'],
+            'email' => $this->data['email']
         ]));
     }
 }

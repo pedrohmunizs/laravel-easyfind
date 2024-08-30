@@ -38,8 +38,14 @@ class SendEmail extends Mailable
      */
     public function content(): Content
     {
+        $view = match ($this->data['template']) {
+            'pedido' => 'mails.pedidos.edit',
+            'create-pedido' => 'mails.pedidos.create',
+            'cadastro' => 'mails.consumidor.create'
+        };
+
         return new Content(
-            view: 'mails.send',
+            view: $view,
         );
     }
 

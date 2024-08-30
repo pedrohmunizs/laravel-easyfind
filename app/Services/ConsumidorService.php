@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Jobs\SendEmailJob;
 use App\Models\Consumidor;
 use Exception;
 
@@ -30,6 +31,14 @@ class ConsumidorService
             $consumidor->fk_usuario = $user->id;
 
             $consumidor->save();
+
+            SendEmailJob::dispatch([
+                'toName' => $consumidor->user->nome,
+                'toEmail' => $consumidor->user->email,
+                'subject' => "Seja bem-vendo(a) a EasyFind",
+                'template' => "cadastro",
+                'email' => ''
+            ])->onQueue('newUser');
 
             return $consumidor;
 

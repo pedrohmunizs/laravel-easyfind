@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Enums\StatusPedido;
 use App\Events\EsvaziarCarrinho;
 use App\Events\TransacaoEvent;
+use App\Jobs\SendEmailJob;
 use App\Models\Pedido;
 use App\Models\Produto;
 
@@ -37,6 +38,20 @@ class PedidoService
 
             event(new EsvaziarCarrinho($estabelecimentoId));
         }
+
+        $email = [
+            'valor' => $itemVenda,
+            'id' => $pedido->id,
+            'estabelecimento' => $pedido->itensVenda->first()->produto->secao->estabelecimento->id
+        ];
+
+        SendEmailJob::dispatch([
+            'toName' => $pedido->itensVenda->first()->produto->secao->estabelecimento->nome,
+            'toEmail' => $pedido->itensVenda->first()->produto->secao->estabelecimento->email,
+            'subject' => "Novo pedido recebido",
+            'template' => "create-pedido",
+            'email' => $email
+        ])->onQueue('newPedido');
 
         return $pedido;
     }

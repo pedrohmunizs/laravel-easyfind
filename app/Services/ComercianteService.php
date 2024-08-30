@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Jobs\SendEmailJob;
 use App\Models\Comerciante;
 use Exception;
 
@@ -41,6 +42,14 @@ class ComercianteService
             $comerciante->fk_endereco =  $endereco->id;
 
             $comerciante->save();
+
+            SendEmailJob::dispatch([
+                'toName' => $comerciante->user->nome,
+                'toEmail' => $comerciante->user->email,
+                'subject' => "Seja bem-vendo(a) a EasyFind",
+                'template' => "cadastro",
+                'email' => ''
+            ])->onQueue('newUser');
             
             return $comerciante;
 

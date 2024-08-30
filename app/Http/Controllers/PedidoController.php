@@ -235,7 +235,8 @@ class PedidoController extends Controller
             'toName' => $consumidor->user->nome,
             'toEmail' => $consumidor->user->email,
             'subject' => "Atualização do pedido $id",
-            'id' => $id
+            'template' => "pedido",
+            'email' => $id
         ])->onQueue('changeStatus');
 
         return response()->json(['message' => 'Status do pedido atualizado com sucesso!'], 201);
