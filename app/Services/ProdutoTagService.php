@@ -28,34 +28,27 @@ class ProdutoTagService{
 
     public function update($tags, $idProduto)
     {
-        try{
-            $tags = json_decode($tags['fk_tag']);
+        $tags = json_decode($tags['fk_tag']);
 
-            ProdutoTag::where('fk_produto', $idProduto)->whereNotIn('fk_tag', $tags)->delete();
-            
-            foreach($tags as $tag){
+        ProdutoTag::where('fk_produto', $idProduto)->whereNotIn('fk_tag', $tags)->delete();
 
-                ProdutoTag::firstOrCreate([
-                    'fk_produto' => $idProduto,
-                    'fk_tag' => $tag,
-                ]);
-            }
+        foreach($tags as $tag){
 
-            return response()->json(null, 201);
-
-        }catch(Exception $e){
-            throw $e;
+            ProdutoTag::firstOrCreate([
+                'fk_produto' => $idProduto,
+                'fk_tag' => $tag,
+            ]);
         }
     }
 
     public function destroy($id)
     {
-        try{
-            $tag = ProdutoTag::find($id);
-            $tag->delete();
+        $tag = ProdutoTag::find($id);
+        $tag->delete();
+    }
 
-        }catch(Exception $e){
-            throw $e;
-        }
+    public function destroyAll($idProduto)
+    {
+        ProdutoTag::where('fk_produto', $idProduto)->delete();   
     }
 }

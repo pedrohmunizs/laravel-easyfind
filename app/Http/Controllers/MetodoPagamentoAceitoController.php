@@ -10,12 +10,13 @@ use App\Models\MetodoPagamento;
 use App\Models\MetodoPagamentoAceito;
 use App\Models\Pedido;
 use App\Services\MetodoPagamentoAceitoService;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
 class MetodoPagamentoAceitoController extends Controller
 {
-    protected $service = null;
+    protected $service;
     
     public function __construct( MetodoPagamentoAceitoService $metodoPagamentoAceitoService) {
         $this->service = $metodoPagamentoAceitoService;
@@ -117,16 +118,21 @@ class MetodoPagamentoAceitoController extends Controller
 
     public function store(Request $request)
     {
-        $idEstabelecimento = $request['estabelecimento'];
-        $metodos = $request['metodo'];
-
-        $aceito = $this->service->store($metodos, $idEstabelecimento);
-        return $aceito;
+        try{
+            $this->service->store($request['metodo'], $request['estabelecimento']);
+            return response()->json(['message' => 'Método adicionado com sucesso!'], 201);
+        }catch(Exception $e){
+            return response()->json(['message' => 'Erro ao adicionar método!'], 500);
+        }
     }
 
     public function destroy($id)
     {
-        $metodo = $this->service->destroy($id);
-        return $metodo;
+        try{
+            $this->service->destroy($id);
+            return response()->json(['message' => 'Método Excluído com sucesso!'], 204);
+        }catch(Exception $e){
+            return response()->json(['message' => 'Erro ao excluir método!'], 500);
+        }
     }
 }

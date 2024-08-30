@@ -7,12 +7,13 @@ use App\Models\Agenda;
 use App\Models\Estabelecimento;
 use App\Models\Pedido;
 use App\Services\AgendaService;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
 class AgendaController extends Controller
 {
-    protected $service = null;
+    protected $service;
 
     public function __construct(AgendaService $agendaService) {
         $this->service = $agendaService;
@@ -44,8 +45,11 @@ class AgendaController extends Controller
     {
         $agendas = $request['agenda'];
 
-        $update = $this->service->update($agendas, $idEstabelecimento);
-        
-        return $update;
+        try{
+            $this->service->update($agendas, $idEstabelecimento);
+            return response()->json(['message' => 'Agenda editada com sucesso!'], 201);
+        }catch(Exception $e){
+            return response()->json(['message' => 'Erro ao editar agenda'], 500);
+        }
     }
 }

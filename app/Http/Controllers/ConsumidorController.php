@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Consumidor;
 use App\Models\User;
 use App\Services\ConsumidorService;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 
 class ConsumidorController extends Controller
 {
-    protected $service = null;
+    protected $service;
 
     public function __construct(ConsumidorService $consumidorService) {
         $this->service = $consumidorService;
@@ -52,9 +53,12 @@ class ConsumidorController extends Controller
             return response()->json(['message' => "Esse email já está em uso!"], 409);
         }
 
-        $consumidor = $this->service->store($request);
-
-        return $consumidor;
+        try{
+            $this->service->store($request);
+            return response()->json(['message' => 'Usuário criado com sucesso!'], 201);
+        }catch(Exception $e){
+            return response()->json(['message' => 'Erro ao criar usuário'], 500);
+        }
     }
 
     public function edit($id)
@@ -72,6 +76,12 @@ class ConsumidorController extends Controller
 
     public function update($id, Request $request)
     {
+        $consumidor = Consumidor::find($id);
+
+        if(!$consumidor){
+            return response()->json(['message' => "Usuário não existente!"], 400);
+        }
+
         $email = Validator::make($request->all(), [
             'user.email' => 'required|email',
         ]);
@@ -88,8 +98,11 @@ class ConsumidorController extends Controller
             return response()->json(['message' => "Esse CPF não é válido!"], 400);
         }
 
-        $consumidor = $this->service->update($id, $request);
-
-        return $consumidor;
+        try{
+            $this->service->update($id, $request);
+            return response()->json(['message' => 'Usuário editado com sucesso!'], 201);
+        }catch(Exception $e){
+            return response()->json(['message' => 'Erro ao editar usuário'], 500);
+        }
     }
 }

@@ -71,32 +71,32 @@ class EstabelecimentoService
 
     public function update($id, $data)
     {
-            $estabelecimento = Estabelecimento::find($id);
+        $estabelecimento = Estabelecimento::find($id);
 
-            $endereco = $data['endereco'];
-            $endereco['cep'] = str_replace('-', '', $endereco['cep']);
-            $cepData = $this->cepService->getCep($endereco['cep']);
-            $endereco = $this->enderecoService->update($estabelecimento->fk_endereco, $endereco, $cepData);
+        $endereco = $data['endereco'];
+        $endereco['cep'] = str_replace('-', '', $endereco['cep']);
+        $cepData = $this->cepService->getCep($endereco['cep']);
+        $endereco = $this->enderecoService->store($endereco, $cepData, $estabelecimento->fk_endereco);
 
-            $dataEstabelecimento = $data['estabelecimento'];
-            $dataEstabelecimento['telefone'] = str_replace(['(', ')', '-', ' '], '', $dataEstabelecimento['telefone']);
+        $dataEstabelecimento = $data['estabelecimento'];
+        $dataEstabelecimento['telefone'] = str_replace(['(', ')', '-', ' '], '', $dataEstabelecimento['telefone']);
 
-            $estabelecimento->fill($dataEstabelecimento);
-            $estabelecimento->is_ativo = true;
-            $estabelecimento->fk_endereco = $endereco->id;
-            $estabelecimento->fk_comerciante = auth()->user()->comerciante->id;
+        $estabelecimento->fill($dataEstabelecimento);
+        $estabelecimento->is_ativo = true;
+        $estabelecimento->fk_endereco = $endereco->id;
+        $estabelecimento->fk_comerciante = auth()->user()->comerciante->id;
 
-            $estabelecimento->save();
+        $estabelecimento->save();
 
-            if($data['agenda']){
-                $this->agendaService->update($data['agenda'], $estabelecimento->id);
-            }
+        if($data['agenda']){
+            $this->agendaService->update($data['agenda'], $estabelecimento->id);
+        }
 
-            if($data->hasFile('image') && $data->file('image')->isValid()){
-                $this->imagemService->storeEstabelecimento($data->file('image'), $estabelecimento->id);
-            }
+        if($data->hasFile('image') && $data->file('image')->isValid()){
+            $this->imagemService->storeEstabelecimento($data->file('image'), $estabelecimento->id);
+        }
 
-            return $estabelecimento;
+        return $estabelecimento;
     }
 
     private function destroy($id)

@@ -17,13 +17,12 @@ use App\Services\CarrinhoService;
 use App\Services\ImagemService;
 use App\Services\ProdutoService;
 use App\Services\ProdutoTagService;
+use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 
 class ProdutoController extends Controller
 {
-
     protected $service;
     protected $carrinhoService;
     protected $imagemService;
@@ -160,14 +159,14 @@ class ProdutoController extends Controller
 
     public function store(Request $request)
     {
-        $produto = $request['produto']; 
+        $produto = $request['produto'];
 
         if(!isset($produto['is_promocao_ativa'])){
             $produto['is_promocao_ativa'] = false;
         }else{
             $produto['is_promocao_ativa'] = true;
         }
-        
+
         $produto['preco'] = trim(substr($produto['preco'], 2));
         $produto['preco'] = str_replace(".", "", $produto['preco']);
         $produto['preco'] = str_replace(',', '.', $produto['preco']);
@@ -177,10 +176,13 @@ class ProdutoController extends Controller
         $produto['preco_oferta'] = str_replace(".", "", $produto['preco_oferta']);
         $produto['preco_oferta'] = str_replace(',', '.', $produto['preco_oferta']);
         $produto['preco_oferta'] = number_format((float) $produto['preco_oferta'], 2, '.', '');
-        
-        $produto = $this->service->store($produto, $request['produto_tag']);
 
-        return $produto;
+        try{
+            $this->service->store($produto, $request['produto_tag']);
+            return response()->json(['message' => 'Produto criado com sucesso!'], 201);
+        }catch(Exception $e){
+            return response()->json(['message' => 'Erro ao criar produto'], 500);
+        }
     }
 
     public function edit($id)
@@ -210,6 +212,12 @@ class ProdutoController extends Controller
 
     public function update($id, Request $request)
     {
+        $existe = Produto::find($id);
+
+        if(!$existe){
+            return response()->json(['message' => "Estabelecimento não encontrado!"], 400);
+        }
+
         $produto = $request['produto']; 
 
         if(!isset($produto['is_promocao_ativa'])){
@@ -227,10 +235,13 @@ class ProdutoController extends Controller
         $produto['preco_oferta'] = str_replace(".", "", $produto['preco_oferta']);
         $produto['preco_oferta'] = str_replace(',', '.', $produto['preco_oferta']);
         $produto['preco_oferta'] = number_format((float) $produto['preco_oferta'], 2, '.', '');
-        
-        $produto = $this->service->update($id, $produto, $request['produto_tag']);
 
-        return $produto;
+        try{
+            $this->service->update($id, $produto, $request['produto_tag']);
+            return response()->json(['message' => 'Produto editado com sucesso!'], 201);
+        }catch(Exception $e){
+            return response()->json(['message' => 'Erro ao editar produto'], 500);
+        }
     }
 
     public function destroy($id)
@@ -263,13 +274,18 @@ class ProdutoController extends Controller
                 }
             }
 
-            $produto = $this->service->destroy($id);
-            return $produto;
+            try{
+                $this->service->destroy($id);
+                return response()->json(['message' => 'Produto excluído com sucesso!'], 204);
+            }catch(Exception $e){
+                return response()->json(['message' => 'Erro ao excluir produto'], 500);
+            }
         }
 
         $produto->is_ativo = false;
         $produto->save();
-        return $produto;
+
+        return response()->json(['message' => 'Produto desativado com sucesso!'], 201);
     }
 
     public function active($id)
@@ -277,7 +293,8 @@ class ProdutoController extends Controller
         $produto = Produto::where('id', $id)->first();
         $produto->is_ativo = true;
         $produto->save();
-        return $produto;
+
+        return response()->json(['message' => 'Produto ativado com sucesso!'], 201);
     }
 
     public function show($id)
@@ -332,7 +349,6 @@ class ProdutoController extends Controller
 
     public function loadSearch(Request $request)
     {
-        dd($request);
         $filter = $request['filter'];
         $search = $request['search'];
         $estabelecimento = $request['estabelecimento'];

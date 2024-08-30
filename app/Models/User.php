@@ -16,9 +16,7 @@ class User extends Authenticatable
 
     protected $fillable = [
         'email',
-        'nome',
-        'password',
-        'type'
+        'nome'
     ];
 
     public function comerciante()

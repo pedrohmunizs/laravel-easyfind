@@ -14,6 +14,7 @@ use App\Models\Pedido;
 use App\Models\Produto;
 use App\Services\PedidoService;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -104,8 +105,12 @@ class PedidoController extends Controller
 
     public function store(Request $request)
     {
-        $pedido = $this->service->store($request);
-        return $pedido;
+        try{
+            $this->service->store($request);
+            return response()->json(['message' => 'Pedido criado com sucesso!'], 201);
+        }catch(Exception $e){
+            return response()->json(['message' => 'Erro ao criar pedido'], 500);
+        }
     }
 
     public function show($id)

@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Carrinho;
 use App\Services\CarrinhoService;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
 class CarrinhoController extends Controller
 {
-    protected $service = null;
+    protected $service;
 
     public function __construct(CarrinhoService $carrinhoSerivce) {
         $this->service = $carrinhoSerivce;
@@ -43,10 +44,13 @@ class CarrinhoController extends Controller
             $carrinho = $this->service->update($existe, $quantidade);
             return $carrinho;
         }
-        
-        $carrinho = $this->service->store($data, $consumidor->id);
 
-        return $carrinho;
+        try{
+            $this->service->store($data, $consumidor->id);
+            return response()->json(['message' => 'Produto adicionado ao carrinho!'], 201);
+        }catch(Exception $e){
+            return response()->json(['message' => 'Erro ao adicionar produto ao carrinho!'], 500);
+        }
     }
 
     public function load()
@@ -76,6 +80,12 @@ class CarrinhoController extends Controller
         if(!$quantidade){
             return $this->service->destroy($carrinho);
         }
-        return $this->service->update($carrinho, $quantidade);
+
+        try{
+            $this->service->update($carrinho, $quantidade);
+            return response()->json(['message' => 'Quantidade atualizado com sucesso!'], 201);
+        }catch(Exception $e){
+            return response()->json(['message' => 'Erro ao atualizar quantidade do produto no carrinho!'], 500);
+        }
     }
 }

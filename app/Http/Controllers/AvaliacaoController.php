@@ -5,11 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Avaliacao;
 use App\Models\ItemVenda;
 use App\Services\AvaliacaoService;
+use Exception;
 use Illuminate\Http\Request;
 
 class AvaliacaoController extends Controller
 {
-    protected $service = null;
+    protected $service;
 
     public function __construct(AvaliacaoService $avaliacaoService) {
         $this->service = $avaliacaoService;
@@ -37,10 +38,13 @@ class AvaliacaoController extends Controller
         if(empty($data['qtd_estrela'])){
             return response()->json(['message' => 'Adicione uma nota a essa avaliação!'], 400);
         }
-        
-        $avaliacao = $this->service->store($data, $consumidor->id);
-        
-        return $avaliacao;
+
+        try{
+            $this->service->store($data, $consumidor->id);
+            return response()->json(['message' => 'Avaliação postada!'], 201);
+        }catch(Exception $e){
+            return response()->json(['message' => 'Erro ao avalaiar produto!'], 500);
+        }
     }
 
     public function load($idProduto)

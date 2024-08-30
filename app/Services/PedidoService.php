@@ -7,7 +7,6 @@ use App\Events\EsvaziarCarrinho;
 use App\Events\TransacaoEvent;
 use App\Models\Pedido;
 use App\Models\Produto;
-use Exception;
 
 class PedidoService
 {
@@ -39,6 +38,6 @@ class PedidoService
             event(new EsvaziarCarrinho($estabelecimentoId));
         }
 
-        return response()->json(['message' => 'Pedido realizado com sucesso!'], 201);
+        return $pedido;
     }
 }

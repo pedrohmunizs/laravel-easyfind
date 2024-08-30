@@ -8,6 +8,7 @@ use App\Models\Pedido;
 use App\Models\Produto;
 use App\Models\Secao;
 use App\Services\SecaoService;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -99,17 +100,22 @@ class SecaoController extends Controller
 
     public function store(Request $request)
     {
-        $secao = $request['secao'];
-        $secao = $this->service->store($secao);
-        
-        return $secao;
+        try{
+            $this->service->store($request['secao']);
+            return response()->json(['message' => 'Seção criada com sucesso!'], 201);
+        }catch(Exception $e){
+            return response()->json(['message' => 'Erro ao criar seção'], 500);
+        }
     }
 
     public function destroy($id)
     {
-        $secao = $this->service->destroy($id);
-
-        return $secao;
+        try{
+            $this->service->destroy($id);
+            return response()->json(['message' => 'Seção excluída com sucesso!'], 204);
+        }catch(Exception $e){
+            return response()->json(['message' => 'Erro ao excluir seção'], 500);
+        }
     }
 
     public function edit($id)
@@ -139,8 +145,17 @@ class SecaoController extends Controller
 
     public function update($id, Request $request)
     {
-        $secao = $this->service->update($id, $request['secao.descricao']);
+        $secao = Secao::find($id);
 
-        return $secao;
+        if(!$secao){
+            return response()->json(['message' => "Seção não existe!"], 400);
+        }
+
+        try{
+            $this->service->update($id, $request['secao.descricao']);
+            return response()->json(['message' => 'Seção editada com sucesso!'], 201);
+        }catch(Exception $e){
+            return response()->json(['message' => 'Erro ao editar seção'], 500);
+        }
     }
 }

@@ -58,7 +58,6 @@ class EstabelecimentoController extends Controller
 
         try{
             $this->estabelecimentoService->store($request);
-
             return response()->json(['message' => 'Estabelecimento cadastrado com sucesso!'], 201);
         }catch(Exception $e){
             return response()->json(['message' => 'Erro ao criar estabelecimento'], 500);
@@ -133,7 +132,6 @@ class EstabelecimentoController extends Controller
 
         try{
             $this->estabelecimentoService->update($id, $request);
-
             return response()->json(['message' => 'Estabelecimento editado com sucesso!'], 201);
         }catch(Exception $e){
             return response()->json(['message' => 'Erro ao editar estabelecimento'], 500);

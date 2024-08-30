@@ -24,50 +24,39 @@ class ConsumidorService
             $data['cpf'] = str_replace(['.', '-'], '', $data['cpf']);
             $data['telefone'] = str_replace(['(', ')', '-', ' '], '', $data['telefone']);
 
-            try{
-                $consumidor = new Consumidor();
-                
-                $consumidor->fill($data);
-                $consumidor->fk_usuario = $user->id;
+            $consumidor = new Consumidor();
 
-                $consumidor->save();
+            $consumidor->fill($data);
+            $consumidor->fk_usuario = $user->id;
 
-            }catch(Exception $e){
-                throw $e;
-            }
+            $consumidor->save();
 
-            return response()->json(['message' => 'Usuário cadastrado com sucesso!'], 201);
+            return $consumidor;
 
         }catch(Exception $e){
-            throw $e;
+            if(isset($user)){
+                $this->userService->destroy($user->id);
+            }
+
+            throw new Exception("Erro ao criar o usuário: " . $e->getMessage());
         }
     }
 
     public function update($id, $request)
     {
-        try{
-            $consumidor = Consumidor::where('fk_usuario', $id)->first();
+        $consumidor = Consumidor::where('fk_usuario', $id)->first();
 
-            $usuario = $this->userService->update( $consumidor->user->id, $request['user']);
+        $usuario = $this->userService->store($request['user'], $consumidor->user->id);
 
-            $data = $request['consumidor'];
-            $data['cpf'] = str_replace(['.', '-'], '', $data['cpf']);
-            $data['telefone'] = str_replace(['(', ')', '-', ' '], '', $data['telefone']);
+        $data = $request['consumidor'];
+        $data['cpf'] = str_replace(['.', '-'], '', $data['cpf']);
+        $data['telefone'] = str_replace(['(', ')', '-', ' '], '', $data['telefone']);
 
-            try{
-                $consumidor->fill($data);
-                $consumidor->fk_usuario = $usuario->id;
+        $consumidor->fill($data);
+        $consumidor->fk_usuario = $usuario->id;
 
-                $consumidor->save();
+        $consumidor->save();
 
-            }catch(Exception $e){
-                throw $e;
-            }
-
-            return response()->json(['message' => 'Usuário editado com sucesso!'], 201);
-
-        }catch(Exception $e){
-            throw $e;
-        }
+        return $consumidor;
     }
 }
