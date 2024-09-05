@@ -28,11 +28,11 @@ Pronto, agora você pode utilizar o projeto acessando http://localhost:80
 
 Depois que você configurou pela primeira vez, não é necessário executar o script de configuração novamente, você pode utilizar esse comando
 ```
-./vendor/bin/sail up -d
+./run-dev.sh
 ```
 Para derrubar os containers é só executar 
 ```
-./vendor/bin/sail down
+ctrl + c
 ```
 
 ## Ajuda

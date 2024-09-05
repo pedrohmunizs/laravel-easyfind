@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Enums\StatusPedido;
 use App\Events\EsvaziarCarrinho;
+use App\Events\NovoPedido;
 use App\Events\TransacaoEvent;
 use App\Jobs\SendEmailJob;
 use App\Models\Pedido;
@@ -52,6 +53,8 @@ class PedidoService
             'template' => "create-pedido",
             'email' => $email
         ])->onQueue('newPedido');
+
+        event(new NovoPedido());
 
         return $pedido;
     }

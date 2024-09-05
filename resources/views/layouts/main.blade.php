@@ -11,6 +11,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="shortcut icon" type="imagex/png" href="/img/logo_sn.png">
+    @vite('resources/js/app.js')
 </head>
 <body>
     @yield('content')

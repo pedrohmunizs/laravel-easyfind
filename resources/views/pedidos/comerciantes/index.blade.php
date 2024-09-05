@@ -86,7 +86,13 @@
     let order = "DESC"
 
     $(document).ready(function(){
-        load()
+        load();
+
+        window.Echo.channel('pedido')
+            .listen('NovoPedido', () => {
+            load();
+            toastr.success('Novo pedido recebido', 'Pedido');
+        });
     })
 
     function load (){
