@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title', 'Cadastro')
+@section('title', 'Login')
 
 @section('content')
 
@@ -28,8 +28,9 @@
                         <label class="label-default" for="password">Senha</label>
                         <input type="password" name="password" class="form-control px-3 py-2 input-default w-100" placeholder="Insira a sau senha">
                     </div>
-                    <div class="d-flex flex-column align-items-center">
+                    <div class="d-flex flex-column align-items-center gap-2">
                         <button type="submit" class="mt-4 btn-default btn-large rounded-pill">Entrar</button>
+                        <h6 class="m-0"><a href="{{ route('password.request') }}" class="a-default fc-blue">Esqueceu a senha?</a></h6>
                         <meta name="csrf-token" content="{{ csrf_token() }}">
                     </div>
                 </div>

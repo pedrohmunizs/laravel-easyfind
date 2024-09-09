@@ -34,6 +34,15 @@ Route::group(['prefix' => 'estabelecimentos', 'namespace' => 'App\Http\Controlle
     Route::get('/loadSearch', ['uses' => 'EstabelecimentoController@loadSearch', 'as' => 'estabelecimentos.loadSearch'] );
 });
 
+Route::middleware('guest')->group(function () {
+    Route::group(['prefix' => 'forgot-password', 'namespace' => 'App\Http\Controllers'], function(){
+        Route::get('/', ['uses' => 'UserController@forgotPassword', 'as' => 'password.request']);
+        Route::post('/', ['uses' => 'UserController@sendEmail', 'as' => 'password.email']);
+        Route::get('/{token}', ['uses' => 'UserController@newPassword', 'as' => 'password.reset']);
+    });
+    Route::patch('/reset-password', ['uses' => 'App\Http\Controllers\UserController@resetPassword', 'as' => 'password.update']);
+});
+
 Route::middleware('auth')->group(function () {
     Route::group(['prefix' => 'estabelecimentos', 'namespace' => 'App\Http\Controllers'], function(){
         Route::get('/load', ['uses' => 'EstabelecimentoController@load', 'as' => 'estabelecimentos.load'] );
